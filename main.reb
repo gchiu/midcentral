@@ -3,6 +3,8 @@ Rebol [
 	exports: [parse-demographics rx]
 ]
 
+root: https://github.com/gchiu/midcentral/blob/main/drugs/
+
 comment {
 
 ASurname, Basil Phillip (Mr) 
@@ -51,8 +53,6 @@ parse-demographics: func [][
 rx: func [ drug [text!]][
 	; search for drug in database, get the first char
 	c: form first drug
-	data: read unspaced [root "/" c %.reb]
-]
-	
-	
+	import unspaced [root c %.reb]
+	drugdata drug
 ]
