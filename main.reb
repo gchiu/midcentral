@@ -30,7 +30,7 @@ parse-demographics: func [][
 	parse demo [while whitespace copy surname to space thru "," while space copy firstnames to "(" (trim/head/tail firstnames) 
 		thru "(" copy title to ")" thru "BORN" copy dob to space
 		thru "(" copy age to ")" thru "GENDER" while space copy gender some alpha thru "NHI" copy nhi nhi-rule]
-	dump fname
+	dump surname
 	dump firstnames
 	dump dob
 	dump gender
