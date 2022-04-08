@@ -53,9 +53,10 @@ parse-demographics: func [][
 rx: func [ drug [text! word!]
 	<local> link
 ][
+	drug: form drug
 	; search for drug in database, get the first char
-	c: form first form drug
-	link: unspaced [root c %.reb]
+	c: form first drug
+	link: to url! unspaced [root c %.reb]
 	dump link
 	import link
 	drugdata drug
