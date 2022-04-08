@@ -34,6 +34,7 @@ parse-demographics: func [][
 	]
 	dump surname
 	dump firstnames
+	dump title
 	dump dob
 	dump gender
 	dump nhi
