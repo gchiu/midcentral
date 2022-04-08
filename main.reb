@@ -17,7 +17,7 @@ Address  29 Somewhere League, Middleton, NEW ZEALAND, 4999
 Home  071234567 
 }
 
-whitespace: charset [#" " #"^/" #"^/M"]
+whitespace: charset [#" " #"^/" #"^M"]
 alpha: charset [#"A" - #"Z" #"a" - #"z"]
 digit: charset [#"0" - #"9"]
 nhi-rule: [3 alphaa 4 digit]
