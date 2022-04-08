@@ -1,6 +1,6 @@
 Rebol [
 	type: module
-	exports: [parse-demographics]
+	exports: [parse-demographics rx]
 ]
 
 comment {
@@ -46,4 +46,13 @@ parse-demographics: func [][
 	dump town
 	dump city
 	dump phone
+]
+
+rx: func [ drug [text!]][
+	; search for drug in database, get the first char
+	c: form first drug
+	data: read unspaced [root "/" c %.reb]
+]
+	
+	
 ]
