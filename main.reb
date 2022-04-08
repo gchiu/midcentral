@@ -23,7 +23,7 @@ Home  071234567
 whitespace: charset [#" " #"^/" #"^M" #"^J"]
 alpha: charset [#"A" - #"Z" #"a" - #"z"]
 digit: charset [#"0" - #"9"]
-nhi-rule: [3 alphaa 4 digit]
+nhi-rule: [3 alpha 4 digit]
 
 parse-demographics: func [][
 	demo: ask ["Paste in demographics from CP" text!]
