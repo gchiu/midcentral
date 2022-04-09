@@ -60,7 +60,7 @@ rx: func [ drug [text! word!]
 	dump link
 	if error? err: trap [import link] [
 		print spaced ["This page" link "isn't available"]
-	][
+	] else [
 		drugdata drug
 	]
 ]
