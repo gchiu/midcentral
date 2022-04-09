@@ -69,7 +69,7 @@ rx: func [ drug [text! word!]
 	link: to url! unspaced [root c %.reb]
 	dump link
 	if error? err: trap [import link] [
-		print spaced ["This page" link "isn't available"]
+		print spaced ["This page" link "isn't available, or, has a syntax error"]
 	] else [
 		result: switch drug data ; data comes from import link
 		if 1 < len: length-of result [
