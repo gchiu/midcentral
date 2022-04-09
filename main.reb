@@ -64,9 +64,9 @@ parse-demographics: func [][
 		thru "(" copy age to ")" thru "GENDER" while space copy gender some alpha thru "NHI" copy nhi nhi-rule
 		thru "Address" while whitespace copy street to "," thru "," while whitespace copy town to "," thru "," 
 		while whitespace copy city to ","
-		thru "Home" while whitespace 
+		[thru "Home" | thru "Mobile" ] while whitespace 
 		copy phone some digit 
-		to end
+		to end]
 	]
 	dump surname
 	dump firstnames
