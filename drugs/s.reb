@@ -26,7 +26,7 @@ drugdata: func [name
 	  	]
 	]
 	if 1 < len: length-of result [
-		for i 1 len 1 [print 1 print result/:i] 
+		cfor i 1 len 1 [print 1 print result/:i] 
 		choose-drug result
 	]
 ]
