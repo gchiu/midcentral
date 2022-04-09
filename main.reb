@@ -1,6 +1,6 @@
 Rebol [
 	type: module
-	exports: [parse-demographics rx]
+	exports: [parse-demographics rx choose-drug]
 ]
 
 root: https://github.com/gchiu/midcentral/blob/main/drugs/
