@@ -58,6 +58,9 @@ rx: func [ drug [text! word!]
 	c: form first drug
 	link: to url! unspaced [root c %.reb]
 	dump link
-	import link
-	drugdata drug
+	if error? err: trap [import link] [
+		print spaced ["This page" link "isn't available"]
+	][
+		drugdata drug
+	]
 ]
