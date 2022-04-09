@@ -10,7 +10,7 @@ expand-latin: func [sig [text!]
 ][
 	data: [
 		"QD" "once daily"
-		"QW "once weekly"
+		"QW" "once weekly"
 		"BID" "twice daily"
 		"TDS" "three times daily"
 		"mane" "in the morning"
