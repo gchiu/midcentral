@@ -4,16 +4,6 @@ rebol [
   exports: [drugdata]
 ]
 
-choose-drug: func [scheds [block!]
-	<local> num
-][
-	num: length-of scheds
-	choice: ask ["Which schedule to use?" integer!]
-	if choice = 0 [return]
-	if choice <= num [print pick scheds choice return]
-	print "invalid choice"
-]
-
 drugdata: func [name
 	<local> result
 ][
