@@ -1,9 +1,28 @@
 Rebol [
 	type: module
-	exports: [parse-demographics rx choose-drug]
+	exports: [parse-demographics rx choose-drug expand-latin]
 ]
 
 root: https://github.com/gchiu/midcentral/blob/main/drugs/
+
+expand-latin: func [sig [text!]
+	<local> data
+][
+	data: [
+		"QD" "once daily"
+		"QW "once weekly"
+		"BID" "twice daily"
+		"TDS" "three times daily"
+		"mane" "in the morning"
+		"nocte" "at night"
+		"PC" "with food"
+		"AC" "before food"
+	]
+	for-each [abbrev expansion] data [
+		replace sig unspaced [space abbrev space] unspaced [space expansion space]
+	]
+	return sig
+]
 
 choose-drug: func [scheds [block!]
 	<local> num
@@ -11,7 +30,7 @@ choose-drug: func [scheds [block!]
 	num: length-of scheds
 	choice: ask ["Which schedule to use?" integer!]
 	if choice = 0 [return]
-	if choice <= num [print pick scheds choice return]
+	if choice <= num [print expand-latin pick scheds choice return]
 	print "invalid choice"
 ]
 
