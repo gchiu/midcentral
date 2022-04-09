@@ -5,6 +5,16 @@ Rebol [
 
 root: https://github.com/gchiu/midcentral/blob/main/drugs/
 
+choose-drug: func [scheds [block!]
+	<local> num
+][
+	num: length-of scheds
+	choice: ask ["Which schedule to use?" integer!]
+	if choice = 0 [return]
+	if choice <= num [print pick scheds choice return]
+	print "invalid choice"
+]
+
 comment {
 
 ASurname, Basil Phillip (Mr) 
