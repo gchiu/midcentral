@@ -71,7 +71,7 @@ rx: func [ drug [text! word!]
 	if error? err: trap [import link] [
 		print spaced ["This page" link "isn't available, or, has a syntax error"]
 	] else [
-		if null? result: switch drug data ; data comes from import link [
+		if null? result: switch drug data [; data comes from import link 
 			print spaced ["Drug" drug "not found in database. Edit link to add it."]		
 		] else [	
 			if 1 < len: length-of result [
