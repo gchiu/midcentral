@@ -61,7 +61,7 @@ parse-demographics: func [][
 ]
 
 rx: func [ drug [text! word!]
-	<local> link
+	<local> link result c err
 ][
 	drug: form drug
 	; search for drug in database, get the first char
@@ -71,6 +71,12 @@ rx: func [ drug [text! word!]
 	if error? err: trap [import link] [
 		print spaced ["This page" link "isn't available"]
 	] else [
-		drugdata drug
+		result: switch drug data ; data comes from import link
+		if 1 < len: length-of result [
+			print newline
+			for i len [print form i print result.:i print newline] 
+			choose-drug result
+		]
 	]
 ]
+
