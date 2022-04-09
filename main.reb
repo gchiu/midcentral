@@ -66,7 +66,7 @@ parse-demographics: func [][
 		while whitespace copy city to ","
 		[thru "Home" | thru "Mobile" ] while whitespace 
 		copy phone some digit 
-		to end]
+		to end
 	]
 	dump surname
 	dump firstnames
