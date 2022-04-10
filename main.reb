@@ -103,3 +103,33 @@ rx: func [ drug [text! word!]
 	]
 ]
 
+replpad-write/html
+{<div id=form>
+<script language="JavaScript">
+function openWin(){<!--from w ww .  j  a  va  2 s  .co  m-->
+var myBars = 'directories=no,location=no,menubar=no,status=no';
+
+myBars += ',titlebar=no,toolbar=no';
+var myOptions = 'scrollbars=no,width=400,height=200,resizeable=no';
+var myFeatures = myBars + ',' + myOptions;
+var myReadme = 'This is a test.'
+
+var newWin = open('', 'myDoc', myFeatures);
+
+newWin.document.writeln('<form>');
+newWin.document.writeln('<table>');
+newWin.document.writeln('<tr valign=TOP><td>');
+newWin.document.writeln('<textarea cols=45 rows=7 wrap=SOFT>');
+newWin.document.writeln(myReadme + '</textarea>');
+newWin.document.writeln('</td></tr>');
+newWin.document.writeln('<tr><td>');
+newWin.document.writeln('<input type=BUTTON value="Close"');
+newWin.document.writeln(' onClick="window.close()">');
+newWin.document.writeln('</td></tr>');
+newWin.document.writeln('</table></form>');
+newWin.document.close();
+newWin.focus();
+}
+</script>
+</div>
+}
