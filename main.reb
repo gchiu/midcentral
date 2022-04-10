@@ -1,6 +1,12 @@
 Rebol [
 	type: module
-	exports: [parse-demographics rx choose-drug expand-latin]
+	exports: [
+		add-form ; puts JS form into 
+		choose-drug ; pick drug from a selection
+		expand-latin ; turns abbrevs into english
+		parse-demographics ; extracts demographics from clinical portal details
+		rx ; starts the process of getting a drug schedule
+	]
 ]
 
 root: https://github.com/gchiu/midcentral/blob/main/drugs/
