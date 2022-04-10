@@ -103,6 +103,7 @@ rx: func [ drug [text! word!]
 	]
 ]
 
+add-form: does [
 replpad-write/html
 {<div id=form>
 <script language="JavaScript">
@@ -133,3 +134,4 @@ newWin.focus();
 </script>
 </div>
 }
+]
