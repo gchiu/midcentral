@@ -9,6 +9,7 @@ Rebol [
 	]
 ]
 
+import @popupdemo
 root: https://github.com/gchiu/midcentral/blob/main/drugs/
 
 expand-latin: func [sig [text!]
@@ -140,4 +141,8 @@ newWin.focus();
 </script>
 </div>
 }
+]
+
+add-form: does [
+	show-dialog/size {<div id="board" style="width: 400px"><textarea id="script" cols="80" rows="80"></textarea></div>} 480x480
 ]
