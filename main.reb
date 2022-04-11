@@ -150,7 +150,7 @@ add-form: does [
 
 add-content: func [txt [text!]
 ][
-	string: {document.getElementById('test').innerHTML = "$a"}
+	string: {document.getElementById('script').innerHTML = "$a"}
 	reword string compose [a (txt)]
 	js-do string
 ]
