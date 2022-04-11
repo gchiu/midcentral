@@ -33,6 +33,19 @@ expand-latin: func [sig [text!]
 	return sig
 ]
 
+add-form: does [
+	show-dialog/size {<div id="board" style="width: 400px"><textarea id="script" cols="80" rows="80"></textarea></div>} 480x480
+]
+
+add-content: func [txt [text!]
+	<local> foo
+][
+	string: {document.getElementById('script').innerHTML += "$a"}
+	foo: reword string compose [a (txt)]
+	dump foo
+	js-do foo
+]
+
 choose-drug: func [scheds [block!]
 	<local> num output
 ][
@@ -113,49 +126,4 @@ rx: func [ drug [text! word!]
 			]
 		]
 	]
-]
-
-add-form: does [
-replpad-write/html
-{<div id=form>
-<script language="JavaScript">
-function openWin(){<!--from w ww .  j  a  va  2 s  .co  m-->
-var myBars = 'directories=no,location=no,menubar=no,status=no';
-
-myBars += ',titlebar=no,toolbar=no';
-var myOptions = 'scrollbars=no,width=400,height=200,resizeable=no';
-var myFeatures = myBars + ',' + myOptions;
-var myReadme = 'This is a test.'
-
-var newWin = open('', 'myDoc', myFeatures);
-
-newWin.document.writeln('<form>');
-newWin.document.writeln('<table>');
-newWin.document.writeln('<tr valign=TOP><td>');
-newWin.document.writeln('<textarea cols=45 rows=7 wrap=SOFT>');
-newWin.document.writeln(myReadme + '</textarea>');
-newWin.document.writeln('</td></tr>');
-newWin.document.writeln('<tr><td>');
-newWin.document.writeln('<input type=BUTTON value="Close"');
-newWin.document.writeln(' onClick="window.close()">');
-newWin.document.writeln('</td></tr>');
-newWin.document.writeln('</table></form>');
-newWin.document.close();
-newWin.focus();
-}
-</script>
-</div>
-}
-]
-
-add-form: does [
-	show-dialog/size {<div id="board" style="width: 400px"><textarea id="script" cols="80" rows="80"></textarea></div>} 480x480
-]
-
-add-content: func [txt [text!]
-	<local> foo
-][
-	string: {document.getElementById('script').innerHTML += "$a"}
-	foo: reword string compose [a (txt)]
-	js-do foo
 ]
