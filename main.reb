@@ -2,6 +2,7 @@ Rebol [
 	type: module
 	exports: [
 		add-form ; puts JS form into 
+		add-content ; adds content to the form
 		choose-drug ; pick drug from a selection
 		expand-latin ; turns abbrevs into english
 		parse-demographics ; extracts demographics from clinical portal details
