@@ -34,12 +34,16 @@ expand-latin: func [sig [text!]
 ]
 
 choose-drug: func [scheds [block!]
-	<local> num
+	<local> num output
 ][
 	num: length-of scheds
 	choice: ask ["Which schedule to use?" integer!]
 	if choice = 0 [return]
-	if choice <= num [print expand-latin pick scheds choice return]
+	if choice <= num [
+		print output: expand-latin pick scheds choice 
+		add-content output
+		return
+	]
 	print "invalid choice"
 ]
 
