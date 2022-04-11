@@ -149,5 +149,7 @@ add-form: does [
 
 add-content: func [txt [text!]
 ][
-	js-do unspaced [{{document.getElementById('script').innerHTML =}  {"} txt {"} "}"]
+	string: {document.getElementById('test').innerHTML = "$a"}
+	reword string compose [a (txt)]
+	js-do string
 ]
