@@ -149,8 +149,9 @@ add-form: does [
 ]
 
 add-content: func [txt [text!]
+	<local> foo
 ][
 	string: {document.getElementById('script').innerHTML += "$a"}
-	reword string compose [a (txt)]
-	js-do string
+	reword foo: string compose [a (txt)]
+	js-do foo
 ]
