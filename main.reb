@@ -156,6 +156,6 @@ add-content: func [txt [text!]
 	<local> foo
 ][
 	string: {document.getElementById('script').innerHTML += "$a"}
-	reword foo: string compose [a (txt)]
+	foo: reword string compose [a (txt)]
 	js-do foo
 ]
