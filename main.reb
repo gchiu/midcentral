@@ -40,8 +40,9 @@ add-form: does [
 add-content: func [txt [text!]
 	<local> foo
 ][
-	string: {document.getElementById('script').innerHTML += "$a"}
-	foo: reword string compose [a (txt)]
+	; string: {document.getElementById('script').innerHTML += "$a"}
+	string: [{document.getElementById('script').innerHTML +=} spell @txt]
+	foo: reword string compose [t (txt)]
 	dump foo
 	js-do foo
 ]
