@@ -38,17 +38,12 @@ add-form: does [
 ]
 
 add-content: func [txt [text!]
-	<local> foo
 ][
-	; string: {document.getElementById('script').innerHTML += "$a"}
-	; string: compose [{document.getElementById('script').innerHTML +=} spell (txt)]
-	; foo: reword string compose [t (txt)]
-	; dump foo
 	js-do [{document.getElementById('script').innerHTML +=} spell ^txt]
 ]
 
 choose-drug: func [scheds [block!]
-	<local> num output
+	<local> num choice output
 ][
 	num: length-of scheds
 	choice: ask ["Which schedule to use?" integer!]
