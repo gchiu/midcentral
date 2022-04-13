@@ -39,7 +39,7 @@ add-form: does [
 
 add-content: func [txt [text!]
 ][
-	js-do [{document.getElementById('script').innerHTML +=} spell ^txt]
+	js-do [{document.getElementById('script').innerHTML +=} spell @txt]
 ]
 
 choose-drug: func [scheds [block!]
