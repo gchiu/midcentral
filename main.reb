@@ -44,7 +44,7 @@ add-content: func [txt [text!]
 	; string: compose [{document.getElementById('script').innerHTML +=} spell (txt)]
 	; foo: reword string compose [t (txt)]
 	; dump foo
-	js-do compose [{document.getElementById('script').innerHTML +=} spell (txt)]
+	js-do [{document.getElementById('script').innerHTML +=} spell @txt]
 ]
 
 choose-drug: func [scheds [block!]
