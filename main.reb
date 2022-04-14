@@ -45,7 +45,7 @@ clear-form: does [
 
 add-content: func [txt [text!]
 ][
-	txt: append copy txt newline
+	txt: append append copy txt newline newline
 	js-do [{document.getElementById('script').innerHTML +=} spell @txt]
 ]
 
@@ -109,7 +109,7 @@ parse-demographics: func [
 	dump city
 	dump phone
 	clear-form
-	data: unspaced [ surname "," firstnames "(" title ")" dob space "NHI:" space nhi newline street newline town newline city] 
+	data: unspaced [ surname "," firstnames space "(" title ")" space "DOB:" space dob space "NHI:" space nhi newline street newline town newline city newline newline] 
 	add-content data
 ]
 
