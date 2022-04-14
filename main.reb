@@ -39,7 +39,7 @@ add-form: does [
 ]
 
 clear-form: does [
-	js-do [{document.getElementById('script').innerHTML = '']
+	js-do {document.getElementById('script').innerHTML = ''}
 ]
 
 
