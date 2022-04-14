@@ -39,7 +39,7 @@ add-form: does [
 
 add-content: func [txt [text!]
 ][
-	append txt newline
+	txt: append copy txt newline
 	js-do [{document.getElementById('script').innerHTML +=} spell @txt]
 ]
 
