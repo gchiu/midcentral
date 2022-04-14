@@ -1,9 +1,10 @@
 Rebol [
 	type: module
 	exports: [
-		add-form ; puts JS form into 
+		add-form ; puts JS form into DOM
 		add-content ; adds content to the form
 		choose-drug ; pick drug from a selection
+		clear-form ; clears the script
 		expand-latin ; turns abbrevs into english
 		parse-demographics ; extracts demographics from clinical portal details
 		rx ; starts the process of getting a drug schedule
@@ -36,6 +37,11 @@ expand-latin: func [sig [text!]
 add-form: does [
 	show-dialog/size {<div id="board" style="width: 400px"><textarea id="script" cols="80" rows="80"></textarea></div>} 480x480
 ]
+
+clear-form: does [
+	js-do [{document.getElementById('script').innerHTML = '']
+]
+
 
 add-content: func [txt [text!]
 ][
