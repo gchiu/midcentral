@@ -85,7 +85,9 @@ alpha: charset [#"A" - #"Z" #"a" - #"z"]
 digit: charset [#"0" - #"9"]
 nhi-rule: [3 alpha 4 digit]
 
-parse-demographics: func [][
+parse-demographics: func [
+	<local> data
+][
 	demo: ask ["Paste in demographics from CP" text!]
 	parse demo [while whitespace copy surname to "," thru space while space copy firstnames to "(" (trim/head/tail firstnames) 
 		thru "(" copy title to ")" thru "BORN" copy dob to space
@@ -106,6 +108,9 @@ parse-demographics: func [][
 	dump town
 	dump city
 	dump phone
+	clear-form
+	data: unspaced [ surname "," firstnames "(" title ")" dob space "NHI:" space nhi newline street newline town newline city] 
+	add-content data
 ]
 
 rx: func [ drug [text! word!]
