@@ -170,6 +170,7 @@ parse-demographics: func [
 	clear-form
 	data: unspaced [ surname "," firstnames space "(" title ")" space "DOB:" space dob space "NHI:" space nhi newline street newline town newline city newline newline] 
 	cdata: reword cdata reduce ['firstnames firstnames 'surname surname 'title title]
+	probe cdata
 	add-content data
 ]
 
