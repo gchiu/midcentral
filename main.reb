@@ -54,6 +54,12 @@ cdata: {window.generate = function() {
                 doc.render({
                 	surname: '$surname',
 			firstnames: '$firstnames',
+			title: '$title',
+			dob: '$dob',
+			street: '$street',
+			town: '$town',
+			nhi: '$nhi',
+			phone: '$phone',
 			rx1: `$rx1`,
 			rx2: `$rx2`,
             	});
