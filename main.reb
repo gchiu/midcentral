@@ -58,10 +58,15 @@ cdata: {window.generate = function() {
 			dob: '$dob',
 			street: '$street',
 			town: '$town',
+			city: '$city',
 			nhi: '$nhi',
 			phone: '$phone',
 			rx1: `$rx1`,
 			rx2: `$rx2`,
+			rx3: `$rx3`,
+			rx4: `$rx4`,
+			signature: '$signature',
+			date: '$date`,
             	});
             }
             catch (error) {
@@ -217,6 +222,6 @@ write-rx: does [
 	append/dup rxs space 4
 	cdata: reword cdata reduce ['rx1 rxs.1 'rx2 rxs.2 'rx3 rxs.3 'rx4 rxs.4]
 	probe cdata
-
+	date: now/date
 	js-do cdata
 ]
