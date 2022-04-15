@@ -15,7 +15,8 @@ Rebol [
 
 import @popupdemo
 root: https://github.com/gchiu/midcentral/blob/main/drugs/
-rx-template: https://github.com/gchiu/midcentral/raw/main/rx-template-docx.docx
+; rx-template: https://github.com/gchiu/midcentral/raw/main/rx-template-docx.docx ; can't use due to CORS
+rx-template: https://metaeducation.s3.amazonaws.com/rx-template-docx.docx
 
 for-each site [
   https://cdnjs.cloudflare.com/ajax/libs/docxtemplater/3.9.1/docxtemplater.js
@@ -154,7 +155,7 @@ rx: func [ drug [text! word!]
 ]
 
 data: {window.generate = function() {
-        loadFile("https://github.com/gchiu/midcentral/raw/main/rx-template-docx.docx",function(error,content){
+        loadFile("https://metaeducation.s3.amazonaws.com/rx-template-docx.docx",function(error,content){
             if (error) { throw error };
             var zip = new JSZip(content);
             var doc=new window.docxtemplater().loadZip(zip)
