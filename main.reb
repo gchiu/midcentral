@@ -93,8 +93,8 @@ expand-latin: func [sig [text!]
 		"AC" "before food"
 	]
 	for-each [abbrev expansion] data [
-		replace sig unspaced [space abbrev space] unspaced [space expansion space]
-		replace sig unspaced [space abbrev newline] unspaced [space expansion newline]
+		replace/all sig unspaced [space abbrev space] unspaced [space expansion space]
+		replace/all sig unspaced [space abbrev newline] unspaced [space expansion newline]
 	]
 	return sig
 ]
