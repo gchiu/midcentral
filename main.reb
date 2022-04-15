@@ -172,6 +172,7 @@ parse-demographics: func [
 	cdata: reword cdata reduce ['firstnames firstnames 'surname surname 'title title]
 	probe cdata
 	add-content data
+	return cdata
 ]
 
 rx: func [ drug [text! word!]
