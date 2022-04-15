@@ -46,7 +46,7 @@ cdata: {window.generate = function() {
             doc.setData({
                 surname: '$surname',
 		firstnames: '$firstnames',
-		rx1: '$rx1',
+		rx1: `$rx1`,
             });
             try {
                 // render the document (replace all occurences of {first_name} by John, {last_name} by Doe, ...)
