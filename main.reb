@@ -182,7 +182,9 @@ parse-demographics: func [
 	dump phone
 	clear-form
 	data: unspaced [ surname "," firstnames space "(" title ")" space "DOB:" space dob space "NHI:" space nhi newline street newline town newline city newline newline] 
-	cdata: reword cdata reduce ['firstnames firstnames 'surname surname 'title title 'street street 'town town 'city city 'dob dob 'nhi nhi]
+	cdata: reword cdata reduce ['firstnames firstnames 'surname surname 'title title 'street street 'town town 'city city 
+		'dob dob 'nhi nhi 'signature "Graham Chiu" 'date now/date
+	]
 	probe cdata
 	add-content data
 	return cdata
