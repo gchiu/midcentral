@@ -23,34 +23,65 @@ rx-template: https://metaeducation.s3.amazonaws.com/rx-template-docx.docx
 rxs: []
 firstnames: surname: dob: title: nhi: rx1: rx2: rx3: rx4: street: town: city: _
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/docxtemplater/3.29.0/docxtemplater.js"></script>
+    <script src="https://unpkg.com/pizzip@3.1.1/dist/pizzip.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.8/FileSaver.js"></script>
+    <script src="https://unpkg.com/pizzip@3.1.1/dist/pizzip-utils.js"></script>
+    
+
 for-each site [
-  https://cdnjs.cloudflare.com/ajax/libs/docxtemplater/3.9.1/docxtemplater.js
-  https://cdnjs.cloudflare.com/ajax/libs/jszip/2.6.1/jszip.js
+  https://cdnjs.cloudflare.com/ajax/libs/docxtemplater/3.29.0/docxtemplater.js
+  https://unpkg.com/pizzip@3.1.1/dist/pizzip.js
+  ; https://cdnjs.cloudflare.com/ajax/libs/jszip/2.6.1/jszip.js
   https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.8/FileSaver.js
-  https://cdnjs.cloudflare.com/ajax/libs/jszip-utils/0.0.2/jszip-utils.js
+  https://unpkg.com/pizzip@3.1.1/dist/pizzip-utils.js
+  ; https://cdnjs.cloudflare.com/ajax/libs/jszip-utils/0.0.2/jszip-utils.js
 ][
   js-do site
 ]
 
 js-do {window.loadFile = function(url,callback){
-        JSZipUtils.getBinaryContent(url,callback);
+        PizZipUtils.getBinaryContent(url,callback);
     };
 }
 
+loadFile(
+                "https://docxtemplater.com/tag-example.docx",
+                function (error, content) {
+                    if (error) {
+                        throw error;
+                    }
+                    var zip = new PizZip(content);
+                    var doc = new window.docxtemplater(zip, {
+                        paragraphLoop: true,
+                        linebreaks: true,
+                    });
+
+                    // Render the document (Replace {first_name} by John, {last_name} by Doe, ...)
+                    doc.render({
+                        first_name: "John",
+                        last_name: "Doe",
+                        phone: "0652455478",
+                        description: "New Website",
+                    });
+
 cdata: {window.generate = function() {
-        loadFile("https://metaeducation.s3.amazonaws.com/rx-template-docx.docx",function(error,content){
+        loadFile("https://metaeducation.s3.amazonaws.com/rx-template-docx.docx",
+	function(error,content){
             if (error) { throw error };
-            var zip = new JSZip(content);
+            var zip = new PizZip(content);
             // var doc=new window.docxtemplater().loadZip(zip)
-	    const doc = new Docxtemplater(zip, { linebreaks: true });
-            doc.setData({
-                surname: '$surname',
-		firstnames: '$firstnames',
-		rx1: `$rx1`,
-            });
+	    var doc = new window.docxtemplater(zip, {
+                        paragraphLoop: true,
+                        linebreaks: true,
+                    });
             try {
                 // render the document (replace all occurences of {first_name} by John, {last_name} by Doe, ...)
-                doc.render()
+                doc.render({
+                	surname: '$surname',
+			firstnames: '$firstnames',
+			rx1: `$rx1`,
+            	});
             }
             catch (error) {
                 var e = {
@@ -62,7 +93,7 @@ cdata: {window.generate = function() {
                 console.log(JSON.stringify({error: e}));
                 // The error thrown here contains additional information when logged with JSON.stringify (it contains a property object).
                 throw error;
-            }
+            }    
             var out=doc.getZip().generate({
                 type:"blob",
                 mimeType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
