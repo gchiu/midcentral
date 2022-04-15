@@ -206,7 +206,7 @@ write-rx: does [
 ;	]
 	for i 4 [
 		if something? rxs.:i [
-			cdata: reword data compose ['(to word! join "rx" i) rxs.:i]
+			cdata: reword cdata compose ['(to word! join "rx" i) rxs.:i]
 		]
 	]
 	probe cdata
