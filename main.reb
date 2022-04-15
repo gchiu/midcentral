@@ -204,11 +204,12 @@ write-rx: does [
 ;		'surname surname
 ;		'firstnames firstnames
 ;	]
-	for i 4 [
-		if something? rxs.:i [
-			cdata: reword cdata compose ['(to word! join "rx" i) rxs.:i]
-		]
-	]
+	;for i 4 [
+	;	if something? rxs.:i [
+	;		cdata: reword cdata compose ['(to word! join "rx" i) rxs.:i]
+	;	]
+	;]
+	cdata: reword cdata reduce ['rx1 rx1 'rx2 rx2 'rx3 rx3 'rx4 rx4]
 	probe cdata
 
 	js-do cdata
