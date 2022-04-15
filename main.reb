@@ -55,6 +55,7 @@ cdata: {window.generate = function() {
                 	surname: '$surname',
 			firstnames: '$firstnames',
 			rx1: `$rx1`,
+			rx2: `$rx2`,
             	});
             }
             catch (error) {
