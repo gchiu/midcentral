@@ -21,6 +21,7 @@ root: https://github.com/gchiu/midcentral/blob/main/drugs/
 ; rx-template: https://github.com/gchiu/midcentral/raw/main/rx-template-docx.docx ; can't use due to CORS
 rx-template: https://metaeducation.s3.amazonaws.com/rx-template-docx.docx
 rxs: []
+firstnames: surname: dob: title: nhi: rx1: rx2: rx3: rx4: street: town: city: _
 
 for-each site [
   https://cdnjs.cloudflare.com/ajax/libs/docxtemplater/3.9.1/docxtemplater.js
