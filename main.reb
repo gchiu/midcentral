@@ -5,9 +5,11 @@ Rebol [
 		add-content ; adds content to the form
 		choose-drug ; pick drug from a selection
 		clear-form ; clears the script
+		data ; the data
 		expand-latin ; turns abbrevs into english
 		parse-demographics ; extracts demographics from clinical portal details
 		rx ; starts the process of getting a drug schedule
+		write-rx ; sends to docx
 	]
 ]
 
@@ -185,3 +187,12 @@ data: {window.generate = function() {
     generate()
 }
 
+write-rx: does [
+	data: reword data reduce [
+		'surname surname
+		'firstnames firstnames
+	]
+	; probe data
+
+	js-do data
+]
