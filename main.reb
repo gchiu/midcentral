@@ -9,6 +9,7 @@ Rebol [
 		expand-latin ; turns abbrevs into english
 		parse-demographics ; extracts demographics from clinical portal details
 		rx ; starts the process of getting a drug schedule
+		rxs ; block of rx
 		write-rx ; sends to docx
 	]
 ]
@@ -17,6 +18,7 @@ import @popupdemo
 root: https://github.com/gchiu/midcentral/blob/main/drugs/
 ; rx-template: https://github.com/gchiu/midcentral/raw/main/rx-template-docx.docx ; can't use due to CORS
 rx-template: https://metaeducation.s3.amazonaws.com/rx-template-docx.docx
+rxs: []
 
 for-each site [
   https://cdnjs.cloudflare.com/ajax/libs/docxtemplater/3.9.1/docxtemplater.js
@@ -76,6 +78,7 @@ choose-drug: func [scheds [block!]
 	if choice <= num [
 		print output: expand-latin pick scheds choice 
 		add-content output
+		append rxs output
 		return
 	]
 	print "invalid choice"
@@ -193,7 +196,12 @@ write-rx: does [
 		'surname surname
 		'firstnames firstnames
 	]
-	; probe data
+	for i 4 [
+		if something? rxs.:i [
+			data: reword data compose ['(to word! join "rx" i) rxs.:i]
+		]
+	]
+	probe data
 
 	js-do data
 ]
