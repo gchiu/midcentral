@@ -5,13 +5,13 @@ Rebol [
 		add-content ; adds content to the form
 		choose-drug ; pick drug from a selection
 		clear-form ; clears the script
-		data ; the data
+		cdata ; the JS that will be executed
 		expand-latin ; turns abbrevs into english
 		parse-demographics ; extracts demographics from clinical portal details
 		rx ; starts the process of getting a drug schedule
 		rxs ; block of rx
 		write-rx ; sends to docx
-		firstnames surname dob title nhi rx1 rx2 rx3 rx4
+		; firstnames surname dob title nhi rx1 rx2 rx3 rx4
 		street town city
 	]
 ]
@@ -35,6 +35,41 @@ for-each site [
 js-do {window.loadFile = function(url,callback){
         JSZipUtils.getBinaryContent(url,callback);
     };
+}
+
+
+cdata: {window.generate = function() {
+        loadFile("https://metaeducation.s3.amazonaws.com/rx-template-docx.docx",function(error,content){
+            if (error) { throw error };
+            var zip = new JSZip(content);
+            var doc=new window.docxtemplater().loadZip(zip)
+            doc.setData({
+                surname: '$surname',
+		firstnames: '$firstnames',
+            });
+            try {
+                // render the document (replace all occurences of {first_name} by John, {last_name} by Doe, ...)
+                doc.render()
+            }
+            catch (error) {
+                var e = {
+                    message: error.message,
+                    name: error.name,
+                    stack: error.stack,
+                    properties: error.properties,
+                }
+                console.log(JSON.stringify({error: e}));
+                // The error thrown here contains additional information when logged with JSON.stringify (it contains a property object).
+                throw error;
+            }
+            var out=doc.getZip().generate({
+                type:"blob",
+                mimeType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+            }) //Output the document using Data-URI
+            saveAs(out,"$prescription.docx")
+        })
+    };
+    generate()
 }
 
 expand-latin: func [sig [text!]
@@ -134,6 +169,7 @@ parse-demographics: func [
 	dump phone
 	clear-form
 	data: unspaced [ surname "," firstnames space "(" title ")" space "DOB:" space dob space "NHI:" space nhi newline street newline town newline city newline newline] 
+	cdata: reword cdata reduce ['firstnames firstnames 'surname surname 'title title]
 	add-content data
 ]
 
@@ -160,51 +196,17 @@ rx: func [ drug [text! word!]
 	]
 ]
 
-data: {window.generate = function() {
-        loadFile("https://metaeducation.s3.amazonaws.com/rx-template-docx.docx",function(error,content){
-            if (error) { throw error };
-            var zip = new JSZip(content);
-            var doc=new window.docxtemplater().loadZip(zip)
-            doc.setData({
-                surname: '$surname',
-		firstnames: '$firstnames',
-            });
-            try {
-                // render the document (replace all occurences of {first_name} by John, {last_name} by Doe, ...)
-                doc.render()
-            }
-            catch (error) {
-                var e = {
-                    message: error.message,
-                    name: error.name,
-                    stack: error.stack,
-                    properties: error.properties,
-                }
-                console.log(JSON.stringify({error: e}));
-                // The error thrown here contains additional information when logged with JSON.stringify (it contains a property object).
-                throw error;
-            }
-            var out=doc.getZip().generate({
-                type:"blob",
-                mimeType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-            }) //Output the document using Data-URI
-            saveAs(out,"$prescription.docx")
-        })
-    };
-    generate()
-}
-
 write-rx: does [
-	data: reword data reduce [
-		'surname surname
-		'firstnames firstnames
-	]
+;	cdata: reword cdata reduce [
+;		'surname surname
+;		'firstnames firstnames
+;	]
 	for i 4 [
 		if something? rxs.:i [
-			data: reword data compose ['(to word! join "rx" i) rxs.:i]
+			cdata: reword data compose ['(to word! join "rx" i) rxs.:i]
 		]
 	]
-	probe data
+	probe cdata
 
-	js-do data
+	js-do cdata
 ]
