@@ -13,6 +13,7 @@ Rebol [
 
 import @popupdemo
 root: https://github.com/gchiu/midcentral/blob/main/drugs/
+rx-template: https://github.com/gchiu/midcentral/raw/main/rx-template-docx.docx
 
 expand-latin: func [sig [text!]
 	<local> data
