@@ -209,7 +209,7 @@ write-rx: does [
 	;		cdata: reword cdata compose ['(to word! join "rx" i) rxs.:i]
 	;	]
 	;]
-	cdata: reword cdata reduce ['rx1 rx1 'rx2 rx2 'rx3 rx3 'rx4 rx4]
+	cdata: reword cdata reduce ['rx1 rxs.1 'rx2 rxs.2 'rx3 rxs.3 'rx4 rxs.4]
 	probe cdata
 
 	js-do cdata
