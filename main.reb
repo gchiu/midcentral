@@ -23,12 +23,6 @@ rx-template: https://metaeducation.s3.amazonaws.com/rx-template-docx.docx
 rxs: []
 firstnames: surname: dob: title: nhi: rx1: rx2: rx3: rx4: street: town: city: _
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/docxtemplater/3.29.0/docxtemplater.js"></script>
-    <script src="https://unpkg.com/pizzip@3.1.1/dist/pizzip.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.8/FileSaver.js"></script>
-    <script src="https://unpkg.com/pizzip@3.1.1/dist/pizzip-utils.js"></script>
-    
-
 for-each site [
   https://cdnjs.cloudflare.com/ajax/libs/docxtemplater/3.29.0/docxtemplater.js
   https://unpkg.com/pizzip@3.1.1/dist/pizzip.js
@@ -44,26 +38,6 @@ js-do {window.loadFile = function(url,callback){
         PizZipUtils.getBinaryContent(url,callback);
     };
 }
-
-loadFile(
-                "https://docxtemplater.com/tag-example.docx",
-                function (error, content) {
-                    if (error) {
-                        throw error;
-                    }
-                    var zip = new PizZip(content);
-                    var doc = new window.docxtemplater(zip, {
-                        paragraphLoop: true,
-                        linebreaks: true,
-                    });
-
-                    // Render the document (Replace {first_name} by John, {last_name} by Doe, ...)
-                    doc.render({
-                        first_name: "John",
-                        last_name: "Doe",
-                        phone: "0652455478",
-                        description: "New Website",
-                    });
 
 cdata: {window.generate = function() {
         loadFile("https://metaeducation.s3.amazonaws.com/rx-template-docx.docx",
