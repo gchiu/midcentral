@@ -37,12 +37,12 @@ js-do {window.loadFile = function(url,callback){
     };
 }
 
-
 cdata: {window.generate = function() {
         loadFile("https://metaeducation.s3.amazonaws.com/rx-template-docx.docx",function(error,content){
             if (error) { throw error };
             var zip = new JSZip(content);
-            var doc=new window.docxtemplater().loadZip(zip)
+            // var doc=new window.docxtemplater().loadZip(zip)
+	    const doc = new Docxtemplater(zip, { linebreaks: true });
             doc.setData({
                 surname: '$surname',
 		firstnames: '$firstnames',
