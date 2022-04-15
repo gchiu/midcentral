@@ -214,15 +214,7 @@ rx: func [ drug [text! word!]
 ]
 
 write-rx: does [
-;	cdata: reword cdata reduce [
-;		'surname surname
-;		'firstnames firstnames
-;	]
-	;for i 4 [
-	;	if something? rxs.:i [
-	;		cdata: reword cdata compose ['(to word! join "rx" i) rxs.:i]
-	;	]
-	;]
+	append/dup rxs space 4
 	cdata: reword cdata reduce ['rx1 rxs.1 'rx2 rxs.2 'rx3 rxs.3 'rx4 rxs.4]
 	probe cdata
 
