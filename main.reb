@@ -14,6 +14,12 @@ Rebol [
 		; firstnames surname dob title nhi rx1 rx2 rx3 rx4
 		street town city
 	]
+	notes: {
+		cdata is the JS script which replaces the form variables in the docx template for the prescription
+		We replace the $ placesetters into two places to prepare the JS function that calls docxtemplater
+		1. parse-demographics replaces the patient $variables, and the prescriber variables
+		2. write-rx replaces the $prescription variables eg. rx1 .. rx4
+	}
 ]
 
 import @popupdemo
@@ -51,6 +57,7 @@ cdata: {window.generate = function() {
                     });
             try {
                 // render the document (replace all occurences of {first_name} by John, {last_name} by Doe, ...)
+                // we replace the dollar vars using Rebol
                 doc.render({
                 	surname: '$surname',
 			firstnames: '$firstnames',
@@ -67,6 +74,8 @@ cdata: {window.generate = function() {
 			rx4: `$rx4`,
 			signature: '$signature',
 			date: '$date',
+			doc-name: '$doc-name',
+			doc-registration: '$doc-registration',
             	});
             }
             catch (error) {
@@ -190,8 +199,8 @@ parse-demographics: func [
 	data: unspaced [ surname "," firstnames space "(" title ")" space "DOB:" space dob space "NHI:" space nhi newline street newline town newline city newline newline] 
 	cdata: reword cdata reduce ['firstnames firstnames 'surname surname 'title title 'street street 'town town 'city city 'phone phone
 		'dob dob 'nhi nhi 'signature "Graham Chiu" 'date now/date
-		'doc-registration "10761"
-		'doc-name "Graham Chiu"
+		'docregistration "10761"
+		'docname "Graham Chiu"
 	]
 	probe cdata
 	add-content data
@@ -221,6 +230,7 @@ rx: func [ drug [text! word!]
 	]
 ]
 
+; replace the prescription drug variables in cdata here, and then evaluate the JS in cdata
 write-rx: does [
 	append/dup rxs space 4
 	cdata: reword cdata reduce ['rx1 rxs.1 'rx2 rxs.2 'rx3 rxs.3 'rx4 rxs.4]
