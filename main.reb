@@ -230,6 +230,7 @@ rx: func [ drug [text! word!]
 	]
 ]
 
+; replace the prescription drug variables in cdata here, and then evaluate the JS in cdata
 write-rx: does [
 	append/dup rxs space 4
 	cdata: reword cdata reduce ['rx1 rxs.1 'rx2 rxs.2 'rx3 rxs.3 'rx4 rxs.4]
