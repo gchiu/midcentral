@@ -57,7 +57,7 @@ cdata: {window.generate = function() {
                     });
             try {
                 // render the document (replace all occurences of {first_name} by John, {last_name} by Doe, ...)
-		// we replace the dollar vars using Rebol
+                // we replace the dollar vars using Rebol
                 doc.render({
                 	surname: '$surname',
 			firstnames: '$firstnames',
