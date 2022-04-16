@@ -16,7 +16,7 @@ Rebol [
 	]
 	notes: {
 		cdata is the JS script which replaces the form variables in the docx template for the prescription
-		We replace the $ placesetters into two places to prepare the JS function cdata
+		We replace the $ placesetters into two places to prepare the JS function that calls docxtemplater
 		1. parse-demographics replaces the patient $variables, and the prescriber variables
 		2. write-rx replaces the $prescription variables eg. rx1 .. rx4
 	}
@@ -57,6 +57,7 @@ cdata: {window.generate = function() {
                     });
             try {
                 // render the document (replace all occurences of {first_name} by John, {last_name} by Doe, ...)
+		// we replace the $ vars using Rebol
                 doc.render({
                 	surname: '$surname',
 			firstnames: '$firstnames',
