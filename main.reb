@@ -57,10 +57,25 @@ cdata: {window.generate = function() {
                     });
             try {
                 // render the document (replace all occurences of {first_name} by John, {last_name} by Doe, ...)
-		// we replace the $ vars using Rebol
+		// we replace the dollar vars using Rebol
                 doc.render({
                 	surname: '$surname',
 			firstnames: '$firstnames',
+			title: '$title',
+			dob: '$dob',
+			street: '$street',
+			town: '$town',
+			city: '$city',
+			nhi: '$nhi',
+			phone: '$phone',
+			rx1: `$rx1`,
+			rx2: `$rx2`,
+			rx3: `$rx3`,
+			rx4: `$rx4`,
+			signature: '$signature',
+			date: '$date',
+			doc-name: '$doc-name',
+			doc-registration: '$doc-registration',
             	});
             }
             catch (error) {
