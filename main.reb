@@ -14,6 +14,12 @@ Rebol [
 		; firstnames surname dob title nhi rx1 rx2 rx3 rx4
 		street town city
 	]
+	notes: {
+		cdata is the JS script which replaces the form variables in the docx template for the prescription
+		We replace the $ placesetters into two places to prepare the JS function cdata
+		1. parse-demographics replaces the patient $variables, and the prescriber variables
+		2. write-rx replaces the $prescription variables eg. rx1 .. rx4
+	}
 ]
 
 import @popupdemo
