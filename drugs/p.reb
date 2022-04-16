@@ -13,8 +13,8 @@ data: [
 	]
 	"pax" "Paxlovid" [
 		[
-			{Rx: PAXLOVID (nirmatrelvir 300 mg/ritonavir 100 mg) for Immunosuppressed^/Sig: take 3 tablets in each cell BID^/Mitte: 5 days}
-			{Rx: PAXLOVID (nirmatrelvir 300 mg/ritonavir 100 mg) for Immunosuppressed & reduced renal function^/Sig: take 1 tablets of each in a ell BID^/Mitte: 5 days}
+			{Rx: PAXLOVID (nirmatrelvir 300 mg/ritonavir 100 mg) ^/for Immunosuppressed^/Sig: take 3 tablets in each cell BID^/Mitte: 5 days}
+			{Rx: PAXLOVID (nirmatrelvir 300 mg/ritonavir 100 mg) ^/for Immunosuppressed & reduced renal function^/Sig: take 1 tablets of each in a cell BID^/Mitte: 5 days}
 		]
 	]
 ]
