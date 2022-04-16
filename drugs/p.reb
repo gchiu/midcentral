@@ -17,7 +17,9 @@ data: [
 			{Rx: PAXLOVID (nirmatrelvir 300 mg/ritonavir 100 mg) ^/for Immunosuppressed & reduced renal function^/Sig: take 1 tablets of each in a cell BID^/Mitte: 5 days}
 		]
 	]
-	"pred" "prednisone" [
-		
+	"pred" "prednisone" "prednisolone" [
+		[
+			{Rx: Prednisone 5 mg^/Sig: 1 PO mane^/Mitte: 3/12}
+		]
 	]
 ]
