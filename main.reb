@@ -222,6 +222,5 @@ write-rx: does [
 	append/dup rxs space 4
 	cdata: reword cdata reduce ['rx1 rxs.1 'rx2 rxs.2 'rx3 rxs.3 'rx4 rxs.4]
 	probe cdata
-	date: now/date
 	js-do cdata
 ]
