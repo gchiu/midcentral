@@ -67,6 +67,7 @@ cdata: {window.generate = function() {
 			rx4: `$rx4`,
 			signature: '$signature',
 			date: '$date',
+			doc-name: '$doc-name',
             	});
             }
             catch (error) {
