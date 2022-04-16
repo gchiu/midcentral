@@ -67,7 +67,7 @@ cdata: {window.generate = function() {
 			rx4: `$rx4`,
 			signature: '$signature',
 			date: '$date',
-			docname: '$doc-name',
+			docname: '$docname',
             	});
             }
             catch (error) {
@@ -192,7 +192,7 @@ parse-demographics: func [
 	cdata: reword cdata reduce ['firstnames firstnames 'surname surname 'title title 'street street 'town town 'city city 'phone phone
 		'dob dob 'nhi nhi 'signature "Graham Chiu" 'date now/date
 		'doc-registration "10761"
-		'doc-name "Graham Chiu"
+		'docname "Graham Chiu"
 	]
 	probe cdata
 	add-content data
