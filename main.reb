@@ -14,6 +14,8 @@ Rebol [
 		write-rx ; sends to docx
 		; firstnames surname dob title nhi rx1 rx2 rx3 rx4
 		street town city
+		docname
+		docregistration
 	]
 ]
 
