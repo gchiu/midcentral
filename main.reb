@@ -107,6 +107,8 @@ grab-creds: func [ <local> docnames docregistrations] [
 			break
 		]
 	]
+	cdata: reword cdata reduce ['docname docname 'docregistation docregistration 'signature docname]
+	probe cdata
 	return  
 ]
 
