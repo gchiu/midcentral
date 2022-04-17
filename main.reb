@@ -1,5 +1,6 @@
 Rebol [
 	type: module
+	author: "Graham Chiu"
 	exports: [
 		add-form ; puts JS form into DOM
 		add-content ; adds content to the form
