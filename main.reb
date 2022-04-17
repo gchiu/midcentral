@@ -96,14 +96,14 @@ cdata: {window.generate = function() {
     generate()
 }
 
-grab-creds: func [ <local> docname docregistration] [
+grab-creds: func [ <local> docnames docregistrations] [
 	cycle [
-		docname: ask ["Enter your name as appears on a prescription:" text!]
-		docregistration: ask ["Enter your prescriber ID number:" integer!]
+		docnames: ask ["Enter your name as appears on a prescription:" text!]
+		docregistrations: ask ["Enter your prescriber ID number:" integer!]
 		response: lowercase ask ["Okay?" text!]
 		if find ["yes" "y"] response [
-			set 'docname :docname
-			set 'docregistration :docregistration
+			set 'docname :docnames
+			set 'docregistration :docregistrations
 			break
 		]
 	]
