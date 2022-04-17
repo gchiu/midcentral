@@ -98,7 +98,7 @@ grab-creds: func [ <local> docname docregistration] [
 		docname: ask ["Enter your name as appears on a prescription:" text!]
 		docregistrationi: ask ["Enter your prescriber ID number:" integer!]
 		response: ask ["Okay?" text!]
-		if find? response ["yes" "y"][
+		if find response ["yes" "y"][
 			set 'docname :docname
 			set 'docregistration :docregistration
 			break
