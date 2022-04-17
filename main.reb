@@ -96,7 +96,7 @@ cdata: {window.generate = function() {
 grab-creds: func [ <local> docname docregistration] [
 	cycle [
 		docname: ask ["Enter your name as appears on a prescription:" text!]
-		docregistrationi: ask ["Enter your prescriber ID number:" integer!]
+		docregistration: ask ["Enter your prescriber ID number:" integer!]
 		response: lowercase ask ["Okay?" text!]
 		if find ["yes" "y"] response [
 			set 'docname :docname
