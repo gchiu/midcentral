@@ -107,7 +107,7 @@ grab-creds: func [ <local> docnames docregistrations] [
 			break
 		]
 	]
-	cdata: reword cdata reduce ['docname docname 'docregistation docregistration 'signature docname]
+	cdata: reword cdata reduce ['docname docname 'docregistration docregistration 'signature docname 'date now/date]
 	probe cdata
 	return  
 ]
@@ -211,9 +211,10 @@ parse-demographics: func [
 	clear-form
 	data: unspaced [ surname "," firstnames space "(" title ")" space "DOB:" space dob space "NHI:" space nhi newline street newline town newline city newline newline] 
 	cdata: reword cdata reduce ['firstnames firstnames 'surname surname 'title title 'street street 'town town 'city city 'phone phone
-		'dob dob 'nhi nhi 'signature "Graham Chiu" 'date now/date
-		'docregistration "10761"
-		'docname "Graham Chiu"
+		'dob dob 'nhi nhi 
+		; 'signature "Graham Chiu" 'date now/date
+		; 'docregistration "10761"
+		; 'docname "Graham Chiu"
 	]
 	probe cdata
 	add-content data
