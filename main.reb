@@ -7,6 +7,7 @@ Rebol [
 		clear-form ; clears the script
 		cdata ; the JS that will be executed
 		expand-latin ; turns abbrevs into english
+		grab-creds ; gets credentials
 		parse-demographics ; extracts demographics from clinical portal details
 		rx ; starts the process of getting a drug schedule
 		rxs ; block of rx
@@ -91,6 +92,20 @@ cdata: {window.generate = function() {
     };
     generate()
 }
+
+grab-creds: has [docname docregistration] [
+	cycle [
+		docname: ask ["Enter your name as appears on a prescription:" text!]
+		docregistrationi: ask ["Enter your prescriber ID number:" integer!]
+		response: ask ["Okay?" text!]
+		if find? response ["yes" "y"][
+			set 'docname :docname
+			set 'docregistration :docregistration
+			break
+		]
+	]
+	return  
+]
 
 expand-latin: func [sig [text!]
 	<local> data
