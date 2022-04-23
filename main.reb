@@ -85,7 +85,7 @@ cdata: {window.generate = function() {
 
 set-doc: does [
 	wtemplate: copy template
-	wtemplate: reword wtemplate reduce ['docname docname 'docregistration docregistration 'signature docname 'date now/date]
+	wtemplate: reword wtemplate reduce ['docname docname 'docregistration docregistration 'signature docname] ; 'date now/date]
 	probe wtemplate
 ]
 
@@ -265,6 +265,7 @@ write-rx: does [
 	replace cdata "$template" wtemplate
 	replace cdata "$prescription" unspaced [nhi "_" now/date]
 	cdata: reword cdata reduce ['rx1 rxs.1 'rx2 rxs.2 'rx3 rxs.3 'rx4 rxs.4]
+	cdata: reword cdata reduce compose ['date (spaced [now/date now/time])]
 	probe cdata
 	js-do cdata
 ]
