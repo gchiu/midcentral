@@ -12,7 +12,9 @@ data: [
 		]
 	]
 	"fos" "fosamax" [
+		[
 					{Rx: Alendronate 70 mg^/Sig: 1 PO QW on empty stomach with glass of water^/Mitte: 3/12}
+		]
 
 	]
 ]
