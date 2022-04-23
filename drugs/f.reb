@@ -11,4 +11,8 @@ data: [
 			{Rx: Folic Acid 0.8 mg^/Sig: 1 tab PO QD^/Mitte: 3/12}		
 		]
 	]
+	"fos" "fosamax" [
+					{Rx: Alendronate 70 mg^/Sig: 1 PO QW on empty stomach with glass of water^/Mitte: 3/12}
+
+	]
 ]
