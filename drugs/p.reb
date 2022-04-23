@@ -21,6 +21,7 @@ data: [
 		[
 			{Rx: Prednisone 5 mg^/Sig: 1 PO mane^/Mitte: 3/12}
 			{Rx: Prednisone 5 mg^/Sig: 2 PO mane^/Mitte: 3/12}
+			{Rx: Prednisone 20 mg^/Sig: 2 PO mane 1 PO nocte^/Mitte: 3/12}
 		]
 	]
 ]
