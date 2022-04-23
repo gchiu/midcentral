@@ -12,6 +12,7 @@ Rebol [
 		parse-demographics ; extracts demographics from clinical portal details
 		rx ; starts the process of getting a drug schedule
 		rxs ; block of rx
+		set-doc ; fills the wtemplate with current doc
 		write-rx ; sends to docx
 		; wtemplate ;
 		; firstnames surname dob title nhi rx1 rx2 rx3 rx4
@@ -133,9 +134,8 @@ add-form: does [
 
 clear-form: does [
 	js-do {document.getElementById('script').innerHTML = ''}
-	wtemplate: copy template
+	set-doc
 ]
-
 
 add-content: func [txt [text!]
 ][
