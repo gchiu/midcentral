@@ -13,6 +13,7 @@ Rebol [
 		rx ; starts the process of getting a drug schedule
 		rxs ; block of rx
 		write-rx ; sends to docx
+		wtemplate ;
 		; firstnames surname dob title nhi rx1 rx2 rx3 rx4
 		street town city
 		docname
@@ -100,7 +101,7 @@ grab-creds: func [ <local> docnames docregistrations] [
 	set-doc
 	;wtemplate: copy template
 	;wtemplate: reword wtemplate reduce ['docname docname 'docregistration docregistration 'signature docname 'date now/date]
-	;probe wtemplate
+	probe wtemplate
 	return  
 ]
 
