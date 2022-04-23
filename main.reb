@@ -263,7 +263,7 @@ rx: func [ drug [text! word!]
 write-rx: does [
 	append/dup rxs space 4
 	replace cdata "$template" wtemplate
-	replace cdata "$prescription" unspaced [nhi "-" now/date]
+	; replace cdata "$prescription" unspaced [nhi "-" now/date]
 	cdata: reword cdata reduce ['rx1 rxs.1 'rx2 rxs.2 'rx3 rxs.3 'rx4 rxs.4]
 	probe cdata
 	js-do cdata
