@@ -56,24 +56,8 @@ cdata: {window.generate = function() {
             try {
                 // render the document (replace all occurences of {first_name} by John, {last_name} by Doe, ...)
                 doc.render({
-                	surname: '$surname',
-			firstnames: '$firstnames',
-			title: '$title',
-			dob: '$dob',
-			street: '$street',
-			town: '$town',
-			city: '$city',
-			nhi: '$nhi',
-			phone: '$phone',
-			rx1: `$rx1`,
-			rx2: `$rx2`,
-			rx3: `$rx3`,
-			rx4: `$rx4`,
-			signature: '$signature',
-			date: '$date',
-			docname: '$docname',
-			docregistration: '$docregistration',
-            	});
+			$template
+		});
             }
             catch (error) {
                 var e = {
@@ -96,6 +80,12 @@ cdata: {window.generate = function() {
     generate()
 }
 
+set-doc: does [
+	wtemplate: copy template
+	wtemplate: reword wtemplate reduce ['docname docname 'docregistration docregistration 'signature docname 'date now/date]
+	probe wtemplate
+]
+
 grab-creds: func [ <local> docnames docregistrations] [
 	cycle [
 		docnames: ask ["Enter your name as appears on a prescription:" text!]
@@ -107,8 +97,10 @@ grab-creds: func [ <local> docnames docregistrations] [
 			break
 		]
 	]
-	cdata: reword cdata reduce ['docname docname 'docregistration docregistration 'signature docname 'date now/date]
-	probe cdata
+	set-doc
+	;wtemplate: copy template
+	;wtemplate: reword wtemplate reduce ['docname docname 'docregistration docregistration 'signature docname 'date now/date]
+	;probe wtemplate
 	return  
 ]
 
@@ -139,6 +131,7 @@ add-form: does [
 
 clear-form: does [
 	js-do {document.getElementById('script').innerHTML = ''}
+	wtemplate: copy template
 ]
 
 
@@ -185,6 +178,26 @@ alpha: charset [#"A" - #"Z" #"a" - #"z"]
 digit: charset [#"0" - #"9"]
 nhi-rule: [3 alpha 4 digit]
 
+template: {
+	surname: '$surname',
+	firstnames: '$firstnames',
+	title: '$title',
+	dob: '$dob',
+	street: '$street',
+	town: '$town',
+	city: '$city',
+	nhi: '$nhi',
+	phone: '$phone',
+	rx1: `$rx1`,
+	rx2: `$rx2`,
+	rx3: `$rx3`,
+	rx4: `$rx4`,
+	signature: '$signature',
+	date: '$date',
+	docname: '$docname',
+	docregistration: '$docregistration',
+}			
+
 parse-demographics: func [
 	<local> data
 ][
@@ -210,15 +223,15 @@ parse-demographics: func [
 	dump phone
 	clear-form
 	data: unspaced [ surname "," firstnames space "(" title ")" space "DOB:" space dob space "NHI:" space nhi newline street newline town newline city newline newline] 
-	cdata: reword cdata reduce ['firstnames firstnames 'surname surname 'title title 'street street 'town town 'city city 'phone phone
+	wtemplate: reword wtemplate reduce ['firstnames firstnames 'surname surname 'title title 'street street 'town town 'city city 'phone phone
 		'dob dob 'nhi nhi 
 		; 'signature "Graham Chiu" 'date now/date
 		; 'docregistration "10761"
 		; 'docname "Graham Chiu"
 	]
-	probe cdata
+	probe wtemplate
 	add-content data
-	return cdata
+	return wtemplate
 ]
 
 rx: func [ drug [text! word!]
@@ -246,6 +259,7 @@ rx: func [ drug [text! word!]
 
 write-rx: does [
 	append/dup rxs space 4
+	replace cdata "$template" wtemplate
 	cdata: reword cdata reduce ['rx1 rxs.1 'rx2 rxs.2 'rx3 rxs.3 'rx4 rxs.4]
 	probe cdata
 	js-do cdata
