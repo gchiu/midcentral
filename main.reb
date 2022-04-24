@@ -234,7 +234,7 @@ comment {
 	]
 	; probe wtemplate
 	add-content data
-	return ; wtemplate
+	return _ ; wtemplate
 ]
 
 rx: func [ drug [text! word!]
