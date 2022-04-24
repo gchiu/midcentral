@@ -107,7 +107,7 @@ grab-creds: func [ <local> docnames docregistrations] [
 	;wtemplate: copy template
 	;wtemplate: reword wtemplate reduce ['docname docname 'docregistration docregistration 'signature docname 'date now/date]
 	probe wtemplate
-	write %/credentials.reb mold [docname docregistration]
+	write %/credentials.reb mold reduce [docname docregistration]
 	return  
 ]
 
