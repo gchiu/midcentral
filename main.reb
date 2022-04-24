@@ -234,7 +234,7 @@ comment {
 	]
 	; probe wtemplate
 	add-content data
-	return wtemplate
+	return ; wtemplate
 ]
 
 rx: func [ drug [text! word!]
@@ -280,7 +280,7 @@ new-rx: does [
 	print {"Use Rx" to add a drug to prescription}
 ]
 
-print "checking for %/credentials.reb"
+; print "checking for %/credentials.reb"
 
 if word? exists? %/credentials.reb [
 	creds: load read %/credentials.reb
