@@ -272,6 +272,7 @@ new-rx: does [
 	if empty? docname [
 		grab-creds
 	]
+	set-doc
 	add-form
 	parse-demographics
 	print {"Use Rx" to add a drug to prescription}
