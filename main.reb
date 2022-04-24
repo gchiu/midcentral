@@ -88,7 +88,7 @@ cdata: {window.generate = function() {
 set-doc: does [
 	wtemplate: copy template
 	wtemplate: reword wtemplate reduce ['docname docname 'docregistration docregistration 'signature docname] ; 'date now/date]
-	probe wtemplate
+	; probe wtemplate
 ]
 
 grab-creds: func [ <local> docnames docregistrations] [
@@ -103,7 +103,7 @@ grab-creds: func [ <local> docnames docregistrations] [
 		]
 	]
 	set-doc
-	probe wtemplate
+	; probe wtemplate
 	write %/credentials.reb mold reduce [docname docregistration]
 	return  
 ]
