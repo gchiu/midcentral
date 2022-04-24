@@ -145,7 +145,7 @@ add-content: func [txt [text!]
 ]
 
 choose-drug: func [scheds [block!]
-	<local> num choice output
+	<local> num choice output rx sig mitte drugname
 ][
 	num: length-of scheds
 	choice: ask ["Which schedule to use?" integer!]
@@ -156,6 +156,31 @@ choose-drug: func [scheds [block!]
 		append rxs output
 		return
 	]
+	; out of bounds
+output: pick scheds 1
+drugname: _
+; first off, get any drugs that start with a digit eg. 6-Mercaptopurine
+	parse output [copy drugname some digit copy output to end] 
+	if empty? drugname [
+		; not a drug that starts with a digit
+		drugname: copy ""
+	] ; otherwise drugname = "6" etc
+	; now get the rest of the drugname
+	parse output [copy drug to digit to end (append drugname drug)]
+	; so we now have the drugname
+	; so let's ask for the new dose
+	cycle [
+		dose: ask [(spaced ["New Dose for" drugname]) text!]
+		sig: ask ["Sig: " text!]
+		mitte: ask ["Mitte: " text!]
+		response: lowercase ask ["Okay?" text!]
+		if response = "y" [break]
+	]
+	output: expand-latin spaced [dose "^/Sig:" sig "^/Mitte:" mitte]
+	add-content output
+	append rxs output
+	return
+	
 	print "invalid choice"
 ]
 
