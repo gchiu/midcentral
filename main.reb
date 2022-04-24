@@ -14,8 +14,6 @@ Rebol [
 		rxs ; block of rx
 		set-doc ; fills the wtemplate with current doc
 		write-rx ; sends to docx
-		; wtemplate ;
-		; firstnames surname dob title nhi rx1 rx2 rx3 rx4
 		street town city
 		docname
 		docregistration
@@ -104,8 +102,6 @@ grab-creds: func [ <local> docnames docregistrations] [
 		]
 	]
 	set-doc
-	;wtemplate: copy template
-	;wtemplate: reword wtemplate reduce ['docname docname 'docregistration docregistration 'signature docname 'date now/date]
 	probe wtemplate
 	write %/credentials.reb mold reduce [docname docregistration]
 	return  
@@ -232,9 +228,6 @@ parse-demographics: func [
 	wtemplate: reword wtemplate reduce ['firstnames firstnames 'surname surname 'title title 'street street 'town town 'city city 'phone phone
 		'dob dob 'nhi nhi 
 		'prescription nhi
-		; 'signature "Graham Chiu" 'date now/date
-		; 'docregistration "10761"
-		; 'docname "Graham Chiu"
 	]
 	probe wtemplate
 	add-content data
@@ -279,7 +272,7 @@ print "checking for %/credentials.reb"
 if word? exists? %/credentials.reb [
 	creds: load read %/credentials.reb
 	docname: creds.1.1
-	docregisration: creds.1.2
+	docregistration: creds.1.2
 	set-doc
 	print ["Welcome" docname]
 ]
