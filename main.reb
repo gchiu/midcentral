@@ -41,7 +41,8 @@ for-each site [
   js-do site
 ]
 
-do %storage.reb
+; do %storage.reb
+do http://hostilefork.com/media/shared/replpad-js/storage.reb
 
 js-do {window.loadFile = function(url,callback){
         PizZipUtils.getBinaryContent(url,callback);
@@ -281,5 +282,4 @@ if word? exists? %/credentials.reb [
 	docregisration: creds.1.2
 	set-doc
 	print ["Welcome" docname]
-	
 ]
