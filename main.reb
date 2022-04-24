@@ -273,6 +273,8 @@ write-rx: does [
 	js-do cdata
 ]
 
+print "checking for %/credentials.reb"
+
 if word? exists? %/credentials.reb [
 	creds: load read %/credentials.reb
 	docname: creds.1.1
