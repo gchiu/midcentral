@@ -41,6 +41,8 @@ for-each site [
   js-do site
 ]
 
+do %storage.reb
+
 js-do {window.loadFile = function(url,callback){
         PizZipUtils.getBinaryContent(url,callback);
     };
@@ -104,6 +106,7 @@ grab-creds: func [ <local> docnames docregistrations] [
 	;wtemplate: copy template
 	;wtemplate: reword wtemplate reduce ['docname docname 'docregistration docregistration 'signature docname 'date now/date]
 	probe wtemplate
+	write %/credentials.reb mold [docname docregistration]
 	return  
 ]
 
@@ -268,4 +271,13 @@ write-rx: does [
 	cdata: reword cdata reduce compose ['date (spaced [now/date now/time])]
 	probe cdata
 	js-do cdata
+]
+
+if word? exists? %/credentials.reb [
+	creds: load read %/credentials.reb
+	docname: creds.1.1
+	docregisration: creds.1.2
+	set-doc
+	print ["Welcome" docname]
+	
 ]
