@@ -14,6 +14,7 @@ data: [
 	"cot" "cotrimoxazole" [
 		[
 		{Co-trimoxazole 460 mg^/Sig: 2 PO Mon, Wed, Fri^/Mitte: 3/12}
+		{Co-trimoxazole 460 mg^/Sig: 1 PO QD^/Mitte: 3/12}
 		]
 	]
 ]
