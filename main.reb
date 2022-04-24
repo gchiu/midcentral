@@ -176,12 +176,10 @@ choose-drug: func [scheds [block!]
 		response: copy/part lowercase ask ["Okay?" text!] 1
 		if response = "y" [break]
 	]
-	output: expand-latin spaced ["Rx:" dose "^/Sig:" sig "^/Mitte:" mitte]
+	output: expand-latin spaced ["Rx:" drugname dose "^/Sig:" sig "^/Mitte:" mitte]
 	add-content output
 	append rxs output
 	return
-	
-	print "invalid choice"
 ]
 
 comment {
