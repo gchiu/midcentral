@@ -40,7 +40,7 @@ for-each site [
 ]
 
 ; do %storage.reb
-do http://hostilefork.com/media/shared/replpad-js/storage.reb
+; do http://hostilefork.com/media/shared/replpad-js/storage.reb ; loaded implicitly
 
 js-do {window.loadFile = function(url,callback){
         PizZipUtils.getBinaryContent(url,callback);
