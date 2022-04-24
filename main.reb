@@ -214,6 +214,7 @@ parse-demographics: func [
 		copy phone some digit 
 		to end
 	]
+comment {	
 	dump surname
 	dump firstnames
 	dump title
@@ -224,13 +225,14 @@ parse-demographics: func [
 	dump town
 	dump city
 	dump phone
+}
 	clear-form
 	data: unspaced [ surname "," firstnames space "(" title ")" space "DOB:" space dob space "NHI:" space nhi newline street newline town newline city newline newline] 
 	wtemplate: reword wtemplate reduce ['firstnames firstnames 'surname surname 'title title 'street street 'town town 'city city 'phone phone
 		'dob dob 'nhi nhi 
 		'prescription nhi
 	]
-	probe wtemplate
+	; probe wtemplate
 	add-content data
 	return wtemplate
 ]
