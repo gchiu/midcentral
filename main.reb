@@ -249,11 +249,11 @@ rx: func [ drug [text! word!]
 		if null? result: switch drug data [; data comes from import link 
 			print spaced ["Drug" drug "not found in database. Right click link to add it."]		
 		] else [	
-			if 1 < len: length-of result [
+			if 0 < len: length-of result [
 				print newline
 				for i len [print form i print result.:i print newline] 
 				choose-drug result
-			]
+			] 
 		]
 	]
 ]
