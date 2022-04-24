@@ -9,6 +9,7 @@ Rebol [
 		cdata ; the JS that will be executed
 		expand-latin ; turns abbrevs into english
 		grab-creds ; gets credentials
+		new-rx ; start a new prescription
 		parse-demographics ; extracts demographics from clinical portal details
 		rx ; starts the process of getting a drug schedule
 		rxs ; block of rx
@@ -267,6 +268,15 @@ write-rx: does [
 	js-do cdata
 ]
 
+new-rx: does [
+	if empty? docname [
+		grab-creds
+	]
+	add-form
+	parse-demographics
+	print {"Use Rx" to add a drug to prescription}
+]
+
 print "checking for %/credentials.reb"
 
 if word? exists? %/credentials.reb [
@@ -276,3 +286,5 @@ if word? exists? %/credentials.reb [
 	set-doc
 	print ["Welcome" docname]
 ]
+
+new-rx
