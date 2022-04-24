@@ -247,7 +247,7 @@ rx: func [ drug [text! word!]
 		print spaced ["This page" link "isn't available, or, has a syntax error"]
 	] else [
 		if null? result: switch drug data [; data comes from import link 
-			print spaced ["Drug" drug "not found in database. Edit link to add it."]		
+			print spaced ["Drug" drug "not found in database. Right click link to add it."]		
 		] else [	
 			if 1 < len: length-of result [
 				print newline
@@ -264,7 +264,7 @@ write-rx: does [
 	replace cdata "$prescription" unspaced [nhi "_" now/date]
 	cdata: reword cdata reduce ['rx1 rxs.1 'rx2 rxs.2 'rx3 rxs.3 'rx4 rxs.4]
 	cdata: reword cdata reduce compose ['date (spaced [now/date now/time])]
-	probe cdata
+	; probe cdata
 	js-do cdata
 ]
 
