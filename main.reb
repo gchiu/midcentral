@@ -23,10 +23,11 @@ Rebol [
 
 import @popupdemo
 root: https://github.com/gchiu/midcentral/blob/main/drugs/
+slotno: 6
 ; rx-template: https://github.com/gchiu/midcentral/raw/main/rx-template-docx.docx ; can't use due to CORS
 rx-template: https://metaeducation.s3.amazonaws.com/rx-template-docx.docx
 rxs: []
-firstnames: surname: dob: title: nhi: rx1: rx2: rx3: rx4: street: town: city: docname: docregistration: _
+firstnames: surname: dob: title: nhi: rx1: rx2: rx3: rx4: rx5: rx6: street: town: city: docname: docregistration: _
 wtemplate: _
 
 for-each site [
@@ -49,7 +50,7 @@ js-do {window.loadFile = function(url,callback){
 }
 
 cdata: {window.generate = function() {
-        loadFile("https://metaeducation.s3.amazonaws.com/rx-template-docx.docx",
+        loadFile("https://metaeducation.s3.amazonaws.com/rx-6template-docx.docx",
 	function(error,content){
             if (error) { throw error };
             var zip = new PizZip(content);
@@ -285,10 +286,10 @@ rx: func [ drug [text! word!]
 ]
 
 write-rx: does [
-	append/dup rxs space 4
+	append/dup rxs space slotno
 	replace cdata "$template" wtemplate
 	replace cdata "$prescription" unspaced [nhi "_" now/date]
-	cdata: reword cdata reduce ['rx1 rxs.1 'rx2 rxs.2 'rx3 rxs.3 'rx4 rxs.4]
+	cdata: reword cdata reduce ['rx1 rxs.1 'rx2 rxs.2 'rx3 rxs.3 'rx4 rxs.4 'rx5 rxs.5 'rx6 rxs.6]
 	cdata: reword cdata reduce compose ['date (spaced [now/date now/time])]
 	; probe cdata
 	js-do cdata
