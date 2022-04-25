@@ -282,8 +282,10 @@ rx: func [ drug [text! word!]
 				counter: me + 1
 				if text? item [append line item]
 				if block? item [
+					counter: me + 1
 					insert head line form counter
 					print line
+					clear head line
 				]
 			]
 			return
