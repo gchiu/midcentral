@@ -277,9 +277,14 @@ rx: func [ drug [text! word!]
 	] else [
 		if drug.2 = #"*" [
 			; asking for what drugs are available
+			counter: 0 line: copy []
 			for-each item data [
-				if text? item [prin item]
-				if block? item [print newline]
+				counter: me + 1
+				if text? item [append line item]
+				if block? item [
+					insert head line form counter
+					print line
+				]
 			]
 			return
 		]
