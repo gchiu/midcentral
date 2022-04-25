@@ -265,7 +265,7 @@ comment {
 ]
 
 rx: func [ drug [text! word!]
-	<local> link result c err counter line
+	<local> link result c err counter line drugs
 ][
 	drug: form drug
 	; search for drug in database, get the first char
@@ -277,7 +277,7 @@ rx: func [ drug [text! word!]
 	] else [
 		if drug.2 = #"*" [
 			; asking for what drugs are available
-			counter: 0 line: copy []
+			counter: 0 line: copy [] drugs: copy []
 			for-each item data [
 				if text? item [append line item]
 				if block? item [
@@ -285,10 +285,16 @@ rx: func [ drug [text! word!]
 					insert head line form counter
 					print line
 					clear head line
+					append drugs lastitem
 				]
+				lastitem: copy item
 			]
 			response: ask compose [ (join "0-" counter) integer!]
-			return
+			if all [response > 0 response <= counter][
+				drug: pick drugs response
+			] else [
+				return
+			]
 		]
 		if null? result: switch drug data [; data comes from import link 
 			print spaced ["Drug" drug "not found in database. Right click link to add it."]		
