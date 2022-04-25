@@ -219,6 +219,8 @@ template: {
 	rx2: `$rx2`,
 	rx3: `$rx3`,
 	rx4: `$rx4`,
+	rx5: `$rx5`,
+	rx6: `$rx6`,
 	signature: '$signature',
 	date: '$date',
 	docname: '$docname',
