@@ -287,6 +287,7 @@ rx: func [ drug [text! word!]
 					clear head line
 				]
 			]
+			response: ask compose [ (join "0-" counter) integer!]
 			return
 		]
 		if null? result: switch drug data [; data comes from import link 
