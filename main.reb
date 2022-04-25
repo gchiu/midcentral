@@ -265,7 +265,7 @@ comment {
 ]
 
 rx: func [ drug [text! word!]
-	<local> link result c err
+	<local> link result c err counter line
 ][
 	drug: form drug
 	; search for drug in database, get the first char
@@ -279,7 +279,6 @@ rx: func [ drug [text! word!]
 			; asking for what drugs are available
 			counter: 0 line: copy []
 			for-each item data [
-				counter: me + 1
 				if text? item [append line item]
 				if block? item [
 					counter: me + 1
