@@ -25,7 +25,7 @@ import @popupdemo
 root: https://github.com/gchiu/midcentral/blob/main/drugs/
 slotno: 6
 ; rx-template: https://github.com/gchiu/midcentral/raw/main/rx-template-docx.docx ; can't use due to CORS
-rx-template: https://metaeducation.s3.amazonaws.com/rx-template-docx.docx
+rx-template: https://metaeducation.s3.amazonaws.com/rx-6template-docx.docx
 rxs: []
 firstnames: surname: dob: title: nhi: rx1: rx2: rx3: rx4: rx5: rx6: street: town: city: docname: docregistration: _
 wtemplate: _
