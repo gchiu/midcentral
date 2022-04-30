@@ -271,7 +271,7 @@ comment {
 	]
 	
 	add-content data
-	
+	print unspaced ["saved " "%/" nhi %.reb ] 
 ]
 
 rx: func [ drug [text! word!]
