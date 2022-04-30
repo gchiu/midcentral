@@ -279,7 +279,7 @@ comment {
 manual-entry: func [
 	<local> filename filedata
 ][
-	Print "Enter the following details:"
+	print "Enter the following details:"
 	nhi: uppercase ask ["NHI: " text!]
 	if word? exists? filename: to file! unspaced [ "/" nhi %.reb][
 		filedata: load to text! read filename
@@ -292,8 +292,28 @@ manual-entry: func [
 		town: filedata.town
 		city: filedata.city
 		phone: filedata.phone
+		
+		dump filedata
+	] else [
+		title: uppercase ask ["Title: " text!]
+		surname: ask ["Surname: " text!]
+		firstnames: ask ["First names: " text!]
+		dob: ask ["Date of birth: " date!]
+		street: ask ["Street Address: " text!]
+		town: ask ["Town: " text!]
+		city: ask ["City: " text!]
+		phone: ask ["Phone: " text!]
 	]
-	dump filedata
+	dump surname
+	dump firstnames
+	dump title
+	dump dob
+	dump gender
+	dump nhi
+	dump street
+	dump town
+	dump city
+	dump phone	
 ]
 
 rx: func [ drug [text! word!]
