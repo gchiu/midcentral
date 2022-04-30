@@ -9,6 +9,7 @@ Rebol [
 		cdata ; the JS that will be executed
 		expand-latin ; turns abbrevs into english
 		grab-creds ; gets credentials
+		manual-entry ; asks for patient demographics
 		new-rx ; start a new prescription
 		parse-demographics ; extracts demographics from clinical portal details
 		rx ; starts the process of getting a drug schedule
@@ -268,10 +269,31 @@ comment {
 		street: (street)
 		town: (town)
 		city: (city)
+		phone: (phone)
 	]
 	
 	add-content data
 	print unspaced ["saved " "%/" nhi %.reb ] 
+]
+
+manual-entry: func [
+	<local> filename filedata
+][
+	Print "Enter the following details:"
+	nhi: uppercase ask ["NHI: " text!]
+	if word? exists? filename: to file! unspaced [ "/" nhi %.reb][
+		filedata: load to text! read filename
+		filedata: filedata.1
+		title: filedata.title
+		surname: filedata.surname
+		firstnames: filedata.firstnames
+		dob: filedata.dob
+		street: filedata.street
+		town: filedata.town
+		city: filedata.city
+		phone: filedata.phone
+	]
+	dump filedata
 ]
 
 rx: func [ drug [text! word!]
