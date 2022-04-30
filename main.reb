@@ -259,9 +259,19 @@ comment {
 		'prescription nhi
 	]
 	; probe wtemplate
+	write to file! unspaced ["/" nhi %.reb] mold compose [
+		nhi: (nhi)
+		title: (title)
+		surname: (surname)
+		firstnames: (firstnames)
+		dob: (dob)
+		street: (street)
+		town: (town)
+		city: (city)
+	]
+	
 	add-content data
-	_
-	; return _ ; wtemplate
+	
 ]
 
 rx: func [ drug [text! word!]
