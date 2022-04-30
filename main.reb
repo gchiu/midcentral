@@ -311,12 +311,12 @@ rx: func [ drug [text! word!]
 write-rx: func [
 	<local> codedata
 ] [
-	append/dup rxs space slotno
+	; append/dup rxs space slotno
 	codedata: copy cdata
 	replace codedata "$template" wtemplate
 	replace codedata "$docxtemplate" rx-template
 	replace codedata "$prescription" unspaced [nhi "_" now/date]
-	codedata: reword codedata reduce ['rx1 rxs.1 'rx2 rxs.2 'rx3 rxs.3 'rx4 rxs.4 'rx5 rxs.5 'rx6 rxs.6]
+	codedata: reword codedata reduce ['rx1 rxs.1 'rx2 any [rxs.2 space] 'rx3 any [rxs.3 space] 'rx4 any [rxs.4 space] 'rx5 any [rxs.5 space] 'rx6 any [rxs.6 space]]
 	codedata: reword codedata reduce compose ['date (spaced [now/date now/time])]
 	; probe cdata
 	js-do codedata
@@ -326,6 +326,7 @@ new-rx: does [
 	if empty? docname [
 		grab-creds
 	]
+	rxs: copy []
 	set-doc
 	add-form
 	parse-demographics
