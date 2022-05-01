@@ -270,6 +270,7 @@ comment {
 		town: (town)
 		city: (city)
 		phone: (phone)
+		gender: (gender)
 	]
 	
 	add-content data
