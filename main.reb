@@ -349,7 +349,8 @@ rx: func [ drug [text! word!]
 			]
 		]
 		if null? result: switch drug data [; data comes from import link 
-			print spaced ["Drug" drug "not found in database. Right click link to add it."]		
+			print spaced ["Drug" drug "not found in database."]
+			print ["You can submit a PR to add them here." https://github.com/gchiu/midcentral/tree/main/drugs ]
 		] else [	
 			if 0 < len: length-of result [
 				print newline
@@ -381,7 +382,12 @@ new-rx: does [
 	rxs: copy []
 	set-doc
 	add-form
-	parse-demographics
+	response: lowercase ask ["Paste in Patient Demographics from Clinical Portal? (y/n)" text!]
+	if response.1 = #y [
+		parse-demographics
+	] else [
+		manual-entry
+	]
 	print {"Use Rx" to add a drug to prescription}
 ]
 
