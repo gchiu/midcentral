@@ -305,7 +305,9 @@ manual-entry: func [
 			town: ask ["Town: " text!]
 			city: ask ["City: " text!]
 			phone: ask ["Phone: " text!]
+			gender: ask ["Gender: " text!]
 			response: lowercase ask ["OK?" text!]
+			
 			if response.1 = #y [break]
 		]
 	]
