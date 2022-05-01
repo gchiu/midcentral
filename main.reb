@@ -278,7 +278,7 @@ comment {
 ]
 
 manual-entry: func [
-	<local> filename filedata
+	<local> filename filedata response
 ][
 	print "Enter the following details:"
 	nhi: uppercase ask ["NHI: " text!]
@@ -296,14 +296,18 @@ manual-entry: func [
 		
 		dump filedata
 	] else [
-		title: uppercase ask ["Title: " text!]
-		surname: ask ["Surname: " text!]
-		firstnames: ask ["First names: " text!]
-		dob: ask ["Date of birth: " date!]
-		street: ask ["Street Address: " text!]
-		town: ask ["Town: " text!]
-		city: ask ["City: " text!]
-		phone: ask ["Phone: " text!]
+		cycle [
+			title: uppercase ask ["Title: " text!]
+			surname: ask ["Surname: " text!]
+			firstnames: ask ["First names: " text!]
+			dob: ask ["Date of birth: " date!]
+			street: ask ["Street Address: " text!]
+			town: ask ["Town: " text!]
+			city: ask ["City: " text!]
+			phone: ask ["Phone: " text!]
+			response: lowercase ask ["OK?" text!]
+			if response.1 = #y [break]
+		]
 	]
 	dump surname
 	dump firstnames
@@ -315,6 +319,27 @@ manual-entry: func [
 	dump town
 	dump city
 	dump phone	
+	data: unspaced [ surname "," firstnames space "(" title ")" space "DOB:" space dob space "NHI:" space nhi newline street newline town newline city newline newline] 
+	wtemplate: reword wtemplate reduce ['firstnames firstnames 'surname surname 'title title 'street street 'town town 'city city 'phone phone
+		'dob dob 'nhi nhi 
+		'prescription nhi
+	]
+	; probe wtemplate
+	write to file! unspaced ["/" nhi %.reb] mold compose [
+		nhi: (nhi)
+		title: (title)
+		surname: (surname)
+		firstnames: (firstnames)
+		dob: (dob)
+		street: (street)
+		town: (town)
+		city: (city)
+		phone: (phone)
+		gender: (gender)
+	]
+	
+	add-content data
+	print unspaced ["saved " "%/" nhi %.reb ] 
 ]
 
 rx: func [ drug [text! word!]
