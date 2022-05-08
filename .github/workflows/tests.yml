@@ -1,0 +1,88 @@
+# GitHub Workflow, Yaml file
+# https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions
+
+name: Midcentral Tests
+
+# Controls when the action will run.
+on:
+  # Triggers the workflow on push or pull requests, but only for main branch
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially
+# or in parallel
+jobs:
+  # This workflow contains a single job called "test"
+  tests:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that are executed as part of the job
+    steps:
+
+
+ #====# CHECKOUT STEPS #=====================================================#
+
+    # Checks-out repository under $GITHUB_WORKSPACE, so your job can access it
+
+    - uses: actions/checkout@v2
+
+
+ #====# INSTALL REN-C INTERPRETER #==========================================#
+
+    # Use the debug build ("checked") interpreter so that this script is more
+    # useful for feedback to the Ren-C project.
+
+    - name: Download and Cache the Interpreter
+      uses: metaeducation/ren-c-action@release
+      with:
+        checked: true
+
+
+#====# CHECK FILE CANONIZATION #==============================================#
+
+    # Ren-C project participants are asked to use the VSCode settings that
+    # keep files in canonized condition.
+    #
+    - name: Make Sure Files Have No Tabs or End of Line Whitespace
+      uses: metaeducation/ren-c-action@release
+      with:
+        checked: true
+        script: |
+          result: 0
+          files: read %./
+          for-each file read %./drugs/ [
+              append files join %./drugs/ file
+          ]
+          for-each file files [
+              uparse file [thru ".reb" | thru ".r"] else [continue]
+              print ["Checking:" file]
+              text: as text! read file
+              collect* [case/all [
+                  find text tab [
+                      keep "contains TABS, the horror!"
+                  ]
+                  find text (join space newline) [
+                      keep "has spaces at end of lines"
+                  ]
+                  find text cr [
+                      keep "has carriage return characters in it"
+                  ]
+                  newline <> last text [
+                      keep "has no terminal newline"
+                  ]
+                  newline = first back back tail text [
+                      keep "has extra newlines at end of file"
+                  ]
+              ]] then problems -> [
+                  preface: spaced [newline "File" mold file "=>" space]
+                  print delimit/head preface problems
+                  result: 1
+              ]
+          ]
+          quit result
