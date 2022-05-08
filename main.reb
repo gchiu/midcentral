@@ -173,8 +173,8 @@ choose-drug: func [scheds [block!]
     ; so let's ask for the new dose
     cycle [
         dose: ask compose [(spaced ["New Dose for" drugname]) text!]
-        sig: ask ["Sig: " text!]
-        mitte: ask ["Mitte: " text!]
+        sig: ask ["Sig:" text!]
+        mitte: ask ["Mitte:" text!]
         response: copy/part lowercase ask ["Okay?" text!] 1
         if response = "y" [break]
     ]
@@ -281,7 +281,7 @@ manual-entry: func [
     <local> filename filedata response
 ][
     print "Enter the following details:"
-    nhi: uppercase ask ["NHI: " text!]
+    nhi: uppercase ask ["NHI:" text!]
     if word? exists? filename: to file! unspaced [ "/" nhi %.reb][
         filedata: load to text! read filename
         filedata: filedata.1
@@ -297,15 +297,15 @@ manual-entry: func [
         dump filedata
     ] else [
         cycle [
-            title: uppercase ask ["Title: " text!]
-            surname: ask ["Surname: " text!]
-            firstnames: ask ["First names: " text!]
-            dob: ask ["Date of birth: " date!]
-            street: ask ["Street Address: " text!]
-            town: ask ["Town: " text!]
-            city: ask ["City: " text!]
-            phone: ask ["Phone: " text!]
-            gender: ask ["Gender: " text!]
+            title: uppercase ask ["Title:" text!]
+            surname: ask ["Surname:" text!]
+            firstnames: ask ["First names:" text!]
+            dob: ask ["Date of birth:" date!]
+            street: ask ["Street Address:" text!]
+            town: ask ["Town:" text!]
+            city: ask ["City:" text!]
+            phone: ask ["Phone:" text!]
+            gender: ask ["Gender:" text!]
             response: lowercase ask ["OK?" text!]
 
             if response.1 = #y [break]
@@ -369,7 +369,7 @@ rx: func [ drug [text! word!]
                 ]
                 lastitem: copy item
             ]
-            response: ask compose [ (join "0-" counter) integer!]
+            response: ask compose [(join "0-" counter) integer!]
             if all [response > 0 response <= counter][
                 drug: pick drugs response
             ] else [
