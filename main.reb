@@ -297,6 +297,7 @@ manual-entry: func [
         town: filedata.town
         city: filedata.city
         phone: filedata.phone
+        gender: filedata.gender
 
         dump filedata
     ] else [
