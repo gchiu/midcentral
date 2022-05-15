@@ -6,6 +6,7 @@ Rebol [
         add-content ; adds content to the form
         choose-drug ; pick drug from a selection
         clear-form ; clears the script
+        clear-rx ; clears the drugs but leaves patient
         cdata ; the JS that will be executed
         expand-latin ; turns abbrevs into english
         grab-creds ; gets credentials
@@ -390,6 +391,13 @@ rx: func [ drug [text! word!]
             ]
         ]
     ]
+]
+
+clear-rx: does [
+    clear-form
+    add-content unspaced [ surname "," firstnames space "(" title ")" space "DOB:" space dob space "NHI:" space nhi newline street newline town newline city newline newline]
+    clear-rxs
+    print "Ready for another Rx"
 ]
 
 write-rx: func [
