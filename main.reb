@@ -31,6 +31,8 @@ rxs: []
 firstnames: surname: dob: title: nhi: rx1: rx2: rx3: rx4: rx5: rx6: street: town: city: docname: docregistration: _
 wtemplate: _
 
+dgh: {This Prescription meets the requirement of the Director-General of Health’s waiver of March 2020 for prescriptions not signed personally by a prescriber with their usual signature}
+
 for-each site [
     https://cdnjs.cloudflare.com/ajax/libs/docxtemplater/3.29.0/docxtemplater.js
     https://unpkg.com/pizzip@3.1.1/dist/pizzip.js
@@ -226,6 +228,7 @@ template: {
     date: '$date',
     docname: '$docname',
     docregistration: '$docregistration',
+    dgh: `$dgh`,
 }
 
 parse-demographics: func [
@@ -390,7 +393,7 @@ rx: func [ drug [text! word!]
 ]
 
 write-rx: func [
-    <local> codedata
+    <local> codedata response
 ] [
     ; append/dup rxs space slotno
     codedata: copy cdata
@@ -399,6 +402,8 @@ write-rx: func [
     replace codedata "$prescription" unspaced [nhi "_" now/date]
     codedata: reword codedata reduce ['rx1 rxs.1 'rx2 any [rxs.2 space] 'rx3 any [rxs.3 space] 'rx4 any [rxs.4 space] 'rx5 any [rxs.5 space] 'rx6 any [rxs.6 space]]
     codedata: reword codedata reduce compose ['date (spaced [now/date now/time])]
+    response: lowercase ask ["For email?" text!]
+    codedata: reword codedata reduce compose ['dgh (if response.1 = #"y" [dgh] else [" "])]  
     ; probe cdata
     js-do codedata
 ]
