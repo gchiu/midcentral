@@ -396,9 +396,9 @@ rx: func [ drug [text! word!]
 
 clear-rx: does [
     clear-form
-    probe wtemplate
+    probe codedata
     ; add-content unspaced [ surname "," firstnames space "(" title ")" space "DOB:" space dob space "NHI:" space nhi newline street newline town newline city newline newline]
-    clear-rxs
+    clear rxs
     print "Ready for another Rx"
 ]
 
