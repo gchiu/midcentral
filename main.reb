@@ -236,12 +236,20 @@ parse-demographics: func [
     <local> data
 ][
     demo: ask ["Paste in demographics from CP" text!]
-    parse demo [while whitespace copy surname to "," thru space while space copy firstnames to "(" (trim/head/tail firstnames)
-        thru "(" copy title to ")" thru "BORN" copy dob to space
-        thru "(" copy age to ")" thru "GENDER" while space copy gender some alpha thru "NHI" copy nhi nhi-rule
-        thru "Address" while whitespace copy street to "," thru "," while whitespace copy town to "," thru ","
-        while whitespace copy city to ","
-        [thru "Home" | thru "Mobile" ] while whitespace
+    parse demo [
+        [maybe some whitespace]
+        copy surname to ","
+        thru space [maybe some space]
+        [copy firstnames to "("] (trim/head/tail firstnames)
+        thru "(" copy title to ")"  ; `title: between "(" ")"`
+        thru "BORN" copy dob to space
+        thru "(" copy age to ")"    ; `age: into between "(" ")" integer!`
+        thru "GENDER" maybe some space copy gender some alpha
+        thru "NHI" copy nhi nhi-rule
+        thru "Address" [maybe some whitespace] copy street to ","
+        thru "," [maybe some whitespace] copy town to ","
+        thru "," [maybe some whitespace] copy city to ","
+        [thru "Home" | thru "Mobile" ] [maybe some whitespace]
         copy phone some digit
         to end
     ]
@@ -422,7 +430,7 @@ write-rx: func [
     codedata: reword codedata reduce ['rx1 rxs.1 'rx2 any [rxs.2 space] 'rx3 any [rxs.3 space] 'rx4 any [rxs.4 space] 'rx5 any [rxs.5 space] 'rx6 any [rxs.6 space]]
     codedata: reword codedata reduce compose ['date (spaced [now/date now/time])]
     response: lowercase ask ["For email?" text!]
-    codedata: reword codedata reduce compose ['dgh (if response.1 = #"y" [dgh] else [" "])]  
+    codedata: reword codedata reduce compose ['dgh (if response.1 = #"y" [dgh] else [" "])]
     ; probe cdata
     js-do codedata
 ]
