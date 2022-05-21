@@ -5,7 +5,7 @@ rebol [
     exports: [data]
 ]
 
-data: [
+[
     "vitd" "vitamind" [
         [
             {Rx: Vitamin D 1.25 mg^/Sig: 1 PO monthly PC^/Mitte: 3/12}
