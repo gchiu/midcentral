@@ -12,6 +12,12 @@ data: [
             {Rx: Celebrex 200 mg^/Sig: 1 PO BID PC^/Mitte: 3/12}
         ]
     ]
+    "cos" "cosentyx" [
+        {Rx: Consentyx SensorReady Pen 150 mg^/Sig: 2 Pens SQ weekly for 5 weeks, and then monthly thereafter^/Mitte: 3/12}
+        {Rx: Consentyx SensorReady Pen 150 mg^/Sig: 2 Pens SQ monthly^/Mitte: 3/12}
+        {Rx: Consentyx SensorReady Pen 150 mg^/Sig: 1 Pen SQ weekly for 5 weeks, and then monthly thereafter^/Mitte: 3/12}
+        {Rx: Consentyx SensorReady Pen 150 mg^/Sig: 1 Pen SQ monthly^/Mitte: 3/12}
+    ]
     "cot" "cotrimoxazole" [
         [
             {Co-trimoxazole 460 mg^/Sig: 2 PO Mon, Wed, Fri^/Mitte: 3/12}
