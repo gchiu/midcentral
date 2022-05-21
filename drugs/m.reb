@@ -4,7 +4,7 @@ rebol [
     exports: [data]
 ]
 
-data: [
+[
      "mtx" "methotrexate" [
         [
             {Rx: Methotrexate 10 mg^/Sig: 2 tabs PO QW^/Mitte: 3/12}
