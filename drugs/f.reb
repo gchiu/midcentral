@@ -5,7 +5,7 @@ rebol [
     exports: [data]
 ]
 
-data: [
+[
     "f" "folic" [
           [
             {Rx: Folic Acid 5 mg^/Sig: 1 tab PO QW^/Mitte: 3/12}
