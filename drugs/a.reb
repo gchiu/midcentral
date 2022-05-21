@@ -5,7 +5,7 @@ rebol [
     exports: [data]
 ]
 
-data: [
+[
     "ada" "adalimumab" [
         [
             {Rx: Adalimumab 40 mg Pen^/Sig: 1 SQ fortnightly^/Mitte: 3/12}
