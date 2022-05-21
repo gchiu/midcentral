@@ -25,6 +25,8 @@ Rebol [
 
 import @popupdemo
 root: https://github.com/gchiu/midcentral/blob/main/drugs/
+raw_root: https://raw.githubusercontent.com/gchiu/midcentral/main/drugs/ ; removed html etc
+
 slotno: 6
 ; rx-template: https://github.com/gchiu/midcentral/raw/main/rx-template-docx.docx ; can't use due to CORS
 rx-template: https://metaeducation.s3.amazonaws.com/rx-6template-docx.docx
