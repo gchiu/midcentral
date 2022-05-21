@@ -307,7 +307,7 @@ manual-entry: func [
         phone: filedata.phone
         gender: filedata.gender
 
-        dump filedata
+        ; dump filedata
     ] else [
         cycle [
             title: uppercase ask ["Title:" text!]
