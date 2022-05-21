@@ -415,15 +415,15 @@ rx: func [ drug [text! word!]
 
 clear-rx: func [ <local> data ][
     clear-form
-    probe wtemplate
-    ?? nhi
-    ?? firstnames
+    ; probe wtemplate
+    ; ?? nhi
+    ; ?? firstnames
     data: unspaced [ surname "," firstnames space "(" title ")" space "DOB:" space dob space "NHI:" space nhi newline street newline town newline city newline newline]
     wtemplate: reword wtemplate reduce ['firstnames firstnames 'surname surname 'title title 'street street 'town town 'city city 'phone phone
         'dob dob 'nhi nhi
         'prescription nhi
     ]
-    probe wtemplate
+    ; probe wtemplate
     add-content data
     ; add-content unspaced [ surname "," firstnames space "(" title ")" space "DOB:" space dob space "NHI:" space nhi newline street newline town newline city newline newline]
     clear rxs
