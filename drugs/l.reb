@@ -5,7 +5,7 @@ rebol [
     exports: [data]
 ]
 
-data: [
+[
     "lef" "arava" [
         [
             {Rx: Leflunomide 20 mg^/Sig: 1 tab PO QD^/Mitte: 3/12}
