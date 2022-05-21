@@ -382,7 +382,7 @@ rx: func [ drug [text! word!]
             ] else [
                 print "Datafile loaded and cached"
             ]
-        ]    
+        ]
         if drug.2 = #"*" [
             ; asking for what drugs are available
             counter: 0 line: copy [] drugs: copy []
