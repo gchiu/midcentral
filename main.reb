@@ -326,6 +326,7 @@ manual-entry: func [
             if response.1 = #y [break]
         ]
     ]
+    comment {
     dump surname
     dump firstnames
     dump title
@@ -336,6 +337,7 @@ manual-entry: func [
     dump town
     dump city
     dump phone
+    }
     data: unspaced [ surname "," firstnames space "(" title ")" space "DOB:" space dob space "NHI:" space nhi newline street newline town newline city newline newline]
     wtemplate: reword wtemplate reduce ['firstnames firstnames 'surname surname 'title title 'street street 'town town 'city city 'phone phone
         'dob dob 'nhi nhi
@@ -360,16 +362,24 @@ manual-entry: func [
 ]
 
 rx: func [ drug [text! word!]
-    <local> link result c err counter line drugs
+    <local> link result c err counter line drugs filename
 ][
     drug: form drug
     ; search for drug in database, get the first char
     c: form first drug
+    filename: to file! unspaced ["/" c %.reb]
     link: to url! unspaced [raw_root c %.reb]
     dump link
-    if error? err: trap [data: load link] [
-        print spaced ["This page" link "isn't available, or, has a syntax error"]
-    ] else [
+        if exists? filename [
+            data: load filename
+        ]   else [
+            if error? err: trap [
+                data: load link
+                save filename data
+            ] [
+                print spaced ["This page" link "isn't available, or, has a syntax error"]
+            ]
+        ]    
         if drug.2 = #"*" [
             ; asking for what drugs are available
             counter: 0 line: copy [] drugs: copy []
