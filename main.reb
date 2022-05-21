@@ -365,9 +365,9 @@ rx: func [ drug [text! word!]
     drug: form drug
     ; search for drug in database, get the first char
     c: form first drug
-    link: to url! unspaced [root c %.reb]
+    link: to url! unspaced [raw_root c %.reb]
     dump link
-    if error? err: trap [import link] [
+    if error? err: trap [data: load link] [
         print spaced ["This page" link "isn't available, or, has a syntax error"]
     ] else [
         if drug.2 = #"*" [
