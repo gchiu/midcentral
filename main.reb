@@ -371,11 +371,11 @@ rx: func [ drug [text! word!]
     link: to url! unspaced [raw_root c %.reb]
     dump link
         if exists? filename [
-            data: load filename
+            data: first load filename
         ]   else [
             if error? err: trap [
                 data: load link
-                save filename data
+                save/all filename data
             ] [
                 print spaced ["This page" link "isn't available, or, has a syntax error"]
             ]
