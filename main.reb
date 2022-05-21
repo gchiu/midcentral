@@ -378,6 +378,7 @@ rx: func [ drug [text! word!]
                 save/all filename data
             ] [
                 print spaced ["This page" link "isn't available, or, has a syntax error"]
+                probe err
             ]
         ]    
         if drug.2 = #"*" [
