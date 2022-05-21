@@ -411,7 +411,6 @@ rx: func [ drug [text! word!]
                 choose-drug result
             ]
         ]
-    ]
 ]
 
 clear-rx: func [ <local> data ][
