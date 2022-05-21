@@ -5,7 +5,7 @@ rebol [
     exports: [data]
 ]
 
-data: [
+[
     "rinvoq" [
         [
             {Rx: Rinvoq 3 mg^/Sig: 1 PO QD PC^/Mitte: 3/12}
