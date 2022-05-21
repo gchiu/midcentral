@@ -5,7 +5,7 @@ rebol [
     exports: [data]
 ]
 
-data: [
+[
     "ssz" "salazopyrin" [
         [
             {Rx: Salazopyrin EN 500 mg^/Sig: 2 tabs PO PC BID^/Mitte: 3/12}
