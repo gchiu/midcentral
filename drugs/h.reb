@@ -5,7 +5,7 @@ rebol [
     exports: [data]
 ]
 
-data: [
+[
     "hcq" "hydroxychloroquine" [
         [
             {Rx: Hydroxychloroquine 200 mg^/Sig: 2 tab PO QD^/Mitte: 3/12}
