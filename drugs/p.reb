@@ -5,7 +5,7 @@ rebol [
     exports: [data]
 ]
 
-data: [
+[
     "p" "pfizer" [
         [
             {Rx: Cominarty Covid-19 vaccine for immunosuppressed^/Sig: 1 IM stat^/Mitte: 0.3ml}
@@ -21,6 +21,7 @@ data: [
     "pred" "prednisone" "prednisolone" [
         [
             {Rx: Prednisone 1 mg^/Sig: 4 PO mane.  Taper 1 mg a month^/Mitte: 3/12}
+            {Rx: Prednisone 2.5 mg^/Sig: 3 PO mane^/Mitte: 3/12}
             {Rx: Prednisone 5 mg^/Sig: 1 PO mane^/Mitte: 3/12}
             {Rx: Prednisone 5 mg^/Sig: 2 PO mane^/Mitte: 3/12}
             {Rx: Prednisone 20 mg^/Sig: 2 PO mane 1 PO nocte^/Mitte: 3/12}
