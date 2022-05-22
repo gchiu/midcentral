@@ -369,21 +369,19 @@ rx: func [ drug [text! word!]
     c: form first drug
     filename: to file! unspaced ["/" c %.reb]
     link: to url! unspaced [raw_root c %.reb]
-    dump link
+    ;dump link
         if exists? filename [
             data: first load filename
         ] else [
-            dump filename
-            dump link
+            ;dump filename
+            ;dump link
             if error? err: trap [
                 data: load link
                 save/all filename data
-                print "saved file locally"
+                print "Datafile loaded and cached"
             ][
                 print spaced ["This page" link "isn't available, or, has a syntax error"]
                 probe err
-            ] else [
-                print "Datafile loaded and cached"
             ]
         ]
         if drug.2 = #"*" [
