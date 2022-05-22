@@ -379,11 +379,11 @@ rx: func [ drug [text! word!]
             if error? err: trap [
                 data: load link
                 save/all filename data
-                print "Datafile loaded and cached"
+                print "Datafile loaded"
             ][
                 print spaced ["This page" link "isn't available, or, has a syntax error"]
                 probe err
-            ]
+            ] else [prin "and cached"]
         ]
         if drug.2 = #"*" [
             ; asking for what drugs are available
