@@ -477,6 +477,6 @@ if word? exists? %/credentials.reb [
     print ["Welcome" docname]
 ]
 
-print ["Current Version:" form system.script.header.version]
+; print ["Current Version:" form system.script.header.version]
 probe system.script.header
 new-rx
