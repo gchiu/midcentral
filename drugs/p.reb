@@ -12,6 +12,13 @@ rebol [
             {Rx: Pfizer/BioNTech Covid-19 Vaccine 4th dose for Immunosuppressed^/Sig: 1 IM stat^/Mitte: 0.3ml}
         ]
     ]
+    "pan" "Paracetamol" [
+        [
+            {Rx: Paracetamol 500 mg^/Sig: 2 PO QD prn^/Mitte: 3/12}
+            {Rx: Paracetamol 500 mg^/Sig: 2 PO QID prn^/Mitte: 3/12}
+        ]
+
+    ]
     "pax" "Paxlovid" [
         [
             {Rx: PAXLOVID (nirmatrelvir 300 mg/ritonavir 100 mg) ^/for Immunosuppressed^/Sig: take 3 tablets in each cell BID^/Mitte: 5 days}
