@@ -379,7 +379,7 @@ rx: func [ drug [text! word!]
             if not null? err: trap [
                 data: load link
                 save/all filename data
-                print "Datafile loaded"
+                print "Datafile loading ... "
             ][
                 print spaced ["This page" link "isn't available, or, has a syntax error"]
                 probe err
