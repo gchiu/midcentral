@@ -478,4 +478,5 @@ if word? exists? %/credentials.reb [
 ]
 
 print ["Current Version:" system.script.header.version]
+probe system.script.header
 new-rx
