@@ -376,7 +376,7 @@ rx: func [ drug [text! word!]
         ] else [
             ;dump filename
             ;dump link
-            if error? err: trap [
+            if not null? err: trap [
                 data: load link
                 save/all filename data
                 print "Datafile loaded"
@@ -477,6 +477,6 @@ if word? exists? %/credentials.reb [
     print ["Welcome" docname]
 ]
 
-print ["Current Version:" system.script.header.version]
+print ["Current Version:" form system.script.header.version]
 probe system.script.header
 new-rx
