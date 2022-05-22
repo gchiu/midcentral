@@ -379,11 +379,11 @@ rx: func [ drug [text! word!]
             if not null? err: trap [
                 data: load link
                 save/all filename data
-                print "Datafile loading ... "
+                prin "Datafile loading ... "
             ][
                 print spaced ["This page" link "isn't available, or, has a syntax error"]
                 probe err
-            ] else [prin "and cached"]
+            ] else [print "and cached"]
         ]
         if drug.2 = #"*" [
             ; asking for what drugs are available
@@ -406,6 +406,8 @@ rx: func [ drug [text! word!]
                 return
             ]
         ]
+        dump drug
+        dump data
         if null? result: switch drug data [; data comes from import link
             print spaced ["Drug" drug "not found in database."]
             print ["You can submit a PR to add them here." https://github.com/gchiu/midcentral/tree/main/drugs ]
@@ -478,5 +480,5 @@ if word? exists? %/credentials.reb [
 ]
 
 ; print ["Current Version:" form system.script.header.version]
-probe system.script.header
+words-of system.script.header
 new-rx
