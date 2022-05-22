@@ -373,12 +373,15 @@ rx: func [ drug [text! word!]
     ;dump link
         if exists? filename [
             data: first load filename
+            print "loaded off local storage"
+            dump data
         ] else [
             ;dump filename
             ;dump link
             if not null? err: trap [
                 data: load link
                 save/all filename data
+                dump data
                 prin "Datafile loading ... "
             ][
                 print spaced ["This page" link "isn't available, or, has a syntax error"]
