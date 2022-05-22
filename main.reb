@@ -1,6 +1,7 @@
 Rebol [
     type: module
     author: "Graham Chiu"
+    version: 1.0
     exports: [
         add-form ; puts JS form into DOM
         add-content ; adds content to the form
@@ -476,4 +477,5 @@ if word? exists? %/credentials.reb [
     print ["Welcome" docname]
 ]
 
+print ["Current Version:" system.script.header.version]
 new-rx
