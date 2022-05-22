@@ -480,5 +480,5 @@ if word? exists? %/credentials.reb [
 ]
 
 ; print ["Current Version:" form system.script.header.version]
-print words-of system.script.header
+print mold system.script.header
 new-rx
