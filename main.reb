@@ -1,7 +1,7 @@
 Rebol [
     type: module
     author: "Graham Chiu"
-    Version: 1.0.3
+    Version: 1.0.4
     exports: [
         add-form ; puts JS form into DOM
         add-content ; adds content to the form
@@ -379,7 +379,7 @@ rx: func [ drug [text! word!]
             ;dump filename
             ;dump link
             if not null? err: trap [
-                data: first load link
+                data: load link
                 save/all filename data
                 dump data
                 prin "Datafile loading ... "
