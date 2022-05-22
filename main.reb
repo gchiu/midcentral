@@ -1,7 +1,7 @@
 Rebol [
     type: module
     author: "Graham Chiu"
-    Version: 1.0.5
+    Version: 1.0.6
     exports: [
         add-form ; puts JS form into DOM
         add-content ; adds content to the form
@@ -374,7 +374,7 @@ rx: func [ drug [text! word!]
         if exists? filename [
             data: first load filename
             print "loaded off local storage"
-            dump data
+            ; dump data
         ] else [
             ;dump filename
             ;dump link
@@ -382,7 +382,7 @@ rx: func [ drug [text! word!]
                 data: load link
                 save/all filename data
                 data: data.1
-                dump data
+                ; dump data
                 prin "Datafile loading ... "
             ][
                 print spaced ["This page" link "isn't available, or, has a syntax error"]
@@ -410,8 +410,8 @@ rx: func [ drug [text! word!]
                 return
             ]
         ]
-        dump drug
-        dump data
+        ; dump drug
+        ; dump data
         if null? result: switch drug data [; data comes from import link
             print spaced ["Drug" drug "not found in database."]
             print ["You can submit a PR to add them here." https://github.com/gchiu/midcentral/tree/main/drugs ]
