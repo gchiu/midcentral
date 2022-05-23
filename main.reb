@@ -1,7 +1,7 @@
 Rebol [
     type: module
     author: "Graham Chiu"
-    Version: 1.0.7
+    Version: 1.0.9
     exports: [
         add-form ; puts JS form into DOM
         add-content ; adds content to the form
@@ -487,7 +487,7 @@ clear-cache: func [
 ][
     alphabet: "abcdefghijklmnopqrstuvwxyz"
     for i 24 [
-        probe to file! unspaced [ "/" aphaphabet.i %.reb]
+        probe to file! unspaced [ "/" alphabet.i %.reb]
     ]
 ]
 
