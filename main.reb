@@ -1,7 +1,7 @@
 Rebol [
     type: module
     author: "Graham Chiu"
-    Version: 1.0.6
+    Version: 1.0.7
     exports: [
         add-form ; puts JS form into DOM
         add-content ; adds content to the form
@@ -34,6 +34,7 @@ rx-template: https://metaeducation.s3.amazonaws.com/rx-6template-docx.docx
 rxs: []
 firstnames: surname: dob: title: nhi: rx1: rx2: rx3: rx4: rx5: rx6: street: town: city: docname: docregistration: _
 wtemplate: _
+old_patient: _
 
 dgh: {This Prescription meets the requirement of the Director-General of Health’s waiver of March 2020 for prescriptions not signed personally by a prescriber with their usual signature}
 
@@ -236,7 +237,7 @@ template: {
 }
 
 parse-demographics: func [
-    <local> data
+    <local> data demo
 ][
     demo: ask ["Paste in demographics from CP" text!]
     parse demo [
@@ -256,6 +257,12 @@ parse-demographics: func [
         copy phone some digit
         to end
     ]
+    if nhi = old_patient [
+        response: lowercase ask compose [(spaced ["Do you want to use this patient" surname "again?"]) text!]
+        if response.1 <> #"y" [
+            return
+        ]
+    ]
 comment {
     dump surname
     dump firstnames
@@ -274,6 +281,7 @@ comment {
         'dob dob 'nhi nhi
         'prescription nhi
     ]
+    old_patient: copy nhi
     ; probe wtemplate
     write to file! unspaced ["/" nhi %.reb] mold compose [
         nhi: (nhi)
