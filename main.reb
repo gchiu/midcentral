@@ -417,17 +417,6 @@ rx: func [ drug [text! word!]
                 drug: pick drugs response
             ] else [
                 if response = 0 [return] else [
-                    cycle [
-                        rxname: ask ["Rx:" text!]
-                        sig: ask ["Sig:" text!]
-                        mitte: ask ["Mitte:" text!]
-                        response: copy/part lowercase ask ["Okay?" text!] 1
-                        if response = "y" [break]
-                    ]
-                    output: expand-latin spaced ["Rx:" rxname "^/Sig:" sig "^/Mitte:" mitte]
-                    add-content output
-                    append rxs output
-                    return
                 ]
             ]
         ]
