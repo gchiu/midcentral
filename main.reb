@@ -1,7 +1,7 @@
 Rebol [
     type: module
     author: "Graham Chiu"
-    Version: 1.0.11
+    Version: 1.0.12
     exports: [
         add-form ; puts JS form into DOM
         add-content ; adds content to the form
@@ -372,7 +372,7 @@ manual-entry: func [
 ]
 
 rx: func [ drug [text! word!]
-    <local> link result c err counter line drugs filename
+    <local> link result c err counter line drugs filename rxname mitte sig response dose
 ][
     drug: form drug
     ; search for drug in database, get the first char
@@ -416,7 +416,19 @@ rx: func [ drug [text! word!]
             if all [response > 0 response <= counter][
                 drug: pick drugs response
             ] else [
-                return
+                if response = 0 [return] else [
+                    cycle [
+                        rxname: ask ["Rx:" text!]
+                        sig: ask ["Sig:" text!]
+                        mitte: ask ["Mitte:" text!]
+                        response: copy/part lowercase ask ["Okay?" text!] 1
+                        if response = "y" [break]
+                    ]
+                    output: expand-latin spaced ["Rx:" rxname "^/Sig:" sig "^/Mitte:" mitte]
+                    add-content output
+                    append rxs output
+                    return
+                ]
             ]
         ]
         ; dump drug
