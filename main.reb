@@ -1,7 +1,7 @@
 Rebol [
     type: module
     author: "Graham Chiu"
-    Version: 1.0.14
+    Version: 1.0.15
     exports: [
         add-form ; puts JS form into DOM
         add-content ; adds content to the form
@@ -422,7 +422,7 @@ rx: func [ drug [text! word!]
                         sig: ask ["Sig:" text!]
                         mitte: ask ["Mitte:" text!]
                         response: first lowercase ask ["Okay?" text!]
-                        if response = "#y" [break]
+                        if response = #"y" [break]
                     ]
                     output: expand-latin spaced ["Rx:" rxname "^/Sig:" sig "^/Mitte:" mitte]
                     add-content output
