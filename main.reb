@@ -6,6 +6,7 @@ Rebol [
         add-form ; puts JS form into DOM
         add-content ; adds content to the form
         choose-drug ; pick drug from a selection
+        clear-cache ; remove the drug caches
         clear-form ; clears the script
         clear-rx ; clears the drugs but leaves patient
         cdata ; the JS that will be executed
@@ -479,6 +480,15 @@ new-rx: does [
         manual-entry
     ]
     print {"Use Rx" to add a drug to prescription}
+]
+
+clear-cache: func [
+    <local> alphabet
+][
+    alphabet: "abcdefghijklmnopqrstuvwxyz"
+    for i 24 [
+        probe to file! unspaced [ "/" aphaphabet.i %.reb]
+    ]
 ]
 
 ; print "checking for %/credentials.reb"
