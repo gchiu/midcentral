@@ -4,6 +4,7 @@ rebol [
     type: module
     exports: [data]
 ]
+[
    "celeb" "celebrex" [
         [
             {Rx: Celebrex 200 mg^/Sig: 1 PO QD PC^/Mitte: 3/12}
@@ -24,3 +25,4 @@ rebol [
             {Co-trimoxazole 460 mg^/Sig: 1 PO QD^/Mitte: 3/12}
         ]
     ]
+]
