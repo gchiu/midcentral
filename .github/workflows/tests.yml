@@ -102,6 +102,7 @@ jobs:
           print "starting test run..."
           for-each letter split alphabet 1 [
             filename: to url! unspaced [raw_root letter %.reb]
+            print ["checking" filename]
             if exists? filename [
                 filedata: load filename
                 if all [block? filedata.1 block? filedata text? filedata.1.1][
