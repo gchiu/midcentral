@@ -104,7 +104,7 @@ jobs:
             filename: to url! unspaced [raw_root letter %.reb]
             if exists? filename [
                 filedata: load filename
-                if all [block? filedata.1 block? filedata.1.1][
+                if all [block? filedata.1 block? filedata text? filedata.1.1][
                     print ["OK with letter" letter]
                 ] else [fail "wrong datastructure for file" filename]
             ] else [ print [filename "doesn't exist"]]
