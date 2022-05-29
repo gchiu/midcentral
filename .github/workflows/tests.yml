@@ -87,7 +87,7 @@ jobs:
           ]
           quit result
 
-#====# CHECK FILE CANONIZATION #==============================================#
+#====# CHECK FILE DATA STRUCTURES #==============================================#
 
     # Ensure drug data file is two nested blocks
     #
