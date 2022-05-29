@@ -103,7 +103,7 @@ jobs:
             filename: to file! unspaced [raw_root letter %.reb]
             if exists? filename [
                 filedata: load filename
-                if [block? filedata.1 block? filedata.1.1][
+                if all [block? filedata.1 block? filedata.1.1][
                     print ["OK with letter" letter]
                 ] else [fail "wrong datastructure for file" filename]
             ]
