@@ -100,7 +100,7 @@ jobs:
           alphabet: "abcdefghijklmnopqrstuvwxyz"
           raw_root: https://raw.githubusercontent.com/gchiu/midcentral/main/drugs/
           for-each letter split alphabet 1 [
-            filename: load to file! unspaced [raw_root letter %.reb]
+            filename: to file! unspaced [raw_root letter %.reb]
             if exists? filename [
                 filedata: load filename
                 if [block? filedata.1 block? filedata.1.1][
