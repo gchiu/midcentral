@@ -99,6 +99,7 @@ jobs:
           result: 0
           alphabet: "abcdefghijklmnopqrstuvwxyz"
           raw_root: https://raw.githubusercontent.com/gchiu/midcentral/main/drugs/
+          print "starting test run..."
           for-each letter split alphabet 1 [
             filename: to file! unspaced [raw_root letter %.reb]
             if exists? filename [
@@ -106,6 +107,6 @@ jobs:
                 if all [block? filedata.1 block? filedata.1.1][
                     print ["OK with letter" letter]
                 ] else [fail "wrong datastructure for file" filename]
-            ]
+            ] else [ print [filename "doesn't exist"]]
           ]
           quit result
