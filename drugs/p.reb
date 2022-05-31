@@ -34,4 +34,11 @@ rebol [
             {Rx: Prednisone 20 mg^/Sig: 2 PO mane 1 PO nocte^/Mitte: 3/12}
         ]
     ]
+    "prob" "probenecid" [
+        [
+            {Rx: probenecid 500 mg^/Sig: 1 PO QD^/Mitte: 3/12}
+            {Rx: probenecid 500 mg^/Sig: 1 PO BID^/Mitte: 3/12}
+            {Rx: probenecid 500 mg^/Sig: 2 PO BID^/Mitte: 3/12}
+        ]
+    ]
 ]
