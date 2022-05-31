@@ -11,6 +11,11 @@ rebol [
             {Rx: Celebrex 200 mg^/Sig: 1 PO BID PC^/Mitte: 3/12}
         ]
     ]
+    "col" "colchicine" [
+        [
+            {Rx: colchicine 0.5 mg^/Sig: 1 PO QD or BID for acute gout.  Reduce if diarrhoea^/Mitte: 3/12}
+        ]
+    ]
     "cos" "cosentyx" [
         [
             {Rx: Consentyx SensorReady Pen 150 mg^/Sig: 2 Pens SQ weekly for 5 weeks, and then 2 monthly thereafter^/Mitte: 3/12}
