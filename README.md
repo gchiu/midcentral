@@ -17,7 +17,7 @@ Follow the prompts to add your name and prescriber ID number (Medical Council, o
 * Or, add them manually following the prompts
 
 In both cases the data is saved to your browser cache to be used again when prescribing for this patient.
-In that case you only need the NHI number
+In that latter case you only need the NHI number
 
 ## Start Prescribing
 
@@ -27,5 +27,5 @@ In that case you only need the NHI number
   eg. `rx 'f*`
 * A list of the drugs available will then be printed to the screen
 * Select one to use, and then the available doses will be shown
-
+* 0 means to cancel the prescription of this drug, and 1 more than the possible choice means use a manually entered dose.
 To be contd
