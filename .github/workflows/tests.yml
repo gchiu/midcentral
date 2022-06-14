@@ -111,3 +111,18 @@ jobs:
             ] else [ print [filename "doesn't exist"]]
           ]
           quit result
+
+
+#====# TEST RX APP IN CYPRESS #==================================================#
+
+    - name: Run in Replpad using Chrome
+      uses: cypress-io/github-action@v4
+      with:
+        working-directory: cypress
+        browser: chrome
+        config-file: cypress.config.js
+        record: true
+      env:
+        CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        ## DEBUG: '@cypress/github-action'  # verbose debug output
