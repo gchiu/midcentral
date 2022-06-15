@@ -58,7 +58,6 @@ root: https://github.com/gchiu/midcentral/blob/main/drugs/
 raw_root: https://raw.githubusercontent.com/gchiu/midcentral/main/drugs/ ; removed html etc
 
 slotno: 6
-; rx-template: https://github.com/gchiu/midcentral/raw/main/rx-template-docx.docx ; can't use due to CORS
 rx-template: https://metaeducation.s3.amazonaws.com/rx-6template-docx.docx
 rxs: []
 firstnames: surname: dob: title: nhi: rx1: rx2: rx3: rx4: rx5: rx6: street: town: city: docname: docregistration: _
@@ -119,14 +118,13 @@ configure: func [
     config: if exists? %/configuration.reb [
         load %/configuration.reb
     ] else [
-        load https://raw.githubusercontent.com/gchiu/midcentral/main/templates/sample-config.reb
-        save %/configuration.reb
+        save %/configuration.reb load https://raw.githubusercontent.com/gchiu/midcentral/main/templates/sample-config.reb
         load %/configuration.reb
     ]
     print "Current locations"
     i: 1
     for-each [name url] config [
-        print [i config.:i]
+        print [i name]
         i: me + 1
     ]
     choice: ask ["select location (use 0 to add more locations):" integer!]
@@ -134,7 +132,7 @@ configure: func [
     choice: config.:choice
     if text? choice [
         save %current.reb :[choice select config choice]
-        return _
+        return
     ]
     cycle [
         if empty? loc: ask ["Enter consulting location name:" text!][break]
@@ -570,6 +568,11 @@ if word? exists? %/credentials.reb [
     docregistration: creds.1.2
     set-doc
     print ["Welcome" docname]
+]
+
+if word? exists? %/current.reb [
+    [current-location rx-template]: unpack load %/current.reb
+    print "You're practicing from" current-location
 ]
 
 print ["Current Version:" form system.script.header.Version]
