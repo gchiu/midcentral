@@ -1,7 +1,7 @@
 Rebol [
     type: module
     author: "Graham Chiu"
-    Version: 1.0.18
+    Version: 1.0.19
     exports: [
         add-form ; puts JS form into DOM
         add-content ; adds content to the form
