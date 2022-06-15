@@ -124,7 +124,7 @@ configure: func [
     print "Current locations"
     i: 0
     for-each [name url] config [
-        print [i config.i]
+        print [i config.:i]
         i: me + 1
     ]
     choice: ask ["select location (use 0 to add more locations):" integer!]
