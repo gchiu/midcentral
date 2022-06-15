@@ -1,7 +1,7 @@
 Rebol [
     type: module
     author: "Graham Chiu"
-    Version: 1.0.17
+    Version: 1.0.18
     exports: [
         add-form ; puts JS form into DOM
         add-content ; adds content to the form
@@ -528,7 +528,7 @@ write-rx: func [
     codedata: reword codedata reduce compose ['date (spaced [now/date now/time])]
     response: lowercase ask ["For email?" text!]
     codedata: reword codedata reduce compose ['dgh (if response.1 = #"y" [dgh] else [" "])]
-    probe cdata
+    probe codedata
     ; js-do codedata
 ]
 
