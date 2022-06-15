@@ -98,10 +98,10 @@ cdata: {window.generate = function() {
 
 configure: func [
     return: <none>
-    <local> config
+    <local> config url loc
 ][
     config: if exists? %/configuration.reb [
-        load %/configuration.reb 
+        load %/configuration.reb
     ] else [
         copy []
     ]
