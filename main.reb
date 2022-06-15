@@ -26,7 +26,34 @@ Rebol [
     ]
 ]
 
+=== CUSTOMIZATIONS THAT SHOULD BE IN A COMMON "LIBCHIU" LIBRARY ===
+
+; Customize FUNC to not require a RETURN--result drops out of body by default
+; https://forum.rebol.info/t/1656/2
+'
+func: adapt :lib.func [
+    body: compose [return (as group! body)]
+]
+
+
+=== LIBRARIES ===
+
 import @popupdemo
+
+for-each site [
+    https://cdnjs.cloudflare.com/ajax/libs/docxtemplater/3.29.0/docxtemplater.js
+    https://unpkg.com/pizzip@3.1.1/dist/pizzip.js
+    ; https://cdnjs.cloudflare.com/ajax/libs/jszip/2.6.1/jszip.js
+    https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.8/FileSaver.js
+    https://unpkg.com/pizzip@3.1.1/dist/pizzip-utils.js
+    ; https://cdnjs.cloudflare.com/ajax/libs/jszip-utils/0.0.2/jszip-utils.js
+][
+    js-do site
+]
+
+
+=== GLOBAL DEFINITIONS ===
+
 root: https://github.com/gchiu/midcentral/blob/main/drugs/
 raw_root: https://raw.githubusercontent.com/gchiu/midcentral/main/drugs/ ; removed html etc
 
@@ -40,19 +67,8 @@ old_patient: _
 
 dgh: {This Prescription meets the requirement of the Director-General of Health’s waiver of March 2020 for prescriptions not signed personally by a prescriber with their usual signature}
 
-for-each site [
-    https://cdnjs.cloudflare.com/ajax/libs/docxtemplater/3.29.0/docxtemplater.js
-    https://unpkg.com/pizzip@3.1.1/dist/pizzip.js
-    ; https://cdnjs.cloudflare.com/ajax/libs/jszip/2.6.1/jszip.js
-    https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.8/FileSaver.js
-    https://unpkg.com/pizzip@3.1.1/dist/pizzip-utils.js
-    ; https://cdnjs.cloudflare.com/ajax/libs/jszip-utils/0.0.2/jszip-utils.js
-][
-    js-do site
-]
 
-; do %storage.reb
-; do http://hostilefork.com/media/shared/replpad-js/storage.reb ; loaded implicitly
+=== MAIN SCRIPT ===
 
 js-do {window.loadFile = function(url,callback){
         PizZipUtils.getBinaryContent(url,callback);
