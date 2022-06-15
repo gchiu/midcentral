@@ -114,15 +114,26 @@ cdata: {window.generate = function() {
 
 configure: func [
     return: <none>
-    <local> config url loc
+    <local> config url loc i
 ][
     config: if exists? %/configuration.reb [
         load %/configuration.reb
     ] else [
-        copy []
+        load https://raw.githubusercontent.com/gchiu/midcentral/main/templates/sample-config.reb
     ]
     print "Current locations"
-    probe config
+    i: 0
+    for-each [name url] config [
+        print [i config.i]
+        i: me + 1
+    ]
+    choice: ask ["select location (use 0 to add more locations):" integer!]
+    choice: me * 2 - 1
+    choice: config.:choice
+    if text? choice [
+        save %current.reb :[choice select config choice]
+        return _
+    ]
     cycle [
         if empty? loc: ask ["Enter consulting location name:" text!][break]
         url: ask ["Enter URL for the prescription template:" url!]
