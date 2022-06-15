@@ -9,6 +9,7 @@ Rebol [
         clear-cache ; remove the drug caches
         clear-form ; clears the script
         clear-rx ; clears the drugs but leaves patient
+        configure ; sets up the url to be used for the prescription
         cdata ; the JS that will be executed
         expand-latin ; turns abbrevs into english
         grab-creds ; gets credentials
@@ -94,6 +95,32 @@ cdata: {window.generate = function() {
     };
     generate()
 }
+
+configure: func [
+    return: <none>
+    <local> config
+][
+    config: if exists? %/configuration.reb [
+        load %/configuration.reb 
+    ] else [
+        copy []
+    ]
+    print "Current locations"
+    probe config
+    cycle [
+        if empty? loc: ask ["Enter consulting location name:" text!][break]
+        url: ask ["Enter URL for the prescription template:" url!]
+        if error? trap [read url][
+            print "This location is not available"
+            continue
+        ] else [
+            if #"y" = lowercase first ok: ask ["Okay?" text!][
+                append config :[loc url]
+            ]
+        ]
+    ]
+    save %/configuration.reb config
+]
 
 set-doc: does [
     wtemplate: copy template
