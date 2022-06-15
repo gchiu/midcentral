@@ -120,9 +120,11 @@ configure: func [
         load %/configuration.reb
     ] else [
         load https://raw.githubusercontent.com/gchiu/midcentral/main/templates/sample-config.reb
+        save %/configuration.reb
+        load %/configuration.reb
     ]
     print "Current locations"
-    i: 0
+    i: 1
     for-each [name url] config [
         print [i config.:i]
         i: me + 1
