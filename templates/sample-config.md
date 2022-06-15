@@ -1,0 +1,2 @@
+"Horowhenua" https://raw.githubusercontent.com/gchiu/midcentral/main/templates/Horowhenua-8-patient-Rx-template.docx 
+"PNH" https://raw.githubusercontent.com/gchiu/midcentral/main/templates/PNH-8-patient-Rx-template.docx
