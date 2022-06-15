@@ -528,8 +528,8 @@ write-rx: func [
     codedata: reword codedata reduce compose ['date (spaced [now/date now/time])]
     response: lowercase ask ["For email?" text!]
     codedata: reword codedata reduce compose ['dgh (if response.1 = #"y" [dgh] else [" "])]
-    ; probe cdata
-    js-do codedata
+    probe cdata
+    ; js-do codedata
 ]
 
 new-rx: does [
