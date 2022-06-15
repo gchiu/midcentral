@@ -1,7 +1,7 @@
 Rebol [
     type: module
     author: "Graham Chiu"
-    Version: 1.0.21
+    Version: 1.0.22
     exports: [
         add-form ; puts JS form into DOM
         add-content ; adds content to the form
@@ -528,7 +528,7 @@ write-rx: func [
     codedata: reword codedata reduce compose ['date (spaced [now/date now/time])]
     response: lowercase ask ["For email?" text!]
     codedata: reword codedata reduce compose ['dgh (if response.1 = #"y" [dgh] else [" "])]
-    ; probe codedata
+    probe copy/part codedata 200
     js-do codedata
 ]
 
@@ -573,7 +573,7 @@ if word? exists? %/credentials.reb [
 if word? exists? %/current.reb [
     [current-location rx-template]: unpack load %/current.reb
     print ["You're practicing from" current-location]
-    print ["Your prescription template is at" rx-template]
+    print ["Your prescription template is at" newline rx-template]
 ]
 
 print ["Current Version:" form system.script.header.Version]
