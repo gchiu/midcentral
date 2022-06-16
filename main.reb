@@ -1,7 +1,7 @@
 Rebol [
     type: module
     author: "Graham Chiu"
-    Version: 1.0.23
+    Version: 1.0.24
     exports: [
         add-form ; puts JS form into DOM
         add-content ; adds content to the form
@@ -131,7 +131,8 @@ configure: func [
     choice: me * 2 - 1
     choice: config.:choice
     if text? choice [
-        save %current.reb :[choice select config choice]
+        rx-template: select config choice
+        save %current.reb :[choice rx-template]
         return
     ]
     cycle [
