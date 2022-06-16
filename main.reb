@@ -31,9 +31,9 @@ Rebol [
 ; Customize FUNC to not require a RETURN--result drops out of body by default
 ; https://forum.rebol.info/t/1656/2
 '
-func: adapt :lib.func [
-    body: compose [return (as group! body)]
-]
+func: adapt :lib.func [body: compose [return (as group! body)]]
+function: adapt :lib.function [body: compose [return (as group! body)]]
+meth: enfix adapt :lib.meth [body: compose [return (as group! body)]]
 
 
 === LIBRARIES ===
