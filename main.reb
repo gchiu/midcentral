@@ -1,7 +1,7 @@
 Rebol [
     type: module
     author: "Graham Chiu"
-    Version: 1.0.22
+    Version: 1.0.23
     exports: [
         add-form ; puts JS form into DOM
         add-content ; adds content to the form
@@ -529,6 +529,7 @@ write-rx: func [
     response: lowercase ask ["For email?" text!]
     codedata: reword codedata reduce compose ['dgh (if response.1 = #"y" [dgh] else [" "])]
     probe copy/part codedata 200
+    dump rx-template
     js-do codedata
 ]
 
