@@ -1,7 +1,7 @@
 Rebol [
     type: module
     author: "Graham Chiu"
-    Version: 1.0.26
+    Version: 1.0.27
     exports: [
         add-form ; puts JS form into DOM
         add-content ; adds content to the form
@@ -427,8 +427,9 @@ manual-entry: func [
 ]
 
 rx: func [ drug [text! word!]
-    <local> link result c err counter line drugs filename rxname mitte sig response dose
+    <local> link result c err counter line drugs filename rxname mitte sig response dose local?
 ][
+    local?: false
     drug: form drug
     ; search for drug in database, get the first char
     c: form first drug
@@ -438,6 +439,7 @@ rx: func [ drug [text! word!]
         if exists? filename [
             data: first load filename
             print "loaded off local storage"
+            local?: true
             ; dump data
         ] else [
             ;dump filename
@@ -490,6 +492,16 @@ rx: func [ drug [text! word!]
         ; dump data
         if null? result: switch drug data [; data comes from import link
             print spaced ["Drug" drug "not found in database."]
+            if local? [ ; means we used the cache, so let's fetch the original file
+                if not null? err: trap [
+                    data: load link
+                    save/all filename data
+                    data: data.1
+                    ; dump data
+                    prin "Datafile loading ... "
+                    if find data drug [rx drug return]
+                ][ print "And there's no file online"]
+            ]
             print ["You can submit a PR to add them here." https://github.com/gchiu/midcentral/tree/main/drugs ]
         ] else [
             if 0 < len: length-of result [
@@ -498,6 +510,7 @@ rx: func [ drug [text! word!]
                 choose-drug result
             ]
         ]
+    return
 ]
 
 clear-rx: func [ <local> data ][
