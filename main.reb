@@ -452,7 +452,8 @@ rx: func [ drug [text! word!]
                 prin "Datafile loading ... "
             ][
                 print spaced ["This page" link "isn't available, or, has a syntax error"]
-                probe err
+                ; probe err
+                return
             ] else [print "and cached"]
         ]
         if drug.2 = #"*" [
