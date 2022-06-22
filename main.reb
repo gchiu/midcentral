@@ -1,7 +1,7 @@
 Rebol [
     type: module
     author: "Graham Chiu"
-    Version: 1.0.29
+    Version: 1.0.30
     exports: [
         add-form ; puts JS form into DOM
         add-content ; adds content to the form
@@ -354,7 +354,7 @@ comment {
 
     add-content data
     replpad-write/html {
-   <input type="button" id="copy NHI" value="Copy NHI" onclick="console.log('clicked button')" />
+   <input type="button" id="copy NHI" value="Copy NHI" onclick="reb.elide(write clipboard:// {test})" />
 }
     print unspaced ["saved " "%/" nhi %.reb ]
 ]
