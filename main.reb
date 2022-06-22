@@ -195,7 +195,7 @@ expand-latin: func [sig [text!]
 ]
 
 add-form: does [
-    show-dialog/size {<div id="board" style="width: 400px"><textarea id="script" cols="80" rows="80"></textarea></div>} 480x480
+    show-dialog/size {<div id="board" style="width: 400px"><textarea id="script" cols="80" rows="80"></textarea><button type="button">NHI</button></div>} 480x480
 ]
 
 clear-form: does [
