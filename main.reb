@@ -306,7 +306,7 @@ parse-demographics: func [
         thru "(" copy age to ")"    ; `age: into between "(" ")" integer!`
         thru "GENDER" maybe some space copy gender some alpha
         thru "NHI" copy nhi nhi-rule
-        thru "Address" [maybe some whitespace] opt "Address" copy street to ","
+        thru "Address" [maybe some whitespace] opt "Address" opt space copy street to ","
         thru "," [maybe some whitespace] copy town to ","
         thru "," [maybe some whitespace] copy city to ","
         [thru "Home" | thru "Mobile" ] [maybe some whitespace]
@@ -354,7 +354,7 @@ comment {
 
     add-content data
     replpad-write/html {
-   <input type="button" id="copy NHI" value="Start" onclick="" />
+   <input type="button" id="copy NHI" value="Copy NHI" onclick="" />
 }
     print unspaced ["saved " "%/" nhi %.reb ]
 ]
