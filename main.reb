@@ -354,7 +354,7 @@ comment {
 
     add-content data
     replpad-write/html {
-   <input type="button" id="copy NHI" value="Copy NHI" onclick="reb.elide(write clipboard:// {test})" />
+   <input type="button" id="copy NHI" value="Copy NHI" onclick="reb.elide('write clipboard:// {test}')" />
 }
     print unspaced ["saved " "%/" nhi %.reb ]
 ]
