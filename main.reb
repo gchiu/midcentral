@@ -250,6 +250,7 @@ choose-drug: func [scheds [block!]
 ]
 
 comment {
+>>>>>>>> example below this line
 
 ASurname, Basil Phillip (Mr)
 
@@ -264,6 +265,7 @@ NHIABC1234
 Address  29 Somewhere League, Middleton, NEW ZEALAND, 4999
 
 Home  071234567
+<<<<<<<< above this line
 }
 
 whitespace: charset [#" " #"^/" #"^M" #"^J"]
