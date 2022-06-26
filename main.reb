@@ -1,7 +1,7 @@
 Rebol [
     type: module
     author: "Graham Chiu"
-    Version: 1.0.30
+    Version: 1.0.31
     exports: [
         add-form ; puts JS form into DOM
         add-content ; adds content to the form
@@ -110,6 +110,8 @@ cdata: {window.generate = function() {
     };
     generate()
 }
+
+js-button: {<input type="button" id="copy NHI" value="Copy NHI" onclick='reb.Elide("write clipboard:// {$a}")' />}
 
 configure: func [
     return: <none>
@@ -293,7 +295,7 @@ template: {
 }
 
 parse-demographics: func [
-    <local> data demo
+    <local> data demo js
 ][
     demo: ask ["Paste in demographics from CP" text!]
     parse demo [
@@ -353,9 +355,9 @@ comment {
     ]
 
     add-content data
-    replpad-write/html {
-   <input type="button" id="copy NHI" value="Copy NHI" onclick='reb.Elide("write clipboard:// {test}")' />
-}
+    js: copy js-button
+    reword js reduce ['a nhi]
+    replpad-write/html js
     print unspaced ["saved " "%/" nhi %.reb ]
 ]
 
