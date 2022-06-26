@@ -1,7 +1,7 @@
 Rebol [
     type: module
     author: "Graham Chiu"
-    Version: 1.0.31
+    Version: 1.0.32
     exports: [
         add-form ; puts JS form into DOM
         add-content ; adds content to the form
@@ -356,13 +356,13 @@ comment {
 
     add-content data
     js: copy js-button
-    reword js reduce ['a nhi]
+    replace js "$a" nhi
     replpad-write/html js
     print unspaced ["saved " "%/" nhi %.reb ]
 ]
 
 manual-entry: func [
-    <local> filename filedata response
+    <local> filename filedata response js
 ][
     print "Enter the following details:"
     nhi: uppercase ask ["NHI:" text!]
@@ -428,6 +428,9 @@ manual-entry: func [
     ]
 
     add-content data
+    js: copy js-button
+    replace js "$a" nhi
+    replpad-write/html js
     print unspaced ["saved " "%/" nhi %.reb ]
 ]
 
