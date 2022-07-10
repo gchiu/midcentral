@@ -227,13 +227,13 @@ choose-drug: func [scheds [block!]
     output: pick scheds 1
     drugname: _
     ; first off, get any drugs that start with a digit eg. 6-Mercaptopurine
-    parse3 output [copy drugname some digit copy output to end]
+    parse output [drugname: across some digit, output: across to <end>]
     if empty? drugname [
         ; not a drug that starts with a digit
         drugname: copy ""
     ] ; otherwise drugname = "6" etc
     ; now get the rest of the drugname
-    parse3 output [copy drug to digit to end (append drugname drug)]
+    parse output [drug: across to digit, to <end> (append drugname drug)]
     ; so we now have the drugname
     ; so let's ask for the new dose
     cycle [
@@ -271,7 +271,7 @@ Home  071234567
 whitespace: charset [#" " #"^/" #"^M" #"^J"]
 alpha: charset [#"A" - #"Z" #"a" - #"z"]
 digit: charset [#"0" - #"9"]
-nhi-rule: [3 alpha 4 digit]
+nhi-rule: [repeat 3 alpha, repeat 4 digit]
 
 template: {
     surname: `$surname`,
@@ -300,22 +300,25 @@ parse-demographics: func [
     <local> data demo js
 ][
     demo: ask ["Paste in demographics from CP" text!]
-    parse3 demo [
+    parse demo [
         [maybe some whitespace]
-        copy surname to ","
+        surname: across to ","
         thru space [maybe some space]
-        [copy firstnames to "("] (trim/head/tail firstnames)
-        thru "(" copy title to ")"  ; `title: between "(" ")"`
-        thru "BORN" copy dob to space
-        thru "(" copy age to ")"    ; `age: into between "(" ")" integer!`
-        thru "GENDER" maybe some space copy gender some alpha
-        thru "NHI" copy nhi nhi-rule
-        thru "Address" [maybe some whitespace] opt "Address" opt space copy street to ","
-        thru "," [maybe some whitespace] copy town to ","
-        thru "," [maybe some whitespace] copy city to ","
+        [firstnames: across to "("] (trim/head/tail firstnames)
+        thru "(" title: across to ")"  ; `title: between "(" ")"`
+        thru "BORN" dob: across to space
+        thru "(" age: across to ")"    ; `age: into between "(" ")" integer!`
+        thru "GENDER" maybe some space gender: across some alpha
+        thru "NHI" nhi: across nhi-rule
+        thru "Address" [maybe some whitespace] opt "Address" opt space street: across to ","
+        thru "," [maybe some whitespace] town: across to ","
+        thru "," [maybe some whitespace] city: across to ","
         [thru "Home" | thru "Mobile" ] [maybe some whitespace]
-        copy phone some digit
-        to end
+        phone: across some digit
+        to <end>
+    ] else [
+        print "Could not parse demographic data"
+        return
     ]
     if nhi = old_patient [
         response: lowercase ask compose [(spaced ["Do you want to use this patient" surname "again?"]) text!]
