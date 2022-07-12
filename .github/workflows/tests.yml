@@ -60,7 +60,7 @@ jobs:
               append files join %./drugs/ file
           ]
           for-each file files [
-              uparse file [thru ".reb" | thru ".r"] else [continue]
+              parse file [thru ".reb" | thru ".r"] else [continue]
               print ["Checking:" file]
               text: as text! read file
               collect* [case/all [

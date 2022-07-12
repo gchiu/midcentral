@@ -227,13 +227,13 @@ choose-drug: func [scheds [block!]
     output: pick scheds 1
     drugname: _
     ; first off, get any drugs that start with a digit eg. 6-Mercaptopurine
-    parse output [copy drugname some digit copy output to end]
+    parse3 output [copy drugname some digit copy output to end]
     if empty? drugname [
         ; not a drug that starts with a digit
         drugname: copy ""
     ] ; otherwise drugname = "6" etc
     ; now get the rest of the drugname
-    parse output [copy drug to digit to end (append drugname drug)]
+    parse3 output [copy drug to digit to end (append drugname drug)]
     ; so we now have the drugname
     ; so let's ask for the new dose
     cycle [
@@ -300,7 +300,7 @@ parse-demographics: func [
     <local> data demo js
 ][
     demo: ask ["Paste in demographics from CP" text!]
-    parse demo [
+    parse3 demo [
         [maybe some whitespace]
         copy surname to ","
         thru space [maybe some space]
