@@ -17,6 +17,11 @@ rebol [
             {Rx: Amitriptyline 10 mg^/Sig: 1-3 tabs PO 6 pm^/Mitte: 3/12}
         ]
     ]
+    "aml" "amlodipine" [
+        [
+            {Rx: Amlodipine 5 mg^/Sig: 1 tab PO nocte^/Mitte: 3/12}
+        ]    
+    ]
     "aza" "azathioprine" [
         [
             {Rx: azathioprine 50 mg^/Sig: 1 tab PO daily^/Mitte: 3/12}
