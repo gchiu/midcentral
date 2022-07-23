@@ -21,8 +21,10 @@ rebol [
     ]
     "pax" "Paxlovid" [
         [
-            {Rx: PAXLOVID (nirmatrelvir 300 mg/ritonavir 100 mg) ^/for Immunosuppressed^/Sig: take 3 tablets in each cell BID^/Mitte: 5 days}
-            {Rx: PAXLOVID (nirmatrelvir 300 mg/ritonavir 100 mg) ^/for Immunosuppressed & reduced renal function^/Sig: take 1 tablets of each in a cell BID^/Mitte: 5 days}
+            {Rx: PAXLOVID (nirmatrelvir 300 mg/ritonavir 100 mg) ^/for Immunosuppressed eGFR=^/Sig: take 3 tablets in each cell BID^/Mitte: 5 days}
+            {Rx: PAXLOVID (nirmatrelvir 300 mg/ritonavir 100 mg) ^/for Immunosuppressed & reduced renal function eGFR=^/Sig: take 1 tablets of each in a cell BID^/Mitte: 5 days}
+            {Rx: PAXLOVID (nirmatrelvir 300 mg/ritonavir 100 mg) ^/for Immunosuppressed. Back Pocket. eGFR=^/Sig: take 3 tablets in each cell BID^/Mitte: 5 days}
+            {Rx: PAXLOVID (nirmatrelvir 300 mg/ritonavir 100 mg) ^/for Immunosuppressed & reduced renal function, Back Pocket. eGFR=^/Sig: take 1 tablets of each in a cell BID^/Mitte: 5 days}
         ]
     ]
     "pred" "prednisone" "prednisolone" [
