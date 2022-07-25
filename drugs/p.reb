@@ -21,10 +21,10 @@ rebol [
     ]
     "pax" "Paxlovid" [
         [
-            {Rx: PAXLOVID (nirmatrelvir 300 mg/ritonavir 100 mg) ^/for Immunosuppressed eGFR=^/Sig: take 3 tablets in each cell BID^/Mitte: 5 days}
-            {Rx: PAXLOVID (nirmatrelvir 300 mg/ritonavir 100 mg) ^/for Immunosuppressed & reduced renal function eGFR=^/Sig: take 1 tablets of each in a cell BID^/Mitte: 5 days}
-            {Rx: PAXLOVID (nirmatrelvir 300 mg/ritonavir 100 mg) ^/for Immunosuppressed. Back Pocket. eGFR=^/Sig: take 3 tablets in each cell BID^/Mitte: 5 days}
-            {Rx: PAXLOVID (nirmatrelvir 300 mg/ritonavir 100 mg) ^/for Immunosuppressed & reduced renal function, Back Pocket. eGFR=^/Sig: take 1 tablets of each in a cell BID^/Mitte: 5 days}
+            {Rx: PAXLOVID (nirmatrelvir 300 mg/ritonavir 100 mg) ^/for Immunosuppressed eGFR=^/Sig: take 3 tablets in each cell BID^/Mitte: 5 days^/Use Eclair to check latest eGFR and other drugs for possible interactions}
+            {Rx: PAXLOVID (nirmatrelvir 300 mg/ritonavir 100 mg) ^/for Immunosuppressed & reduced renal function eGFR=^/Sig: take 1 tablets of each in a cell BID^/Mitte: 5 days^/Use Eclair to check latest eGFR and other drugs for possible interactions}
+            {Rx: PAXLOVID (nirmatrelvir 300 mg/ritonavir 100 mg) ^/for Immunosuppressed. Back Pocket.^/Sig: take 3 tablets in each cell BID^/Mitte: 5 days^/Use Eclair to check latest eGFR and other drugs for possible interactions}
+            {Rx: PAXLOVID (nirmatrelvir 300 mg/ritonavir 100 mg) ^/for Immunosuppressed & reduced renal function, Back Pocket.^/Sig: take 1 tablets of each in a cell BID^/Mitte: 5 days^/Use Eclair to check latest eGFR and other drugs for possible interactions}
         ]
     ]
     "pred" "prednisone" "prednisolone" [
