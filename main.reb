@@ -211,12 +211,13 @@ add-content: func [txt [text!]
     js-do [{document.getElementById('script').innerHTML +=} spell @txt]
 ]
 
-choose-drug: func [scheds [block!]
+choose-drug: func [scheds [block!] filename
     <local> num choice output rx sig mitte drugname drug dose
 ][
     num: length-of scheds
     choice: ask ["Which schedule to use?" integer!]
     if choice = 0 [return]
+    if choice = -1 [delete filename, print "Cache deleted, try again"]
     if choice <= num [
         print output: expand-latin pick scheds choice
         add-content output
@@ -487,6 +488,7 @@ rx: func [ drug [text! word!]
             case [
                 all [response > 0 response <= counter][drug: pick drugs response]
                 response = 0 [return]
+                response = -1 [delete filename rx drug] ; deletes cache and reloads it
                 true [
                     cycle [
                         rxname: ask ["Rx:" text!]
@@ -521,7 +523,7 @@ rx: func [ drug [text! word!]
             if 0 < len: length-of result [
                 print newline
                 for i len [print form i print result.:i print newline]
-                choose-drug result
+                choose-drug result filename
             ]
         ]
     return
