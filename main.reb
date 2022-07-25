@@ -217,7 +217,7 @@ choose-drug: func [scheds [block!] filename
     num: length-of scheds
     choice: ask ["Which schedule to use?" integer!]
     if choice = 0 [return]
-    if choice = -1 [delete filename, print "Cache deleted, try again"]
+    if choice = -1 [delete filename, print "Cache deleted, try again" return]
     if choice <= num [
         print output: expand-latin pick scheds choice
         add-content output
