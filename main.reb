@@ -133,6 +133,8 @@ configure: func [
     choice: me * 2 - 1
     choice: pick config choice
     dump choice
+    ?? choice
+    print type-of choice
     if text? choice [
         rx-template: select config choice
         save %current.reb reduce [choice rx-template]
