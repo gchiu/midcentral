@@ -135,8 +135,8 @@ configure: func [
     dump choice
     ?? choice
     dump config
-    print type-of choice
-    if text? choice [
+    print form type-of choice
+    if url? choice [
         rx-template: select config choice
         save %current.reb reduce [choice rx-template]
         return
