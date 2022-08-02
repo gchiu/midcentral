@@ -121,7 +121,7 @@ configure: func [
         load %/configuration.reb
     ] else [
         save %/configuration.reb load https://raw.githubusercontent.com/gchiu/midcentral/main/templates/sample-config.reb
-        load %/configuration.reb
+        ; load %/configuration.reb
     ]
     print "Current locations"
     i: 1
@@ -131,6 +131,7 @@ configure: func [
     ]
     choice: ask ["select location (use 0 to add more locations):" integer!]
     choice: me * 2 - 1
+    dump choice
     choice: pick config choice
     dump choice
     ?? choice
