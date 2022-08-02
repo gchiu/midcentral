@@ -134,6 +134,7 @@ configure: func [
     choice: pick config choice
     dump choice
     ?? choice
+    dump config
     print type-of choice
     if text? choice [
         rx-template: select config choice
