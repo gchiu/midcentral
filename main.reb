@@ -131,10 +131,10 @@ configure: func [
     ]
     choice: ask ["select location (use 0 to add more locations):" integer!]
     choice: me * 2 - 1
-    choice: config.:choice
+    choice: pick config choice
     if text? choice [
         rx-template: select config choice
-        save %current.reb :[choice rx-template]
+        save %current.reb reduce [choice rx-template]
         return
     ]
     cycle [
@@ -145,7 +145,7 @@ configure: func [
             continue
         ] else [
             if #"y" = lowercase first ok: ask ["Okay?" text!][
-                append config :[loc url]
+                append config spread [loc url]
             ]
         ]
     ]
