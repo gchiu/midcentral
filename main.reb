@@ -132,6 +132,7 @@ configure: func [
     choice: ask ["select location (use 0 to add more locations):" integer!]
     choice: me * 2 - 1
     choice: pick config choice
+    dump choice
     if text? choice [
         rx-template: select config choice
         save %current.reb reduce [choice rx-template]
