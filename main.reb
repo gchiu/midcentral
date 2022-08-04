@@ -130,7 +130,7 @@ configure: func [
         i: me + 1
     ]
     choice: ask ["select location (use 0 to add more locations):" integer!]
-    choice: me * 2 - 1
+    choice: choice * 2 - 1
     dump choice
     choice: pick config choice
     dump choice
