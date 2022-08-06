@@ -21,7 +21,7 @@ rebol [
         [
             {Rx: Amlodipine 5 mg^/Sig: 1 tab PO nocte^/Mitte: 3/12}
             {Rx: Amlodipine 5 mg^/Sig: 1 tab PO BD^/Mitte: 3/12}
-        ]    
+        ]
     ]
     "aza" "azathioprine" [
         [
