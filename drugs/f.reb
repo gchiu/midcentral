@@ -15,7 +15,7 @@ rebol [
     "fos" "fosamax" [
         [
             {Rx: Alendronate 70 mg^/Sig: 1 PO QW on empty stomach with glass of water^/Mitte: 3/12}
-            {Rx: Fosamax Plus 70 mg/5400 U^/Sig: 1 PO QW on empty stomach with glass of water^/Mitte: 3/12}
+            {Rx: Fosamax Plus 70 mg/5600 U^/Sig: 1 PO QW on empty stomach with glass of water^/Mitte: 3/12}
         ]
     ]
 ]
