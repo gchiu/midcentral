@@ -23,9 +23,10 @@ In that latter case you only need the NHI number
 
 ### Find a Drug
 
-* type `Rx` followed by an apostrophe, and then the first character of the drug name, and then a * eg `'f*` which shows all the drugs in the system beginning with an `F`
+* type `Rx ` followed by an apostrophe, and then the first character of the drug name, and then a * eg `'f*` which shows all the drugs in the system beginning with an `F`
   eg. `rx 'f*`
 * A list of the drugs available will then be printed to the screen
 * Select one to use, and then the available doses will be shown
 * 0 means to cancel the prescription of this drug, and 1 more than the possible choice means use a manually entered dose.
 To be contd
+* -1 means reload the cache for this character
