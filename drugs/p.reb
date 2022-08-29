@@ -39,6 +39,7 @@ rebol [
     ]
     "prob" "probenecid" [
         [
+            {Rx: probenecid 500 mg^/Sig: 1/2 PO BD^/Mitte: 3/12}
             {Rx: probenecid 500 mg^/Sig: 1 PO QD^/Mitte: 3/12}
             {Rx: probenecid 500 mg^/Sig: 1 PO BID^/Mitte: 3/12}
             {Rx: probenecid 500 mg^/Sig: 2 PO BID^/Mitte: 3/12}
