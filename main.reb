@@ -1,7 +1,7 @@
 Rebol [
     type: module
     author: "Graham Chiu"
-    Version: 1.0.33
+    Version: 1.0.34
     exports: [
         add-form ; puts JS form into DOM
         add-content ; adds content to the form
@@ -63,6 +63,7 @@ rxs: []
 firstnames: surname: dob: title: nhi: rx1: rx2: rx3: rx4: rx5: rx6: street: town: city: docname: docregistration: _
 wtemplate: _
 old_patient: _
+eol: charset [#" " #","] ; used to parse out the address line
 
 dgh: {This Prescription meets the requirement of the Director-General of Health’s waiver of March 2020 for prescriptions not signed personally by a prescriber with their usual signature}
 
@@ -316,11 +317,12 @@ parse-demographics: func [
         thru "(" age: across to ")"    ; `age: into between "(" ")" integer!`
         thru "GENDER" maybe some space gender: across some alpha
         thru "NHI" nhi: across nhi-rule
-        thru "Address" [maybe some whitespace] opt "Address" opt space street: across to ","
-        thru "," [maybe some whitespace] town: across to ","
-        thru "," [maybe some whitespace] city: across to ","
+        thru "Address" [maybe some whitespace] opt "Address" opt space street: across to eol
+        thru some eol [maybe some whitespace] town: across to eol
+        thru some eol [maybe some whitespace] city: across to eol
         [thru "Home" | thru "Mobile" ] [maybe some whitespace]
         phone: across some digit
+        thru some eol thru "Mobile" maybe some whitespace mobile: across to eol
         to <end>
     ] else [
         print "Could not parse demographic data"
