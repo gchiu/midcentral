@@ -1,7 +1,7 @@
 Rebol [
     type: module
     author: "Graham Chiu"
-    Version: 1.0.34
+    Version: 1.0.35
     exports: [
         add-form ; puts JS form into DOM
         add-content ; adds content to the form
@@ -351,7 +351,13 @@ comment {
     dump phone
 }
     clear-form
-    data: unspaced [ surname "," firstnames space "(" title ")" space "DOB:" space dob space "NHI:" space nhi newline street newline town newline city newline newline "phone:" space phone]
+    data: unspaced [
+        surname "," firstnames space "(" title ")" space "DOB:" space dob space "NHI:" space nhi newline
+        street newline town newline city newline newline
+        "phone:" space phone newline
+        "mobile:" space mobile newline
+        "email:" space email
+
     wtemplate: reword wtemplate reduce ['firstnames firstnames 'surname surname 'title title 'street street 'town town 'city city 'phone phone
         'dob dob 'nhi nhi
         'prescription nhi
