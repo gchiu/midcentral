@@ -317,12 +317,12 @@ parse-demographics: func [
         thru "(" age: across to ")"    ; `age: into between "(" ")" integer!`
         thru "GENDER" maybe some space gender: across some alpha
         thru "NHI" nhi: across nhi-rule
-        thru "Address" [maybe some whitespace] opt "Address" opt space street: across to eol
-        thru some eol [maybe some whitespace] town: across to eol
-        thru some eol [maybe some whitespace] city: across to eol
-        [thru "Home" | thru "Mobile" ] [maybe some whitespace]
-        phone: across some digit
-        thru some eol thru "Mobile" maybe some whitespace mobile: across to eol
+        thru "Address" [maybe some whitespace] opt "Address" opt space street: across to eol (?? 1)
+        thru some eol [maybe some whitespace] town: across to eol (?? 2)
+        thru some eol [maybe some whitespace] city: across to eol (?? 3)
+        [thru "Home" | thru "Mobile" ] [maybe some whitespace] (?? 4)
+        phone: across some digit (?? 5)
+        thru some eol thru "Mobile" maybe some whitespace mobile: across to eol (?? 6)
         to <end>
     ] else [
         print "Could not parse demographic data"
