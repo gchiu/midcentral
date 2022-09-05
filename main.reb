@@ -308,6 +308,7 @@ parse-demographics: func [
 ][
     demo: ask ["Paste in demographics from CP" text!]
     parse demo [
+        (home: phone: mobile: _)
         [maybe some whitespace]
         surname: across to ","
         thru space [maybe some space]
