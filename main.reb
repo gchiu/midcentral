@@ -63,7 +63,7 @@ rxs: []
 firstnames: surname: dob: title: nhi: rx1: rx2: rx3: rx4: rx5: rx6: street: town: city: docname: docregistration: _
 wtemplate: _
 old_patient: _
-eol: charset [#" " #","] ; used to parse out the address line
+eol: charset [#"^/" #","] ; used to parse out the address line
 
 dgh: {This Prescription meets the requirement of the Director-General of Health’s waiver of March 2020 for prescriptions not signed personally by a prescriber with their usual signature}
 
@@ -317,11 +317,11 @@ parse-demographics: func [
         thru "(" age: across to ")"    ; `age: into between "(" ")" integer!`
         thru "GENDER" maybe some space gender: across some alpha
         thru "NHI" nhi: across nhi-rule
-        thru "Address" [maybe some whitespace] opt "Address" opt space street: across to eol (?? 1)
-        thru some eol [maybe some whitespace] town: across to eol (?? 2)
-        thru some eol [maybe some whitespace] city: across to eol (?? 3)
-        [thru "Home" | thru "Mobile" ] [maybe some whitespace] (?? 4)
-        phone: across some digit (?? 5)
+        thru "Address" [maybe some whitespace] opt "Address" opt space street: across to eol (?? street ?? 1)
+        thru some eol [maybe some whitespace] town: across to eol (?? town ?? 2)
+        thru some eol [maybe some whitespace] city: across to eol (?? city ?? 3)
+        [thru "Home" | thru "Mobile" ] [maybe some whitespace] (?? home ?? 4)
+        phone: across some digit (?? phone ?? 5)
         thru some eol thru "Mobile" maybe some whitespace mobile: across to eol (?? 6)
         to <end>
     ] else [
