@@ -354,9 +354,9 @@ comment {
     data: unspaced [
         surname "," firstnames space "(" title ")" space "DOB:" space dob space "NHI:" space nhi newline
         street newline town newline city newline newline
-        "phone:" space phone newline
-        "mobile:" space mobile newline
-        "email:" space email
+        "phone:" space maybe phone newline
+        "mobile:" space maybe mobile newline
+        "email:" space maybe email
     ]
     wtemplate: reword wtemplate reduce ['firstnames firstnames 'surname surname 'title title 'street street 'town town 'city city 'phone phone
         'dob dob 'nhi nhi
