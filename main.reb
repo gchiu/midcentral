@@ -321,10 +321,10 @@ parse-demographics: func [
         thru "Address" [maybe some whitespace] opt "Address" opt space street: across to eol (?? street ?? 1)
         thru some eol [maybe some whitespace] town: across to eol (?? 2 ?? town)
         thru some eol [maybe some whitespace] city: across to eol (?? 3 ?? city)
-        [thru "Home" | thru "Mobile" ] [maybe some whitespace] (?? 4 ?? home ?? mobile)
+        [thru "Home" | thru "Mobile" ] [maybe some whitespace]
         phone: across some digit (?? 5 ?? phone)
-        thru some eol thru "Mobile" maybe some whitespace mobile: across to eol (?? 6 ?? mobile)
-        thru some eol thru "Email" maybe some whitespace email: across to eol (?? 7 ?? email)
+        thru some eol thru "Mobile" maybe some whitespace mobile: across to space (?? 6 ?? mobile)
+        opt [thru "Email" maybe some whitespace email: across to eol (?? 7 ?? email)]
         to <end>
     ] else [
         print "Could not parse demographic data"
