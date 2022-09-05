@@ -308,7 +308,7 @@ parse-demographics: func [
 ][
     demo: ask ["Paste in demographics from CP" text!]
     parse demo [
-        (home: phone: mobile: _)
+        (home: phone: mobile: email: _)
         [maybe some whitespace]
         surname: across to ","
         thru space [maybe some space]
@@ -321,9 +321,10 @@ parse-demographics: func [
         thru "Address" [maybe some whitespace] opt "Address" opt space street: across to eol (?? street ?? 1)
         thru some eol [maybe some whitespace] town: across to eol (?? town ?? 2)
         thru some eol [maybe some whitespace] city: across to eol (?? city ?? 3)
-        [thru "Home" | thru "Mobile" ] [maybe some whitespace] (?? home ?? 4)
+        [thru "Home" | thru "Mobile" ] [maybe some whitespace] (?? home ?? mobile ?? 4)
         phone: across some digit (?? phone ?? 5)
         thru some eol thru "Mobile" maybe some whitespace mobile: across to eol (?? 6)
+        thru some eol thru "Email" maybe some whitespace email: across to eol (?? email ?? 7)
         to <end>
     ] else [
         print "Could not parse demographic data"
