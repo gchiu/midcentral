@@ -357,7 +357,7 @@ comment {
         "phone:" space phone newline
         "mobile:" space mobile newline
         "email:" space email
-
+    ]
     wtemplate: reword wtemplate reduce ['firstnames firstnames 'surname surname 'title title 'street street 'town town 'city city 'phone phone
         'dob dob 'nhi nhi
         'prescription nhi
