@@ -1,7 +1,7 @@
 Rebol [
     type: module
     author: "Graham Chiu"
-    Version: 1.0.35
+    Version: 1.0.36
     exports: [
         add-form ; puts JS form into DOM
         add-content ; adds content to the form
@@ -619,7 +619,7 @@ if word? exists? %/credentials.reb [
 ]
 
 if word? exists? %/current.reb [
-    [current-location rx-template]: unpack load %/current.reb
+    [current-location rx-template]: pack load %/current.reb
     print ["You're practicing from" current-location]
     print ["Your prescription template is at" newline rx-template]
 ]
