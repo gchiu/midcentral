@@ -280,6 +280,7 @@ whitespace: charset [#" " #"^/" #"^M" #"^J"]
 alpha: charset [#"A" - #"Z" #"a" - #"z"]
 digit: charset [#"0" - #"9"]
 nhi-rule: [repeat 3 alpha, repeat 4 digit]
+digits: [some digit]
 
 template: {
     surname: `$surname`,
@@ -629,16 +630,31 @@ print ["Current Version:" form system.script.header.Version]
 
 ;; ===== other parse tools ==================
 
+{Name : BLYTHE COWRIE NHI : MPZ0149
+Date Of Birth : 09/06/1991 Gender : Female
+WINZ# : Residency Status : New Zealand
+Ethnicity Code(s) :
+Other
+European,European/Pakeha
+NZ
+CSC Card# :
+CSC Exp Date: Email : blythecowrie@gmail.com
+Home Phone : Work Phone :
+Mobile : 0223899699
+Residential Address : 16 Fisher Street,Johnsonville,Wellington,6037
+Postal Address : 16 Fisher Street,Johnsonville,Wellington,6037
+
 parse-referral: func [data [text!]
     <local> fname sname nhi dob gender email mobile street suburb city zip
 ][
     parse data [
         thru "Name" thru ":" maybe some whitespace fname: across to space some space sname: across to "NHI"
-        thru ":" some space nhi: across to eol
+        (trim sname)
+        thru ":" some space nhi: across nhi-rule thru eol
         thru "Date Of Birth" thru ":" some space dob: across to space thru "Gender" thru ":" some space gender: across to eol
         thru "Email" thru ":" some space email: across to eol
         thru "Mobile" thru ":" some space mobile: across to eol
-        thru "Residential Address" thru ":" some space street: across "," thru "," suburb: across "," "," city: across "," ","
+        thru "Residential Address" thru ":" maybe some space street: across to "," thru "," suburb: across to "," "," city: across to "," ","
         zip: digits to end
     ]
     ?? fname
