@@ -642,8 +642,8 @@ parse-referral: func [data [text!]
         gender: some alpha thru eol
         thru "Email" thru ":" maybe some space email: across to eol
         thru "Mobile" thru ":" maybe some space mobile: across to eol
-        thru "Residential Address" thru ":" maybe some space street: across to "," thru "," suburb: across to "," ","
-        city: across to "," "," zip: digits to end
+        thru "Residential Address" thru ":" maybe some space street: between <here> "," suburb: across to "," ","
+        city: across to "," "," zip: digits to <end>
     ]
     ?? fname
     ?? sname
