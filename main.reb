@@ -639,11 +639,11 @@ parse-referral: func [data [text!]
         (trim sname)
         thru ":" some space nhi: across nhi-rule thru eol
         thru "Date Of Birth" thru ":" maybe some space dob: across to space thru "Gender" thru ":" maybe some space
-        gender: some alpha thru eol
+        gender: across some alpha thru eol
         thru "Email" thru ":" maybe some space email: across to eol
         thru "Mobile" thru ":" maybe some space mobile: across to eol
         thru "Residential Address" thru ":" maybe some space street: between <here> "," suburb: across to "," ","
-        city: across to "," "," zip: digits to <end>
+        city: across to "," "," zip: across digits to <end>
     ]
     ?? fname
     ?? sname
