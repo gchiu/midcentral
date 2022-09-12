@@ -670,4 +670,4 @@ parse-referral: func [data [text!]
     ?? zip
 ]
 
-new-rx
+if find "yY" q: input "New Script?" [new-rx]
