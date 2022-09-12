@@ -633,15 +633,17 @@ print ["Current Version:" form system.script.header.Version]
 parse-referral: func [data [text!]
     <local> fname sname nhi dob gender email mobile street suburb city zip
 ][
+    fname: sname: nhi: dob: gender: email: mobile: street: suburb: city: zip: _
     parse data [
         thru "Name" thru ":" maybe some whitespace fname: across to space some space sname: across to "NHI"
         (trim sname)
         thru ":" some space nhi: across nhi-rule thru eol
-        thru "Date Of Birth" thru ":" some space dob: across to space thru "Gender" thru ":" some space gender: across to eol
-        thru "Email" thru ":" some space email: across to eol
-        thru "Mobile" thru ":" some space mobile: across to eol
-        thru "Residential Address" thru ":" maybe some space street: across to "," thru "," suburb: across to "," "," city: across to "," ","
-        zip: digits to end
+        thru "Date Of Birth" thru ":" maybe some space dob: across to space thru "Gender" thru ":" maybe some space
+        gender: some alpha thru eol
+        thru "Email" thru ":" maybe some space email: across to eol
+        thru "Mobile" thru ":" maybe some space mobile: across to eol
+        thru "Residential Address" thru ":" maybe some space street: across to "," thru "," suburb: across to "," ","
+        city: across to "," "," zip: digits to end
     ]
     ?? fname
     ?? sname
