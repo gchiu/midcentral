@@ -23,6 +23,7 @@ Rebol [
         street town city
         docname
         docregistration
+        parse-referral
     ]
 ]
 
@@ -625,5 +626,32 @@ if word? exists? %/current.reb [
 ]
 
 print ["Current Version:" form system.script.header.Version]
+
+;; ===== other parse tools ==================
+
+parse-referral: func [data [text!]
+    <local> fname sname nhi dob gender email mobile street suburb city zip
+][
+    parse data [
+        thru "Name" thru ":" maybe some whitespace fname: across to space some space sname: across to "NHI"
+        thru ":" some space nhi: across to eol
+        thru "Date Of Birth" thru ":" some space dob: across to space thru "Gender" thru ":" some space gender: across to eol
+        thru "Email" thru ":" some space email: across to eol
+        thru "Mobile" thru ":" some space mobile: across to eol
+        thru "Residential Address" thru ":" some space street: across "," thru "," suburb: across "," "," city: across "," ","
+        zip: digits to end
+    ]
+    ?? fname
+    ?? sname
+    ?? nhi
+    ?? dob
+    ?? gender
+    ?? email
+    ?? mobile
+    ?? street
+    ?? suburb
+    ?? city
+    ?? zip
+]
 
 new-rx
