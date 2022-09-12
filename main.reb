@@ -1,7 +1,7 @@
 Rebol [
     type: module
     author: "Graham Chiu"
-    Version: 1.0.37
+    Version: 1.0.38
     exports: [
         add-form ; puts JS form into DOM
         add-content ; adds content to the form
@@ -656,4 +656,4 @@ parse-referral: func [data [text!]
     ?? zip
 ]
 
-if find "yY" q: input "New Script?" [new-rx]
+if find "yY" first ask ["New Script?" text!][new-rx]
