@@ -1,7 +1,7 @@
 Rebol [
     type: module
     author: "Graham Chiu"
-    Version: 1.0.39
+    Version: 1.0.40
     exports: [
         add-form ; puts JS form into DOM
         add-content ; adds content to the form
@@ -630,9 +630,10 @@ print ["Current Version:" form system.script.header.Version]
 
 ;; ===== other parse tools ==================
 
-parse-referral: func [data [text!]
-    <local> fname sname nhi dob gender email mobile street suburb city zip
+parse-referral: func [
+    <local> data fname sname nhi dob gender email mobile street suburb city zip
 ][
+    data: ask ["Paste in Specialist Referral Demographics" text!]
     fname: sname: nhi: dob: gender: email: mobile: street: suburb: city: zip: _
     parse data [
         thru "Name" thru ":" maybe some whitespace fname: across to space some space sname: across to "NHI"
