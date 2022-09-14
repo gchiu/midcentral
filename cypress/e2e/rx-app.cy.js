@@ -12,6 +12,8 @@ describe('Rx replpad App continous integration', () => {
   it('Visits Replpad', () => {
     cy.visit(replpad_url)
     cy.get('.input').type('import @rx{enter}')
+    cy.get('.stdout').should('contain','New Script?')
+    cy.get('.input:focus').type('y{enter}')
     cy.get('.stdout').should('contain','Enter your name as appears on a prescription:')
     cy.get('.input:focus').type('Graham Chiu{enter}')
     cy.get('.input:focus').type('1234567{enter}')
