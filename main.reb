@@ -593,6 +593,7 @@ new-rx: does [
     if response.1 = #y [
         parse-demographics
     ] else [
+        cls ; clears the screen for the Cypress testing
         manual-entry
     ]
     print {"Use Rx" to add a drug to prescription}
