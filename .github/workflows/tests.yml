@@ -33,6 +33,25 @@ jobs:
     - uses: actions/checkout@v2
 
 
+#====# TEST RX APP IN CYPRESS #==============================================#
+
+    # We do this first because it's frustrating to have to wait for the other
+    # bits if you're iterating tests and trying to figure out why the cypress
+    # page isn't working.
+
+    - name: Run in Replpad using Chrome
+      uses: cypress-io/github-action@v4
+      with:
+        working-directory: cypress
+        browser: chrome
+        config-file: cypress.config.js
+        record: true
+      env:
+        CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        ## DEBUG: '@cypress/github-action'  # verbose debug output
+
+
  #====# INSTALL REN-C INTERPRETER #==========================================#
 
     # Use the debug build ("checked") interpreter so that this script is more
@@ -111,18 +130,3 @@ jobs:
             ] else [ print [filename "doesn't exist"]]
           ]
           quit result
-
-
-#====# TEST RX APP IN CYPRESS #==================================================#
-
-    - name: Run in Replpad using Chrome
-      uses: cypress-io/github-action@v4
-      with:
-        working-directory: cypress
-        browser: chrome
-        config-file: cypress.config.js
-        record: true
-      env:
-        CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        ## DEBUG: '@cypress/github-action'  # verbose debug output
