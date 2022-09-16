@@ -1,7 +1,7 @@
 Rebol [
     type: module
     author: "Graham Chiu"
-    Version: 1.0.41
+    Version: 1.0.42
     exports: [
         add-form ; puts JS form into DOM
         add-content ; adds content to the form
@@ -645,7 +645,7 @@ parse-referral: func [
         thru "Email" thru ":" maybe some space email: between <here> eol
         thru "Mobile" thru ":" maybe some space mobile: between <here> eol
         thru "Residential Address" thru ":" maybe some space street: between <here> "," suburb: between <here> ","
-        city: between <here> "," zip: across digits to <end>
+        [ city: between <here> "," zip: across digits | city: between <here> eol ] to <end>
     ]
     ?? fname
     ?? sname
