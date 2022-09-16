@@ -1,7 +1,7 @@
 Rebol [
     type: module
     author: "Graham Chiu"
-    Version: 1.0.42
+    Version: 1.0.43
     exports: [
         add-form ; puts JS form into DOM
         add-content ; adds content to the form
@@ -323,7 +323,7 @@ parse-demographics: func [
         thru "Address" [maybe some whitespace] opt "Address" opt space street: across to eol (?? street ?? 1)
         thru some eol [maybe some whitespace] town: across to eol (?? 2 ?? town)
         thru some eol [maybe some whitespace] city: across to eol (?? 3 ?? city)
-        [thru "Home" | thru "Mobile" | thru "No Known Contact Information" to <end>] [maybe some whitespace]
+        [thru "Home" (?? 4)| thru "Mobile" (?? 5) | thru "Contact – No Known Contact Information" (?? 6) to <end> (?? 7)] [maybe some whitespace]
         phone: across some digit (?? 5 ?? phone)
         opt [
             thru some eol thru "Mobile" maybe some whitespace mobile: across some digit (?? 6 ?? mobile)
