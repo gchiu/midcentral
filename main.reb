@@ -323,7 +323,7 @@ parse-demographics: func [
         thru "Address" [maybe some whitespace] opt "Address" opt space street: across to eol (?? street ?? 1)
         thru some eol [maybe some whitespace] town: across to eol (?? 2 ?? town)
         thru some eol [maybe some whitespace] city: across to eol (?? 3 ?? city)
-        [thru "Home" | thru "Mobile" ] [maybe some whitespace]
+        [thru "Home" | thru "Mobile" | thru "No Known Contact Information" to <end>] [maybe some whitespace]
         phone: across some digit (?? 5 ?? phone)
         opt [
             thru some eol thru "Mobile" maybe some whitespace mobile: across some digit (?? 6 ?? mobile)
@@ -645,7 +645,7 @@ parse-referral: func [
         thru "Email" thru ":" maybe some space email: between <here> eol
         thru "Mobile" thru ":" maybe some space mobile: between <here> eol
         thru "Residential Address" thru ":" maybe some space street: between <here> "," suburb: between <here> ","
-        [ city: between <here> "," zip: across digits | city: between <here> eol (print "No contact address pathway")] to <end>
+        city: between <here> "," zip: across digits to <end>
     ]
     ?? fname
     ?? sname
