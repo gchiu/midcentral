@@ -323,7 +323,7 @@ parse-demographics: func [
         thru "Address" [maybe some whitespace] opt "Address" opt space street: across to eol (?? street ?? 1)
         thru some eol [maybe some whitespace] town: across to eol (?? 2 ?? town)
         thru some eol [maybe some whitespace] city: across to eol (?? 3 ?? city)
-        [thru "Home" (?? 4)| thru "Mobile" (?? 5) | thru "Contact – No Known Contact Information" (?? 6) to <end> (?? 7) return true] [maybe some whitespace]
+        [thru "Home" (?? 4)| thru "Mobile" (?? 5) | thru "Contact – No Known Contact Information" (?? 6) to <end> (print "Incomplete Demographics") return true] [maybe some whitespace]
         phone: across some digit (?? 5 ?? phone)
         opt [
             thru some eol thru "Mobile" maybe some whitespace mobile: across some digit (?? 6 ?? mobile)
@@ -340,7 +340,7 @@ parse-demographics: func [
             return
         ]
     ]
-comment {
+;comment {
     dump surname
     dump firstnames
     dump title
@@ -351,15 +351,18 @@ comment {
     dump town
     dump city
     dump phone
-}
+;}
     clear-form
     data: unspaced [
-        surname "," firstnames space "(" title ")" space "DOB:" space dob space "NHI:" space nhi newline
+        surname "," firstnames space "(" maybe title ")" space "DOB:" space dob space "NHI:" space nhi newline
         street newline town newline city newline newline
         "phone:" space maybe phone newline
         "mobile:" space maybe mobile newline
         "email:" space maybe email
     ]
+    phone: default [blank]
+    mobile: default [blank]
+    email: default [blank]
     wtemplate: reword wtemplate reduce ['firstnames firstnames 'surname surname 'title title 'street street 'town town 'city city 'phone phone
         'dob dob 'nhi nhi
         'prescription nhi
