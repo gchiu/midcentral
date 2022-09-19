@@ -1,7 +1,7 @@
 Rebol [
     type: module
     author: "Graham Chiu"
-    Version: 1.0.46
+    Version: 1.0.47
     exports: [
         add-form ; puts JS form into DOM
         add-content ; adds content to the form
@@ -24,7 +24,7 @@ Rebol [
         docname
         docregistration
         parse-referral
-        clinical bio sero oth haemo micro
+        clinical bio sero oth haemo mic
     ]
 ]
 
@@ -689,7 +689,7 @@ bio: func [][
     biochem: ask ["Enter biochemistry requests" text!]
     if not okay? [bio]
     replace biochem "1" "Creatinine, LFTs, CRP,"
-    replace biochem "2" "CPK"
+    replace biochem "2" "CPK,"
     replace biochem "3" "Serum Uric Acid"
 ]
 
@@ -704,17 +704,17 @@ sero: func [][
 }
     serology: ask ["Enter serology requests" text!]
     if not okay? [sero]
-    replace sero "0" "Hep B, C serology"
-    replace sero "1" "ANA ENA"
-    replace sero "2" "ds-DNA"
-    replace sero "3" "Complement"
-    replace sero "4" "Cardiolipin, Lupus Anticoagulant, B2-glycoprotein Antibodies"
-    replace sero "5" "Extended scleroderma blot"
+    replace sero "0" "Hep B, C serology,"
+    replace sero "1" "ANA ENA,"
+    replace sero "2" "ds-DNA,"
+    replace sero "3" "Complement,"
+    replace sero "4" "Cardiolipin, Lupus Anticoagulant, B2-glycoprotein Antibodies,"
+    replace sero "5" "Extended scleroderma blot,"
     replace sero "6" "Scl-70 by immunodiffusion"
 ]
 
 oth: func [][
-    print {1. Quantiferon TB Gold}
+    print {1. Quantiferon TB Gold,}
     other: ask ["Enter other requests" text!]
     if not okay? [oth]
     replace other "1" "Quantiferon TB Gold"
@@ -727,9 +727,9 @@ haemo: func [][
 }
     haem: ask ["Enter haematology requests" text!]
     if not okay? [haemo]
-    replace haem "1" "CBC"
-    replace haem "2" "Lupus Anticoagulant"
-    replace haem "3" "Coomb's test"
+    replace haem "1" "CBC,"
+    replace haem "2" "Lupus Anticoagulant,"
+    replace haem "3" "Coomb's test,"
 ]
 
 mic: func [][
@@ -740,10 +740,10 @@ mic: func [][
 }
     micro: ask ["Enter Microbiology requests" text!]
     if not okay? [mic]
-    replace micro "1" "MSU"
-    replace micro "2" "ACR"
-    replace micro "3" "Urinary Casts and sediment"
-    replace micro "4" "Polarized microscopy for urate crystals"
+    replace micro "1" "MSU,"
+    replace micro "2" "ACR,"
+    replace micro "3" "Urinary Casts and sediment,"
+    replace micro "4" "Polarized microscopy for urate crystals,"
 ]
 
 if find "yY" first ask ["New Script?" text!][new-rx]
