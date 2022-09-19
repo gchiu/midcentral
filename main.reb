@@ -671,8 +671,8 @@ parse-referral: func [
 
 medical: biochem: serology: other: micro: doccode: _
 
-yn: func [<local> response][
-    return not find "yY" first response: ask ["Okay?" text!]
+okay?: func [<local> response][
+    return find "yY" first response: ask ["Okay?" text!]
 ]
 
 clinical: func [][
@@ -683,20 +683,35 @@ clinical: func [][
 bio: func [][
     print "1. Creatinine, LFTs, CRP"
     print "2. CPK"
+    print "3. "Serum Uric Acid"
     biochem: ask ["Enter biochemistry requests" text!]
-    if not yn [bio]
+    if not okay? [bio]
     replace biochem "1" "Creatinine, LFTs, CRP,"
     replace biochem "2" "CPK"
+    replace biochem "3" "Serum Uric Acid"
 ]
 
 sero: func [][
+    print {1. ANA ENA
+2. ds-DNA
+3. Complement
+4. Cardiolipin, Lupus Anticoagulant, B2-glycoprotein Antibodies
+5. Extended scleroderma blot
+6. Scl-70 by immunodiffusion
+}
     serology: ask ["Enter serology requests" text!]
-    if not yn [sero]
+    if not okay? [sero]
+    replace sero "1" "ANA ENA"
+    replace sero "2" "ds-DNA"
+    replace sero "3" "Complement"
+    replace sero "4" "Cardiolipin, Lupus Anticoagulant, B2-glycoprotein Antibodies"
+    replace sero "5" "Extended scleroderma blot"
+    replace sero "6" "Scl-70 by immunodiffusion"
 ]
 
 oth: func [][
     other: ask ["Enter other requests" text!][
-    if not yn [oth]
+    if not okay? [oth]
 ]
 
 if find "yY" first ask ["New Script?" text!][new-rx]
