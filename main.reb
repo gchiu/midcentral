@@ -667,7 +667,36 @@ parse-referral: func [
     ?? zip
 ]
 
-;; ===============================================================
+;; ==========lab form tools =================================================
 
+medical: biochem: serology: other: micro: doccode: _
+
+yn: func [<local> response][
+    return not find "yY" first response: ask ["Okay?" text!]
+]
+
+clinical: func [][
+    medical: ask ["Enter clinical details including periodicity" text!]
+    if not yn [clinical]
+]
+
+bio: func [][
+    print "1. Creatinine, LFTs, CRP"
+    print "2. CPK"
+    biochem: ask ["Enter biochemistry requests" text!]
+    if not yn [bio]
+    replace biochem "1" "Creatinine, LFTs, CRP,"
+    replace biochem "2" "CPK"
+]
+
+sero: func [][
+    serology: ask ["Enter serology requests" text!]
+    if not yn [sero]
+]
+
+oth: func [][
+    other: ask ["Enter other requests" text!][
+    if not yn [oth]
+]
 
 if find "yY" first ask ["New Script?" text!][new-rx]
