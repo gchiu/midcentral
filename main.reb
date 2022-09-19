@@ -718,12 +718,14 @@ bio: func [][
     print {1. Creatinine, LFTs, CRP
 2. CPK
 3. Serum Uric Acid
+4. cryoglobulins
 }
     biochem: ask ["Enter biochemistry requests" text!]
     if not okay? [bio]
     replace biochem "1" "Creatinine, LFTs, CRP,"
     replace biochem "2" "CPK,"
     replace biochem "3" "Serum Uric Acid"
+    replace biochem "4" "cryoglobulins"
 ]
 
 sero: func [][
@@ -757,12 +759,14 @@ haemo: func [][
     print {1. CBC
 2. Lupus Anticoagulant
 3. Coomb's test (DAGT)
+4. ESR
 }
     haem: ask ["Enter haematology requests" text!]
     if not okay? [haemo]
     replace haem "1" "CBC,"
     replace haem "2" "Lupus Anticoagulant,"
     replace haem "3" "Coomb's test,"
+    replace haem "4" "ESR (see clinical details)"
 ]
 
 mic: func [][
