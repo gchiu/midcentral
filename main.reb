@@ -1,7 +1,7 @@
 Rebol [
     type: module
     author: "Graham Chiu"
-    Version: 1.0.44
+    Version: 1.0.45
     exports: [
         add-form ; puts JS form into DOM
         add-content ; adds content to the form
@@ -323,8 +323,12 @@ parse-demographics: func [
         thru "Address" [maybe some whitespace] opt "Address" opt space street: across to eol (?? street ?? 1)
         thru some eol [maybe some whitespace] town: across to eol (?? 2 ?? town)
         thru some eol [maybe some whitespace] city: across to eol (?? 3 ?? city)
-        [thru "Home" (?? 4)| thru "Mobile" (?? 5) | thru "Contact – No Known Contact Information" (?? 6) to <end> (print "Incomplete Demographics") return true] [maybe some whitespace]
-        phone: across some digit (?? 5 ?? phone)
+        [thru "Home" (?? 4)
+            | thru "Mobile" (?? 5)
+            | thru "EMAIL" (?? 50) maybe some whitespace email: across to space return true
+            | thru "Contact – No Known Contact Information" (?? 6) to <end> (print "Incomplete Demographics") return true
+        ] [maybe some whitespace]
+        phone: across some digit (?? 51 ?? phone)
         opt [
             thru some eol thru "Mobile" maybe some whitespace mobile: across some digit (?? 6 ?? mobile)
             thru some eol opt [thru "Email" maybe some whitespace email: across to space (?? 7 ?? email)]
@@ -662,5 +666,8 @@ parse-referral: func [
     ?? city
     ?? zip
 ]
+
+;; ===============================================================
+
 
 if find "yY" first ask ["New Script?" text!][new-rx]
