@@ -24,6 +24,7 @@ Rebol [
         docname
         docregistration
         parse-referral
+        clinical bio sero oth haemo
     ]
 ]
 
@@ -693,7 +694,8 @@ bio: func [][
 ]
 
 sero: func [][
-    print {1. ANA ENA
+    print {0. Hep B, C serology"
+1. ANA ENA
 2. ds-DNA
 3. Complement
 4. Cardiolipin, Lupus Anticoagulant, B2-glycoprotein Antibodies
@@ -702,6 +704,7 @@ sero: func [][
 }
     serology: ask ["Enter serology requests" text!]
     if not okay? [sero]
+    replace sero "0" "Hep B, C serology"
     replace sero "1" "ANA ENA"
     replace sero "2" "ds-DNA"
     replace sero "3" "Complement"
@@ -711,8 +714,22 @@ sero: func [][
 ]
 
 oth: func [][
+    print {1. Quantiferon TB Gold}
     other: ask ["Enter other requests" text!]
     if not okay? [oth]
+    replace other "1" "Quantiferon TB Gold"
+]
+
+haemo: func [][
+    print {1. CBC
+2. Lupus Anticoagulant
+3. Coomb's test (DAGT)
+}
+    haem: ask ["Enter haematology requests" text!]
+    if not okay? [haemo]
+    replace haem "1" "CBC"
+    replace haem "2" "Lupus Anticoagulant"
+    replace haem "3" "Coomb's test"
 ]
 
 if find "yY" first ask ["New Script?" text!][new-rx]
