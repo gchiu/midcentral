@@ -681,9 +681,10 @@ clinical: func [][
 ]
 
 bio: func [][
-    print "1. Creatinine, LFTs, CRP"
-    print "2. CPK"
-    print "3. "Serum Uric Acid"
+    print {1. Creatinine, LFTs, CRP
+2. CPK
+3. Serum Uric Acid
+}
     biochem: ask ["Enter biochemistry requests" text!]
     if not okay? [bio]
     replace biochem "1" "Creatinine, LFTs, CRP,"
