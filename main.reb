@@ -24,7 +24,7 @@ Rebol [
         docname
         docregistration
         parse-referral
-        clinical bio sero oth haemo
+        clinical bio sero oth haemo micro
     ]
 ]
 
@@ -730,6 +730,20 @@ haemo: func [][
     replace haem "1" "CBC"
     replace haem "2" "Lupus Anticoagulant"
     replace haem "3" "Coomb's test"
+]
+
+mic: func [][
+    print {1. MSU
+2. ACR
+3. Urinary Casts and sediment
+4. Polarized microscopy for urate crystals
+}
+    micro: ask ["Enter Microbiology requests" text!]
+    if not okay? [mic]
+    replace micro "1" "MSU"
+    replace micro "2" "ACR"
+    replace micro "3" "Urinary Casts and sediment"
+    replace micro "4" "Polarized microscopy for urate crystals"
 ]
 
 if find "yY" first ask ["New Script?" text!][new-rx]
