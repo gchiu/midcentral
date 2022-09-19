@@ -711,7 +711,7 @@ sero: func [][
 ]
 
 oth: func [][
-    other: ask ["Enter other requests" text!][
+    other: ask ["Enter other requests" text!]
     if not okay? [oth]
 ]
 
