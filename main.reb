@@ -63,7 +63,7 @@ slotno: 6
 rx-template: https://metaeducation.s3.amazonaws.com/rx-6template-docx.docx
 rxs: []
 firstnames: surname: dob: title: nhi: rx1: rx2: rx3: rx4: rx5: rx6: street: town: city: docname: docregistration: _
-wtemplate: _
+wtemplate: itemplate: _
 old_patient: _
 eol: charset [#"^/" #","] ; used to parse out the address line
 
@@ -163,6 +163,8 @@ configure: func [
 set-doc: does [
     wtemplate: copy template
     wtemplate: reword wtemplate reduce ['docname docname 'docregistration docregistration 'signature docname] ; 'date now/date]
+    itemplate: copy labplate
+    itemplate: reword itemplate reduce []
     ; probe wtemplate
 ]
 
@@ -304,6 +306,20 @@ template: {
     docname: `$docname`,
     docregistration: `$docregistration`,
     dgh: `$dgh`,
+}
+
+labplate: {
+    surname: `$surname`,
+    firstnames: `$firstnames`,
+    title: `$title`,
+    dob: `$dob`,
+    street: `$street`,
+    town: `$town`,
+    city: `$city`,
+    nhi: `$nhi`,
+    date: `$date`,
+    docname: `$docname`,
+    docregistration: `$docregistration`,
 }
 
 parse-demographics: func [
@@ -585,6 +601,23 @@ write-rx: func [
     codedata: reword codedata reduce compose ['date (spaced [now/date now/time])]
     response: lowercase ask ["For email?" text!]
     codedata: reword codedata reduce compose ['dgh (if response.1 = #"y" [dgh] else [" "])]
+    ;probe copy/part codedata 200
+    ;dump rx-template
+    js-do codedata
+]
+
+write-ix: func [
+    <local> codedata response
+] [
+    ; append/dup rxs space slotno
+    codedata: copy cdata
+    replace codedata "$template" wtemplate
+    replace codedata "$docxtemplate" rx-template
+    replace codedata "$prescription" unspaced [nhi "_" now/date]
+;    codedata: reword codedata reduce ['rx1 rxs.1 'rx2 any [rxs.2 space] 'rx3 any [rxs.3 space] 'rx4 any [rxs.4 space] 'rx5 any [rxs.5 space] 'rx6 any [rxs.6 space]]
+;    codedata: reword codedata reduce compose ['date (spaced [now/date now/time])]
+;    response: lowercase ask ["For email?" text!]
+;   codedata: reword codedata reduce compose ['dgh (if response.1 = #"y" [dgh] else [" "])]
     ;probe copy/part codedata 200
     ;dump rx-template
     js-do codedata
