@@ -726,7 +726,7 @@ medical: biochem: serology: other: micro: haem: _ ; doccode: _
 
 clinical: func [][
     medical: ask ["Enter clinical details including periodicity" text!]
-    if not yn [clinical]
+    if not okay? [clinical]
 ]
 
 bio: func [][
