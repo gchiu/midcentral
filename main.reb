@@ -64,7 +64,7 @@ raw_root: https://raw.githubusercontent.com/gchiu/midcentral/main/drugs/ ; remov
 
 slotno: 6
 rx-template: https://metaeducation.s3.amazonaws.com/rx-6template-docx.docx
-ix-template: https://github.com/gchiu/midcentral/raw/main/templates/Medlab-form-ver1.docx
+ix-template: https://metaeducation.s3.amazonaws.com/Medlab-form-ver1.docx
 rxs: []
 firstnames: surname: dob: title: nhi: rx1: rx2: rx3: rx4: rx5: rx6: street: town: city: docname: docregistration: _
 wtemplate: itemplate: _
