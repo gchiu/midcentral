@@ -120,7 +120,7 @@ cdata: {window.generate = function() {
 js-button: {<input type="button" id="copy NHI" value="Copy NHI" onclick='reb.Elide("write clipboard:// {$a}")' />}
 
 okay?: func [<local> response][
-    return find "yY" first response: ask ["Okay?" text!]
+    return did find "yY" first response: ask ["Okay?" text!]
 ]
 
 configure: func [
