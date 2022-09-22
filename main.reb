@@ -25,6 +25,7 @@ Rebol [
         docregistration
         parse-referral
         clinical bio sero oth haemo mic write-ix
+        biochem serology other haem micro
     ]
 ]
 
@@ -623,20 +624,14 @@ write-ix: func [
     replace codedata "$template" itemplate ; put the JS definitions into the JS template
     replace codedata "$docxtemplate" ix-template ; link to the docx used for the laboratory request form
     replace codedata "$prescription" unspaced [nhi "_" "labrequest" "_" now/date] ; specify the name used to save it as
-;    codedata: reword codedata reduce ['rx1 rxs.1 'rx2 any [rxs.2 space] 'rx3 any [rxs.3 space] 'rx4 any [rxs.4 space] 'rx5 any [rxs.5 space] 'rx6 any [rxs.6 space]]
-;    codedata: reword codedata reduce compose ['date (spaced [now/date now/time])]
-;    response: lowercase ask ["For email?" text!]
-;   codedata: reword codedata reduce compose ['dgh (if response.1 = #"y" [dgh] else [" "])]
-    ; medical: biochem: serology: other: micro: doccode: _
     codedata: reword codedata [
-        'biochem bio
+        'biochem biochem
         'clinical medical
-        'serology sero
+        'serology serology
         'micro micro
-        'haem haemo
-        'other oth
+        'haem haem
+        'other other
     ]
-
     ;probe copy/part codedata 200
     ;dump rx-template
     js-do codedata
