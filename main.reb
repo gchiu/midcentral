@@ -622,7 +622,7 @@ write-ix: func [
     <local> codedata
 ] [
     ?? biochem
-    ?? clinical
+    ?? medical
     ?? serology
     ?? haem
     ?? other
@@ -638,7 +638,7 @@ write-ix: func [
         'haem reify haem
         'other reify other
     ]
-    ;probe copy/part codedata 200
+    probe copy/part codedata 200
     ;dump rx-template
     js-do codedata
 ]
