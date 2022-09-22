@@ -21,7 +21,7 @@ Rebol [
         set-doc ; fills the wtemplate with current doc
         write-rx ; sends to docx
         street town city
-        docname
+        docname doccode
         docregistration
         parse-referral
         clinical bio sero oth haemo mic write-ix
