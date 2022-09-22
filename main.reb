@@ -24,7 +24,7 @@ Rebol [
         docname
         docregistration
         parse-referral
-        clinical bio sero oth haemo mic
+        clinical bio sero oth haemo mic write-ix
     ]
 ]
 
@@ -56,11 +56,14 @@ for-each site [
 
 === GLOBAL DEFINITIONS ===
 
+doccode: "GCHIRC DCGHW DGCHI"
+
 root: https://github.com/gchiu/midcentral/blob/main/drugs/
 raw_root: https://raw.githubusercontent.com/gchiu/midcentral/main/drugs/ ; removed html etc
 
 slotno: 6
 rx-template: https://metaeducation.s3.amazonaws.com/rx-6template-docx.docx
+ix-template: https://github.com/gchiu/midcentral/raw/main/templates/Medlab-form-ver1.docx
 rxs: []
 firstnames: surname: dob: title: nhi: rx1: rx2: rx3: rx4: rx5: rx6: street: town: city: docname: docregistration: _
 wtemplate: itemplate: _
@@ -116,6 +119,10 @@ cdata: {window.generate = function() {
 
 js-button: {<input type="button" id="copy NHI" value="Copy NHI" onclick='reb.Elide("write clipboard:// {$a}")' />}
 
+okay?: func [<local> response][
+    return find "yY" first response: ask ["Okay?" text!]
+]
+
 configure: func [
     return: <none>
     <local> config url loc i
@@ -164,7 +171,7 @@ set-doc: does [
     wtemplate: copy template
     wtemplate: reword wtemplate reduce ['docname docname 'docregistration docregistration 'signature docname] ; 'date now/date]
     itemplate: copy labplate
-    itemplate: reword itemplate reduce []
+    itemplate: reword itemplate reduce ['docname docname 'doccode doccode]
     ; probe wtemplate
 ]
 
@@ -172,8 +179,9 @@ grab-creds: func [ <local> docnames docregistrations] [
     cycle [
         docnames: ask ["Enter your name as appears on a prescription:" text!]
         docregistrations: ask ["Enter your prescriber ID number:" integer!]
-        response: lowercase ask ["Okay?" text!]
-        if find ["yes" "y"] response [
+        ; response: lowercase ask ["Okay?" text!]
+        ; if find ["yes" "y"] response [
+        if okay? [
             set 'docname :docnames
             set 'docregistration :docregistrations
             break
@@ -251,8 +259,9 @@ choose-drug: func [scheds [block!] filename
         dose: ask compose [(spaced ["New Dose for" drugname]) text!]
         sig: ask ["Sig:" text!]
         mitte: ask ["Mitte:" text!]
-        response: copy/part lowercase ask ["Okay?" text!] 1
-        if response = "y" [break]
+        if okay? [break]
+            ;response: copy/part lowercase ask ["Okay?" text!] 1
+            ; if response = "y" [break]
     ]
     output: expand-latin spaced [drugname dose "^/Sig:" sig "^/Mitte:" mitte]
     add-content output
@@ -319,7 +328,7 @@ labplate: {
     nhi: `$nhi`,
     date: `$date`,
     docname: `$docname`,
-    docregistration: `$docregistration`,
+    doccode: `$doccode`,
 }
 
 parse-demographics: func [
@@ -537,8 +546,9 @@ rx: func [ drug [text! word!]
                         rxname: ask ["Rx:" text!]
                         sig: ask ["Sig:" text!]
                         mitte: ask ["Mitte:" text!]
-                        response: first lowercase ask ["Okay?" text!]
-                        if response = #"y" [break]
+                        if okay? [break]
+                        ;response: first lowercase ask ["Okay?" text!]
+                        ;if response = #"y" [break]
                     ]
                     output: expand-latin spaced ["Rx:" rxname "^/Sig:" sig "^/Mitte:" mitte]
                     add-content output
@@ -609,15 +619,24 @@ write-rx: func [
 write-ix: func [
     <local> codedata response
 ] [
-    ; append/dup rxs space slotno
-    codedata: copy cdata
-    replace codedata "$template" wtemplate
-    replace codedata "$docxtemplate" rx-template
-    replace codedata "$prescription" unspaced [nhi "_" now/date]
+    codedata: copy cdata ; the JS template
+    replace codedata "$template" itemplate ; put the JS definitions into the JS template
+    replace codedata "$docxtemplate" ix-template ; link to the docx used for the laboratory request form
+    replace codedata "$prescription" unspaced [nhi "_" "labrequest" "_" now/date] ; specify the name used to save it as
 ;    codedata: reword codedata reduce ['rx1 rxs.1 'rx2 any [rxs.2 space] 'rx3 any [rxs.3 space] 'rx4 any [rxs.4 space] 'rx5 any [rxs.5 space] 'rx6 any [rxs.6 space]]
 ;    codedata: reword codedata reduce compose ['date (spaced [now/date now/time])]
 ;    response: lowercase ask ["For email?" text!]
 ;   codedata: reword codedata reduce compose ['dgh (if response.1 = #"y" [dgh] else [" "])]
+    ; medical: biochem: serology: other: micro: doccode: _
+    codedata: reword codedata [
+        'biochem bio
+        'clinical medical
+        'serology sero
+        'micro micro
+        'haem haemo
+        'other oth
+    ]
+
     ;probe copy/part codedata 200
     ;dump rx-template
     js-do codedata
@@ -703,11 +722,7 @@ parse-referral: func [
 
 ;; ==========lab form tools =================================================
 
-medical: biochem: serology: other: micro: doccode: _
-
-okay?: func [<local> response][
-    return find "yY" first response: ask ["Okay?" text!]
-]
+medical: biochem: serology: other: micro: haem: doccode: _
 
 clinical: func [][
     medical: ask ["Enter clinical details including periodicity" text!]
