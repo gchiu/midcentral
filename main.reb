@@ -71,8 +71,9 @@ wtemplate: itemplate: _
 old_patient: _
 eol: charset [#"^/" #","] ; used to parse out the address line
 
-dgh: {This Prescription meets the requirement of the Director-General of Health’s waiver of March 2020 for prescriptions not signed personally by a prescriber with their usual signature}
+medical: biochem: serology: other: micro: haem: _ ; doccode: _
 
+dgh: {This Prescription meets the requirement of the Director-General of Health’s waiver of March 2020 for prescriptions not signed personally by a prescriber with their usual signature}
 
 === MAIN SCRIPT ===
 
@@ -618,15 +619,20 @@ write-rx: func [
 ]
 
 write-ix: func [
-    <local> codedata response
+    <local> codedata
 ] [
+    ?? biochem
+    ?? clinical
+    ?? serology
+    ?? haem
+    ?? other
     codedata: copy cdata ; the JS template
     replace codedata "$template" itemplate ; put the JS definitions into the JS template
     replace codedata "$docxtemplate" ix-template ; link to the docx used for the laboratory request form
     replace codedata "$prescription" unspaced [nhi "_" "labrequest" "_" now/date] ; specify the name used to save it as
-    codedata: reword codedata [
+    codedata: reword codedata reduce [
         'biochem reify biochem
-        'clinical reify medical
+        'medical reify medical
         'serology reify serology
         'micro reify micro
         'haem reify haem
@@ -684,7 +690,7 @@ if word? exists? %/current.reb [
 
 print ["Current Version:" form system.script.header.Version]
 
-;; ===== other parse tools ==================
+=== other parse tools ===
 
 parse-referral: func [
     <local> data fname sname nhi dob gender email mobile street suburb city zip
@@ -715,7 +721,7 @@ parse-referral: func [
     ?? zip
 ]
 
-;; ==========lab form tools =================================================
+=== lab form tools ===
 
 medical: biochem: serology: other: micro: haem: _ ; doccode: _
 
