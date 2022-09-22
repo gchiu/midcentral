@@ -625,12 +625,12 @@ write-ix: func [
     replace codedata "$docxtemplate" ix-template ; link to the docx used for the laboratory request form
     replace codedata "$prescription" unspaced [nhi "_" "labrequest" "_" now/date] ; specify the name used to save it as
     codedata: reword codedata [
-        'biochem biochem
-        'clinical medical
-        'serology serology
-        'micro micro
-        'haem haem
-        'other other
+        'biochem reify biochem
+        'clinical reify medical
+        'serology reify serology
+        'micro reify micro
+        'haem reify haem
+        'other reify other
     ]
     ;probe copy/part codedata 200
     ;dump rx-template
