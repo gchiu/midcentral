@@ -722,7 +722,7 @@ parse-referral: func [
 
 ;; ==========lab form tools =================================================
 
-medical: biochem: serology: other: micro: haem: doccode: _
+medical: biochem: serology: other: micro: haem: _ ; doccode: _
 
 clinical: func [][
     medical: ask ["Enter clinical details including periodicity" text!]
