@@ -401,7 +401,7 @@ parse-demographics: func [
         'prescription nhi
     ]
     itemplate: reword itemplate reduce compose ['firstnames firstnames 'surname surname 'address (spaced [maybe street maybe town maybe city]) 'phone phone
-        'dob dob 'nhi nhi 'gender "M F O"
+        'dob dob 'nhi nhi 'gender "M F O" 'title title
     ]
     probe itemplate
     old_patient: copy nhi
@@ -478,8 +478,9 @@ manual-entry: func [
         'dob dob 'nhi nhi
         'prescription nhi
     ]
+    ; update the investigation template in both manual and pasted versions
     itemplate: reword itemplate reduce compose ['firstnames firstnames 'surname surname 'address (spaced [maybe street maybe town maybe city]) 'phone phone
-        'dob dob 'nhi nhi 'gender "M F O"
+        'dob dob 'nhi nhi 'gender "M F O" 'title title
     ]
 
     ; probe wtemplate
