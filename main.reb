@@ -175,7 +175,7 @@ set-doc: does [
     wtemplate: copy template
     wtemplate: reword wtemplate reduce ['docname docname 'docregistration docregistration 'signature docname] ; 'date now/date]
     itemplate: copy labplate
-    itemplate: reword itemplate reduce ['docname docname 'doccode doccode]
+    itemplate: reword itemplate reduce ['docname docname 'doccode doccode 'date now/date 'cc "General Practitioner"]
     ; probe wtemplate
 ]
 
@@ -407,7 +407,7 @@ parse-demographics: func [
         'dob dob 'nhi nhi
         'prescription nhi
     ]
-    itemplate: reword itemplate reduce compose ['firstnames firstnames 'surname surname 'address (spaced [maybe street maybe town maybe city]) 'phone phone
+    itemplate: reword itemplate reduce compose ['firstnames firstnames 'surname (join surname ",") 'address (spaced [maybe street maybe town maybe city]) 'phone phone
         'dob dob 'nhi nhi 'gender "M F O" 'title title
     ]
     probe itemplate
