@@ -332,6 +332,13 @@ labplate: {
     date: `$date`,
     docname: `$docname`,
     doccode: `$doccode`,
+    medical: `$medical`,
+    biochem: `$biochem`,
+    haem: `$haem`,
+    serology: `$serology`,
+    other: `$other`,
+    micro: `$micro`,
+    cc: `$cc`,
 }
 
 parse-demographics: func [
