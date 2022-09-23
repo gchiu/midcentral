@@ -1,7 +1,7 @@
 Rebol [
     type: module
     author: "Graham Chiu"
-    Version: 1.0.47
+    Version: 1.0.48
     exports: [
         add-form ; puts JS form into DOM
         add-content ; adds content to the form
@@ -21,10 +21,11 @@ Rebol [
         set-doc ; fills the wtemplate with current doc
         write-rx ; sends to docx
         street town city
-        docname
+        docname doccode
         docregistration
         parse-referral
-        clinical bio sero oth haemo mic
+        clinical bio sero oth haemo mic write-ix
+        biochem serology other haem micro
     ]
 ]
 
@@ -56,19 +57,25 @@ for-each site [
 
 === GLOBAL DEFINITIONS ===
 
+doccode: "GCHIRC DCGHW DGCHI"
+
 root: https://github.com/gchiu/midcentral/blob/main/drugs/
 raw_root: https://raw.githubusercontent.com/gchiu/midcentral/main/drugs/ ; removed html etc
 
 slotno: 6
 rx-template: https://metaeducation.s3.amazonaws.com/rx-6template-docx.docx
+ix-template: sys.util.adjust-url-for-raw https://github.com/gchiu/midcentral/blob/gchiu-patch-2/templates/Medlab-form-ver1.docx
+; https://metaeducation.s3.amazonaws.com/Medlab-form-ver1.docx
+
 rxs: []
 firstnames: surname: dob: title: nhi: rx1: rx2: rx3: rx4: rx5: rx6: street: town: city: docname: docregistration: _
 wtemplate: itemplate: _
 old_patient: _
 eol: charset [#"^/" #","] ; used to parse out the address line
 
-dgh: {This Prescription meets the requirement of the Director-General of Health’s waiver of March 2020 for prescriptions not signed personally by a prescriber with their usual signature}
+medical: biochem: serology: other: micro: haem: _ ; doccode: _
 
+dgh: {This Prescription meets the requirement of the Director-General of Health’s waiver of March 2020 for prescriptions not signed personally by a prescriber with their usual signature}
 
 === MAIN SCRIPT ===
 
@@ -115,6 +122,10 @@ cdata: {window.generate = function() {
 }
 
 js-button: {<input type="button" id="copy NHI" value="Copy NHI" onclick='reb.Elide("write clipboard:// {$a}")' />}
+
+okay?: func [<local> response][
+    return did find "yY" first response: ask ["Okay?" text!]
+]
 
 configure: func [
     return: <none>
@@ -164,7 +175,7 @@ set-doc: does [
     wtemplate: copy template
     wtemplate: reword wtemplate reduce ['docname docname 'docregistration docregistration 'signature docname] ; 'date now/date]
     itemplate: copy labplate
-    itemplate: reword itemplate reduce []
+    itemplate: reword itemplate reduce ['docname docname 'doccode doccode 'date now/date 'cc "copy to General Practitioner"]
     ; probe wtemplate
 ]
 
@@ -172,8 +183,9 @@ grab-creds: func [ <local> docnames docregistrations] [
     cycle [
         docnames: ask ["Enter your name as appears on a prescription:" text!]
         docregistrations: ask ["Enter your prescriber ID number:" integer!]
-        response: lowercase ask ["Okay?" text!]
-        if find ["yes" "y"] response [
+        ; response: lowercase ask ["Okay?" text!]
+        ; if find ["yes" "y"] response [
+        if okay? [
             set 'docname :docnames
             set 'docregistration :docregistrations
             break
@@ -251,8 +263,9 @@ choose-drug: func [scheds [block!] filename
         dose: ask compose [(spaced ["New Dose for" drugname]) text!]
         sig: ask ["Sig:" text!]
         mitte: ask ["Mitte:" text!]
-        response: copy/part lowercase ask ["Okay?" text!] 1
-        if response = "y" [break]
+        if okay? [break]
+            ;response: copy/part lowercase ask ["Okay?" text!] 1
+            ; if response = "y" [break]
     ]
     output: expand-latin spaced [drugname dose "^/Sig:" sig "^/Mitte:" mitte]
     add-content output
@@ -313,13 +326,19 @@ labplate: {
     firstnames: `$firstnames`,
     title: `$title`,
     dob: `$dob`,
-    street: `$street`,
-    town: `$town`,
-    city: `$city`,
+    address: `$address`,
+    gender: `$gender`,
     nhi: `$nhi`,
     date: `$date`,
     docname: `$docname`,
-    docregistration: `$docregistration`,
+    doccode: `$doccode`,
+    medical: `$medical`,
+    biochem: `$biochem`,
+    haem: `$haem`,
+    serology: `$serology`,
+    other: `$other`,
+    micro: `$micro`,
+    cc: `$cc`,
 }
 
 parse-demographics: func [
@@ -388,6 +407,10 @@ parse-demographics: func [
         'dob dob 'nhi nhi
         'prescription nhi
     ]
+    itemplate: reword itemplate reduce compose ['firstnames firstnames 'surname (join surname ",") 'address (spaced [maybe street maybe town maybe city]) 'phone phone
+        'dob dob 'nhi nhi 'gender "M F O" 'title title
+    ]
+    probe itemplate
     old_patient: copy nhi
     ; probe wtemplate
     write to file! unspaced ["/" nhi %.reb] mold compose [
@@ -462,6 +485,11 @@ manual-entry: func [
         'dob dob 'nhi nhi
         'prescription nhi
     ]
+    ; update the investigation template in both manual and pasted versions
+    itemplate: reword itemplate reduce compose ['firstnames firstnames 'surname (join surname ",") 'address (spaced [maybe street maybe town maybe city]) 'phone phone
+        'dob dob 'nhi nhi 'gender "M F O" 'title title
+    ]
+
     ; probe wtemplate
     write to file! unspaced ["/" nhi %.reb] mold compose [
         nhi: (nhi)
@@ -537,8 +565,9 @@ rx: func [ drug [text! word!]
                         rxname: ask ["Rx:" text!]
                         sig: ask ["Sig:" text!]
                         mitte: ask ["Mitte:" text!]
-                        response: first lowercase ask ["Okay?" text!]
-                        if response = #"y" [break]
+                        if okay? [break]
+                        ;response: first lowercase ask ["Okay?" text!]
+                        ;if response = #"y" [break]
                     ]
                     output: expand-latin spaced ["Rx:" rxname "^/Sig:" sig "^/Mitte:" mitte]
                     add-content output
@@ -607,18 +636,27 @@ write-rx: func [
 ]
 
 write-ix: func [
-    <local> codedata response
+    <local> codedata
 ] [
-    ; append/dup rxs space slotno
-    codedata: copy cdata
-    replace codedata "$template" wtemplate
-    replace codedata "$docxtemplate" rx-template
-    replace codedata "$prescription" unspaced [nhi "_" now/date]
-;    codedata: reword codedata reduce ['rx1 rxs.1 'rx2 any [rxs.2 space] 'rx3 any [rxs.3 space] 'rx4 any [rxs.4 space] 'rx5 any [rxs.5 space] 'rx6 any [rxs.6 space]]
-;    codedata: reword codedata reduce compose ['date (spaced [now/date now/time])]
-;    response: lowercase ask ["For email?" text!]
-;   codedata: reword codedata reduce compose ['dgh (if response.1 = #"y" [dgh] else [" "])]
-    ;probe copy/part codedata 200
+    ?? biochem
+    ?? medical
+    ?? serology
+    ?? haem
+    ?? other
+    codedata: copy cdata ; the JS template
+    replace codedata "$template" itemplate ; put the JS definitions into the JS template
+    replace codedata "$docxtemplate" ix-template ; link to the docx used for the laboratory request form
+    replace codedata "$prescription" unspaced [nhi "_" "labrequest" "_" now/date] ; specify the name used to save it as
+    codedata: reword codedata reduce [
+        'biochem reify biochem
+        'medical reify medical
+        'serology reify serology
+        'micro reify micro
+        'haem reify haem
+        'other reify other
+    ]
+    probe copy/part codedata 500
+    write clipboard:// codedata
     ;dump rx-template
     js-do codedata
 ]
@@ -670,7 +708,7 @@ if word? exists? %/current.reb [
 
 print ["Current Version:" form system.script.header.Version]
 
-;; ===== other parse tools ==================
+=== other parse tools ===
 
 parse-referral: func [
     <local> data fname sname nhi dob gender email mobile street suburb city zip
@@ -701,17 +739,14 @@ parse-referral: func [
     ?? zip
 ]
 
-;; ==========lab form tools =================================================
+=== lab form tools ===
 
-medical: biochem: serology: other: micro: doccode: _
-
-okay?: func [<local> response][
-    return find "yY" first response: ask ["Okay?" text!]
-]
+medical: biochem: serology: other: micro: haem: _ ; doccode: _
 
 clinical: func [][
     medical: ask ["Enter clinical details including periodicity" text!]
-    if not yn [clinical]
+    print medical
+    if not okay? [clinical]
 ]
 
 bio: func [][
@@ -721,11 +756,12 @@ bio: func [][
 4. cryoglobulins
 }
     biochem: ask ["Enter biochemistry requests" text!]
-    if not okay? [bio]
     replace biochem "1" "Creatinine, LFTs, CRP,"
     replace biochem "2" "CPK,"
     replace biochem "3" "Serum Uric Acid"
     replace biochem "4" "cryoglobulins"
+    print biochem
+    if not okay? [bio]
 ]
 
 sero: func [][
@@ -738,21 +774,23 @@ sero: func [][
 6. Scl-70 by immunodiffusion
 }
     serology: ask ["Enter serology requests" text!]
+    replace serology "0" "Hep B, C serology,"
+    replace serology "1" "ANA ENA,"
+    replace serology "2" "ds-DNA,"
+    replace serology "3" "Complement,"
+    replace serology "4" "Cardiolipin, Lupus Anticoagulant, B2-glycoprotein Antibodies,"
+    replace serology "5" "Extended scleroderma blot,"
+    replace serology "6" "Scl-70 by immunodiffusion"
+    print serology
     if not okay? [sero]
-    replace sero "0" "Hep B, C serology,"
-    replace sero "1" "ANA ENA,"
-    replace sero "2" "ds-DNA,"
-    replace sero "3" "Complement,"
-    replace sero "4" "Cardiolipin, Lupus Anticoagulant, B2-glycoprotein Antibodies,"
-    replace sero "5" "Extended scleroderma blot,"
-    replace sero "6" "Scl-70 by immunodiffusion"
 ]
 
 oth: func [][
     print {1. Quantiferon TB Gold,}
     other: ask ["Enter other requests" text!]
-    if not okay? [oth]
     replace other "1" "Quantiferon TB Gold"
+    print other
+    if not okay? [oth]
 ]
 
 haemo: func [][
@@ -762,11 +800,12 @@ haemo: func [][
 4. ESR
 }
     haem: ask ["Enter haematology requests" text!]
-    if not okay? [haemo]
     replace haem "1" "CBC,"
     replace haem "2" "Lupus Anticoagulant,"
     replace haem "3" "Coomb's test,"
     replace haem "4" "ESR (see clinical details)"
+    print haem
+    if not okay? [haemo]
 ]
 
 mic: func [][
@@ -776,11 +815,12 @@ mic: func [][
 4. Polarized microscopy for urate crystals
 }
     micro: ask ["Enter Microbiology requests" text!]
-    if not okay? [mic]
     replace micro "1" "MSU,"
     replace micro "2" "ACR,"
     replace micro "3" "Urinary Casts and sediment,"
     replace micro "4" "Polarized microscopy for urate crystals,"
+    print micro
+    if not okay? [mic]
 ]
 
 if find "yY" first ask ["New Script?" text!][new-rx]
