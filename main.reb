@@ -1,7 +1,7 @@
 Rebol [
     type: module
     author: "Graham Chiu"
-    Version: 1.0.47
+    Version: 1.0.48
     exports: [
         add-form ; puts JS form into DOM
         add-content ; adds content to the form
@@ -175,7 +175,7 @@ set-doc: does [
     wtemplate: copy template
     wtemplate: reword wtemplate reduce ['docname docname 'docregistration docregistration 'signature docname] ; 'date now/date]
     itemplate: copy labplate
-    itemplate: reword itemplate reduce ['docname docname 'doccode doccode 'date now/date 'cc "General Practitioner"]
+    itemplate: reword itemplate reduce ['docname docname 'doccode doccode 'date now/date 'cc "copy to General Practitioner"]
     ; probe wtemplate
 ]
 
@@ -486,7 +486,7 @@ manual-entry: func [
         'prescription nhi
     ]
     ; update the investigation template in both manual and pasted versions
-    itemplate: reword itemplate reduce compose ['firstnames firstnames 'surname surname 'address (spaced [maybe street maybe town maybe city]) 'phone phone
+    itemplate: reword itemplate reduce compose ['firstnames firstnames 'surname (join surname ",") 'address (spaced [maybe street maybe town maybe city]) 'phone phone
         'dob dob 'nhi nhi 'gender "M F O" 'title title
     ]
 
