@@ -399,6 +399,9 @@ parse-demographics: func [
         'dob dob 'nhi nhi
         'prescription nhi
     ]
+    itemplate: reword itemplate reduce ['firstnames firstnames 'surname surname 'address spaced [street town city] 'phone phone
+        'dob dob 'nhi nhi 'gender "M F O"
+    ]
     old_patient: copy nhi
     ; probe wtemplate
     write to file! unspaced ["/" nhi %.reb] mold compose [
