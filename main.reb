@@ -64,7 +64,9 @@ raw_root: https://raw.githubusercontent.com/gchiu/midcentral/main/drugs/ ; remov
 
 slotno: 6
 rx-template: https://metaeducation.s3.amazonaws.com/rx-6template-docx.docx
-ix-template: https://metaeducation.s3.amazonaws.com/Medlab-form-ver1.docx
+ix-template: sys.util.adjust-url-for-raw https://github.com/gchiu/midcentral/blob/main/templates/Medlab-form-ver1.docx
+; https://metaeducation.s3.amazonaws.com/Medlab-form-ver1.docx
+
 rxs: []
 firstnames: surname: dob: title: nhi: rx1: rx2: rx3: rx4: rx5: rx6: street: town: city: docname: docregistration: _
 wtemplate: itemplate: _
@@ -401,6 +403,7 @@ parse-demographics: func [
     itemplate: reword itemplate reduce compose ['firstnames firstnames 'surname surname 'address (spaced [maybe street maybe town maybe city]) 'phone phone
         'dob dob 'nhi nhi 'gender "M F O"
     ]
+    probe itemplate
     old_patient: copy nhi
     ; probe wtemplate
     write to file! unspaced ["/" nhi %.reb] mold compose [
@@ -640,7 +643,7 @@ write-ix: func [
         'haem reify haem
         'other reify other
     ]
-    probe copy/part codedata 200
+    probe copy/part codedata 500
     ;dump rx-template
     js-do codedata
 ]
@@ -804,7 +807,7 @@ mic: func [][
     replace micro "3" "Urinary Casts and sediment,"
     replace micro "4" "Polarized microscopy for urate crystals,"
     print micro
-    if not okay? [mic]    
+    if not okay? [mic]
 ]
 
 if find "yY" first ask ["New Script?" text!][new-rx]
