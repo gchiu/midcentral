@@ -324,9 +324,8 @@ labplate: {
     firstnames: `$firstnames`,
     title: `$title`,
     dob: `$dob`,
-    street: `$street`,
-    town: `$town`,
-    city: `$city`,
+    address: `$address`,
+    gender: `$gender`,
     nhi: `$nhi`,
     date: `$date`,
     docname: `$docname`,
@@ -399,7 +398,7 @@ parse-demographics: func [
         'dob dob 'nhi nhi
         'prescription nhi
     ]
-    itemplate: reword itemplate reduce ['firstnames firstnames 'surname surname 'address spaced [street town city] 'phone phone
+    itemplate: reword itemplate reduce compose ['firstnames firstnames 'surname surname 'address (spaced [maybe street maybe town maybe city]) 'phone phone
         'dob dob 'nhi nhi 'gender "M F O"
     ]
     old_patient: copy nhi
@@ -730,6 +729,7 @@ medical: biochem: serology: other: micro: haem: _ ; doccode: _
 
 clinical: func [][
     medical: ask ["Enter clinical details including periodicity" text!]
+    print medical
     if not okay? [clinical]
 ]
 
@@ -740,11 +740,12 @@ bio: func [][
 4. cryoglobulins
 }
     biochem: ask ["Enter biochemistry requests" text!]
-    if not okay? [bio]
     replace biochem "1" "Creatinine, LFTs, CRP,"
     replace biochem "2" "CPK,"
     replace biochem "3" "Serum Uric Acid"
     replace biochem "4" "cryoglobulins"
+    print biochem
+    if not okay? [bio]
 ]
 
 sero: func [][
@@ -757,21 +758,23 @@ sero: func [][
 6. Scl-70 by immunodiffusion
 }
     serology: ask ["Enter serology requests" text!]
+    replace serology "0" "Hep B, C serology,"
+    replace serology "1" "ANA ENA,"
+    replace serology "2" "ds-DNA,"
+    replace serology "3" "Complement,"
+    replace serology "4" "Cardiolipin, Lupus Anticoagulant, B2-glycoprotein Antibodies,"
+    replace serology "5" "Extended scleroderma blot,"
+    replace serology "6" "Scl-70 by immunodiffusion"
+    print serology
     if not okay? [sero]
-    replace sero "0" "Hep B, C serology,"
-    replace sero "1" "ANA ENA,"
-    replace sero "2" "ds-DNA,"
-    replace sero "3" "Complement,"
-    replace sero "4" "Cardiolipin, Lupus Anticoagulant, B2-glycoprotein Antibodies,"
-    replace sero "5" "Extended scleroderma blot,"
-    replace sero "6" "Scl-70 by immunodiffusion"
 ]
 
 oth: func [][
     print {1. Quantiferon TB Gold,}
     other: ask ["Enter other requests" text!]
-    if not okay? [oth]
     replace other "1" "Quantiferon TB Gold"
+    print other
+    if not okay? [oth]
 ]
 
 haemo: func [][
@@ -781,11 +784,12 @@ haemo: func [][
 4. ESR
 }
     haem: ask ["Enter haematology requests" text!]
-    if not okay? [haemo]
     replace haem "1" "CBC,"
     replace haem "2" "Lupus Anticoagulant,"
     replace haem "3" "Coomb's test,"
     replace haem "4" "ESR (see clinical details)"
+    print haem
+    if not okay? [haemo]
 ]
 
 mic: func [][
@@ -795,11 +799,12 @@ mic: func [][
 4. Polarized microscopy for urate crystals
 }
     micro: ask ["Enter Microbiology requests" text!]
-    if not okay? [mic]
     replace micro "1" "MSU,"
     replace micro "2" "ACR,"
     replace micro "3" "Urinary Casts and sediment,"
     replace micro "4" "Polarized microscopy for urate crystals,"
+    print micro
+    if not okay? [mic]    
 ]
 
 if find "yY" first ask ["New Script?" text!][new-rx]
