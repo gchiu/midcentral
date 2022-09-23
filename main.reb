@@ -478,6 +478,10 @@ manual-entry: func [
         'dob dob 'nhi nhi
         'prescription nhi
     ]
+    itemplate: reword itemplate reduce compose ['firstnames firstnames 'surname surname 'address (spaced [maybe street maybe town maybe city]) 'phone phone
+        'dob dob 'nhi nhi 'gender "M F O"
+    ]
+
     ; probe wtemplate
     write to file! unspaced ["/" nhi %.reb] mold compose [
         nhi: (nhi)
@@ -644,6 +648,7 @@ write-ix: func [
         'other reify other
     ]
     probe copy/part codedata 500
+    write clipboard:// codedata
     ;dump rx-template
     js-do codedata
 ]
