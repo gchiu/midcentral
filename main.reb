@@ -1,7 +1,7 @@
 Rebol [
     type: module
     author: "Graham Chiu"
-    Version: 1.0.48
+    Version: 1.0.49
     exports: [
         add-form ; puts JS form into DOM
         add-content ; adds content to the form
@@ -619,12 +619,15 @@ clear-rx: func [ <local> data ][
 ]
 
 write-rx: func [
-    <local> codedata response
+    <local> codedata response date
 ] [
     ; append/dup rxs space slotno
     codedata: copy cdata
     replace codedata "$template" wtemplate
     replace codedata "$docxtemplate" rx-template
+    ?? nhi
+    date: now/date
+    ?? date
     replace codedata "$prescription" unspaced [nhi "_" now/date]
     codedata: reword codedata reduce ['rx1 rxs.1 'rx2 any [rxs.2 space] 'rx3 any [rxs.3 space] 'rx4 any [rxs.4 space] 'rx5 any [rxs.5 space] 'rx6 any [rxs.6 space]]
     codedata: reword codedata reduce compose ['date (spaced [now/date now/time])]
