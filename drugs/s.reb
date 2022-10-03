@@ -16,4 +16,9 @@ then 1 tab PO PC mane, 2 tabs PO PC nocte 1/52,
 then 2 tabs PO PC BID thereafter^/Mitte: 3/12}
         ]
     ]
+    "sil" "Sildenafil"[
+        [
+            {Rx: Sildenafil 25 mg^/Sig: 1 tab PO BID^/Mitte: 3/12}
+        ]
+    ]
 ]
