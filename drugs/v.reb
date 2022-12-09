@@ -6,6 +6,11 @@ rebol [
 ]
 
 [
+    "Ventolin" [
+        [
+            {Rx: Ventolin Inhaler^/Sig: 2 puffs BD and prn^/Mitte: 3 op}
+        ]
+    ]
     "via" "Viaderm KC" [
         [
             {Rx: Viaderm KC Cream^/Sig: Apply daily to rash until clear^/Mitte: 1 op}
