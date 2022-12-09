@@ -45,4 +45,9 @@ rebol [
             {Rx: probenecid 500 mg^/Sig: 2 PO BID^/Mitte: 3/12}
         ]
     ]
+    "pulmicort" [
+        [
+            {Rx: Pulmicort 400 ug^/Sig: 2 puffs BD^/Mitte: 2 op}
+        ]
+    ]
 ]
