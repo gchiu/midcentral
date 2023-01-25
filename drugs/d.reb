@@ -20,4 +20,9 @@ rebol [
       {Rx: Dermovate Ung 30 g^/Sig: Apply daily to affected areas^/M: 3 op}
      ]
   ]
+   "dox" "doxazosin" [
+        [
+            {Rx: doxazosin 4 mg^/Sig: 1 PO nocte^/M: 3/12}
+        ]
+    ]
 ]
