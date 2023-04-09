@@ -1,7 +1,7 @@
 Rebol [
     type: module
     author: "Graham Chiu"
-    Version: 1.0.49
+    Version: 1.0.50
     exports: [
         add-form ; puts JS form into DOM
         add-content ; adds content to the form
@@ -26,6 +26,7 @@ Rebol [
         parse-referral
         clinical bio sero oth haemo mic write-ix
         biochem serology other haem micro
+        clrdata ; removes spaces, tabs from laboratory results
     ]
 ]
 
@@ -824,6 +825,21 @@ mic: func [][
     replace micro "4" "Polarized microscopy for urate crystals,"
     print micro
     if not okay? [mic]
+]
+
+clean-data: func [data [text!]][
+	replace/all data "^-" space
+	replace/all data "^/^/" "^/"
+	repeat 10 [replace/all data "  " space]
+	replace/all data "^/^/" "^/"
+	data: trim/head data
+	return data
+]
+
+clrdata: func [][
+	data: ask "Paste in your blood results"
+	clean-data data
+	write clipboard:// data
 ]
 
 if find "yY" first ask ["New Script?" text!][new-rx]
