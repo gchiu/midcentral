@@ -827,16 +827,24 @@ mic: func [][
     if not okay? [mic]
 ]
 
-clean-data: func [data [text!]][
+clean-data: func [
+	"removes double spaces, tabs and empty lines from data"
+	data [text!]
+][
 	replace/all data "^-" space
-	replace/all data "^/^/" "^/"
-	repeat 10 [replace/all data "  " space]
-	replace/all data "^/^/" "^/"
+	while [not null? find data "^/^/"][
+		replace/all data "^/^/" "^/"
+	]
+	while [not null? find data "  "][
+		repeat 10 [replace/all data "  " space]
+	]
 	data: trim/head data
 	return data
 ]
 
-clrdata: func [][
+clrdata: func [
+	"prompted removes double spaces, tabs and empty lines from data"
+][
 	data: ask "Paste in your blood results"
 	clean-data data
 	write clipboard:// data
