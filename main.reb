@@ -1,7 +1,7 @@
 Rebol [
     type: module
     author: "Graham Chiu"
-    Version: 1.0.50
+    Version: 1.0.51
     exports: [
         add-form ; puts JS form into DOM
         add-content ; adds content to the form
@@ -9,7 +9,7 @@ Rebol [
         clear-cache ; remove the drug caches
         clear-form ; clears the script
         clear-rx ; clears the drugs but leaves patient
-        configure ; sets up the url to be used for the prescription
+        location ; sets up the url to be used for the prescription
         cdata ; the JS that will be executed
         expand-latin ; turns abbrevs into english
         grab-creds ; gets credentials
@@ -128,7 +128,7 @@ okay?: func [<local> response][
     return did find "yY" first response: ask ["Okay?" text!]
 ]
 
-configure: func [
+location: func [
     return: <none>
     <local> config url loc i
 ][
