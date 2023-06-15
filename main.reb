@@ -76,7 +76,7 @@ eol: charset [#"^/" #","] ; used to parse out the address line
 
 medical: biochem: serology: other: micro: haem: _ ; doccode: _
 
-dgh: {This Prescription meets the requirement of the Director-General of Health’s waiver of March 2020 for prescriptions not signed personally by a prescriber with their usual signature}
+dgh: {This Prescription meets the requirement of the Director-General of Health’s waiver of October 2022 for prescriptions not signed personally by a prescriber with their usual signature}
 
 === MAIN SCRIPT ===
 
