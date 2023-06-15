@@ -12,4 +12,9 @@ rebol [
             {Rx: Leflunomide 10 mg^/Sig: 1 tab PO QD^/Mitte: 3/12}
         ]
     ]
+    "lax" "laxsol" [
+        [
+            {Rx: Laxsol tabs^/Sig: 1-2 tabs PO QD^/Mitte: 3/12}
+        ]
+    ]
 ]
