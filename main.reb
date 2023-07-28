@@ -32,12 +32,36 @@ Rebol [
 
 === CUSTOMIZATIONS THAT SHOULD BE IN A COMMON "LIBCHIU" LIBRARY ===
 
-; Customize FUNC to not require a RETURN--result drops out of body by default
+; Customize FUNC to not require a RETURN--result drops out of body by
+; default, and to make a RETURN: <NONE> function have arity-0 RETURN.
+; Add a safety feature to help catch cases that would be dropping the
+; RETURN argument on the floor when using this form.
+;
 ; https://forum.rebol.info/t/1656/2
-'
-func: adapt :lib.func [body: compose [return (as group! body)]]
-function: adapt :lib.function [body: compose [return (as group! body)]]
-meth: enfix adapt :lib.meth [body: compose [return (as group! body)]]
+
+adapted-func-body: [
+    body: if find spec spread [return: <none>] [
+        compose <*> [  ; only compose groups marked with <*>
+            return: adapt augment (
+                specialize :return [value: meta ~]
+            ) [^end-test [<end> any-value!]] [
+                if not null? end-test [
+                    fail 'end-test [
+                        "arity-0 RETURN enforced when return: <none>"
+                    ]
+                ] 
+            ]
+            (<*> as group! body)  ; returns in body will be arity-0
+            return  ; all functions must return (in case hooked)
+        ]
+    ] else [
+        compose [return (as group! body)]
+    ]
+]
+
+func: adapt :lib.func adapted-func-body
+meth: enfix adapt :lib.meth adapted-func-body
+function: method: does [fail "Use FUNC and METH for now"]
 
 
 === LIBRARIES ===
@@ -180,7 +204,10 @@ set-doc: does [
     ; probe wtemplate
 ]
 
-grab-creds: func [ <local> docnames docregistrations] [
+grab-creds: func [
+    return: <none>
+    <local> docnames docregistrations
+][
     cycle [
         docnames: ask ["Enter your name as appears on a prescription:" text!]
         docregistrations: ask ["Enter your prescriber ID number:" integer!]
@@ -195,7 +222,6 @@ grab-creds: func [ <local> docnames docregistrations] [
     set-doc
     ; probe wtemplate
     write %/credentials.reb mold reduce [docname docregistration]
-    return
 ]
 
 expand-latin: func [sig [text!]
@@ -234,7 +260,7 @@ add-content: func [txt [text!]
     js-do [{document.getElementById('script').innerHTML +=} spell @txt]
 ]
 
-choose-drug: func [scheds [block!] filename
+choose-drug: func [return: <none> scheds [block!] filename
     <local> num choice output rx sig mitte drugname drug dose
 ][
     num: length-of scheds
@@ -271,7 +297,7 @@ choose-drug: func [scheds [block!] filename
     output: expand-latin spaced [drugname dose "^/Sig:" sig "^/Mitte:" mitte]
     add-content output
     append rxs output
-    return
+    return  ; not necessary with [return <none>] in spec
 ]
 
 comment {
@@ -373,12 +399,12 @@ parse-demographics: func [
         to <end>
     ] else [
         print "Could not parse demographic data"
-        return
+        return none
     ]
     if nhi = old_patient [
         response: lowercase ask compose [(spaced ["Do you want to use this patient" surname "again?"]) text!]
         if response.1 <> #"y" [
-            return
+            return none
         ]
     ]
 ;comment {
@@ -512,7 +538,7 @@ manual-entry: func [
     print unspaced ["saved " "%/" nhi %.reb ]
 ]
 
-rx: func [ drug [text! word!]
+rx: func [return: <none> drug [text! word!]
     <local> link result c err counter line drugs filename rxname mitte sig response dose local?
 ][
     local?: false
@@ -588,7 +614,7 @@ rx: func [ drug [text! word!]
                     data: data.1
                     ; dump data
                     prin "Datafile loading ... "
-                    if find data drug [rx drug return]
+                    if find data drug [rx drug, return]
                 ][ print "And there's no file online"]
             ]
             print ["You can submit a PR to add them here." https://github.com/gchiu/midcentral/tree/main/drugs ]
@@ -599,7 +625,7 @@ rx: func [ drug [text! word!]
                 choose-drug result filename
             ]
         ]
-    return
+    return  ; not necessary when spec has [return: <none>]
 ]
 
 clear-rx: func [ <local> data ][
