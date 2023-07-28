@@ -49,7 +49,7 @@ adapted-func-body: [
                     fail 'end-test [
                         "arity-0 RETURN enforced when return: <none>"
                     ]
-                ] 
+                ]
             ]
             (<*> as group! body)  ; returns in body will be arity-0
             return  ; all functions must return (in case hooked)
@@ -859,26 +859,26 @@ mic: func [][
 ]
 
 clean-data: func [
-	"removes double spaces, tabs and empty lines from data"
-	data [text!]
+    "removes double spaces, tabs and empty lines from data"
+    data [text!]
 ][
-	replace/all data "^-" space
-	while [not null? find data "^/^/"][
-		replace/all data "^/^/" "^/"
-	]
-	while [not null? find data "  "][
-		repeat 10 [replace/all data "  " space]
-	]
-	data: trim/head data
-	return data
+    replace/all data "^-" space
+    while [not null? find data "^/^/"][
+        replace/all data "^/^/" "^/"
+    ]
+    while [not null? find data "  "][
+        repeat 10 [replace/all data "  " space]
+    ]
+    data: trim/head data
+    return data
 ]
 
 clrdata: func [
-	"prompted removes double spaces, tabs and empty lines from data"
+    "prompted removes double spaces, tabs and empty lines from data"
 ][
-	data: ask "Paste in your blood results"
-	clean-data data
-	write clipboard:// data
+    data: ask "Paste in your blood results"
+    clean-data data
+    write clipboard:// data
 ]
 
 if find "yY" first ask ["New Script?" text!][new-rx]
