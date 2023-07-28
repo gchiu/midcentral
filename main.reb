@@ -93,12 +93,12 @@ ix-template: sys.util.adjust-url-for-raw https://github.com/gchiu/midcentral/blo
 ; https://metaeducation.s3.amazonaws.com/Medlab-form-ver1.docx
 
 rxs: []
-firstnames: surname: dob: title: nhi: rx1: rx2: rx3: rx4: rx5: rx6: street: town: city: docname: docregistration: _
-wtemplate: itemplate: _
-old_patient: _
+firstnames: surname: dob: title: nhi: rx1: rx2: rx3: rx4: rx5: rx6: street: town: city: docname: docregistration: null
+wtemplate: itemplate: null
+old_patient: null
 eol: charset [#"^/" #","] ; used to parse out the address line
 
-medical: biochem: serology: other: micro: haem: _ ; doccode: _
+medical: biochem: serology: other: micro: haem: null  ; doccode: null
 
 dgh: {This Prescription meets the requirement of the Director-General of Health’s waiver of October 2022 for prescriptions not signed personally by a prescriber with their usual signature}
 
@@ -182,7 +182,12 @@ location: func [
         return
     ]
     cycle [
-        if empty? loc: ask ["Enter consulting location name:" text!][break]
+        ; Note: This is how ASK currently works.  Review.
+        ;
+        loc: ask ["Enter consulting location name:" text!]
+        if null? loc [break]  ; ESCAPE hit
+        if empty? trim loc [break]  ; ENTER with all whitespace
+
         url: ask ["Enter URL for the prescription template:" url!]
         if error? trap [read url][
             print "This location is not available"
@@ -275,10 +280,10 @@ choose-drug: func [return: <none> scheds [block!] filename
     ]
     ; out of bounds
     output: pick scheds 1
-    drugname: _
+    drugname: null
     ; first off, get any drugs that start with a digit eg. 6-Mercaptopurine
     parse output [drugname: across some digit, output: across to <end>]
-    if empty? drugname [
+    if null? drugname [
         ; not a drug that starts with a digit
         drugname: copy ""
     ] ; otherwise drugname = "6" etc
@@ -373,7 +378,7 @@ parse-demographics: func [
 ][
     demo: ask ["Paste in demographics from CP" text!]
     parse demo [
-        (home: phone: mobile: email: _)
+        (home: phone: mobile: email: null)
         [maybe some whitespace]
         surname: across to ","
         thru space [maybe some space]
@@ -692,7 +697,7 @@ write-ix: func [
 ]
 
 new-rx: does [
-    if empty? docname [
+    if not docname [
         grab-creds
     ]
     rxs: copy []
@@ -744,7 +749,7 @@ parse-referral: func [
     <local> data fname sname nhi dob gender email mobile street suburb city zip
 ][
     data: ask ["Paste in Specialist Referral Demographics" text!]
-    fname: sname: nhi: dob: gender: email: mobile: street: suburb: city: zip: _
+    fname: sname: nhi: dob: gender: email: mobile: street: suburb: city: zip: null
     parse data [
         thru "Name" thru ":" maybe some whitespace fname: across to space some space sname: across to "NHI"
         (trim sname)
@@ -771,7 +776,7 @@ parse-referral: func [
 
 === lab form tools ===
 
-medical: biochem: serology: other: micro: haem: _ ; doccode: _
+medical: biochem: serology: other: micro: haem: null  ; doccode: null
 
 clinical: func [][
     medical: ask ["Enter clinical details including periodicity" text!]
