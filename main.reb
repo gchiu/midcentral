@@ -393,8 +393,8 @@ parse-demographics: func [
         thru some eol [maybe some whitespace] city: across to eol (?? 3 ?? city)
         [thru "Home" (?? 4)
             | thru "Mobile" (?? 5)
-            | thru "EMAIL" (?? 50) maybe some whitespace email: across to space return true
-            | thru "Contact – No Known Contact Information" (?? 6) to <end> (print "Incomplete Demographics") return true
+            | thru "EMAIL" (?? 50) maybe some whitespace email: across to space accept (true)
+            | thru "Contact – No Known Contact Information" (?? 6) to <end> (print "Incomplete Demographics") accept (true)
         ] [maybe some whitespace]
         phone: across some digit (?? 51 ?? phone)
         opt [
