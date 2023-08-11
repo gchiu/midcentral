@@ -1,7 +1,7 @@
 Rebol [
     type: module
     author: "Graham Chiu"
-    Version: 1.0.51
+    Version: 1.0.52
     exports: [
         add-form ; puts JS form into DOM
         add-content ; adds content to the form
@@ -27,6 +27,7 @@ Rebol [
         clinical bio sero oth haemo mic write-ix
         biochem serology other haem micro
         clrdata ; removes spaces, tabs from laboratory results
+        help-rx
     ]
 ]
 
@@ -879,6 +880,37 @@ clrdata: func [
     data: ask "Paste in your blood results"
     clean-data data
     write clipboard:// data
+]
+
+print "help-rx for help on commands"
+
+help-rx: does [
+    print {
+        add-form ; puts JS form into DOM
+        add-content ; adds content to the form
+        choose-drug ; pick drug from a selection
+        clear-cache ; remove the drug caches
+        clear-form ; clears the script
+        clear-rx ; clears the drugs but leaves patient
+        location ; sets up the url to be used for the prescription
+        cdata ; the JS that will be executed
+        expand-latin ; turns abbrevs into english
+        grab-creds ; gets credentials
+        manual-entry ; asks for patient demographics
+        new-rx ; start a new prescription
+        parse-demographics ; extracts demographics from clinical portal details
+        rx ; starts the process of getting a drug schedule
+        rxs ; block of rx
+        set-doc ; fills the wtemplate with current doc
+        write-rx ; sends to docx
+        docregistration
+        parse-referral
+        clinical bio sero oth haemo mic write-ix
+        biochem serology other haem micro
+        clrdata ; removes spaces, tabs from laboratory results
+        help-rx
+    }
+
 ]
 
 if find "yY" first ask ["New Script?" text!][new-rx]
