@@ -1,7 +1,7 @@
 Rebol [
     type: module
     author: "Graham Chiu"
-    Version: 1.0.52
+    Version: 1.0.53
     exports: [
         add-form ; puts JS form into DOM
         add-content ; adds content to the form
@@ -898,16 +898,16 @@ help-rx: does [
         grab-creds ; gets credentials
         manual-entry ; asks for patient demographics
         new-rx ; start a new prescription
-        parse-demographics ; extracts demographics from clinical portal details
         rx ; starts the process of getting a drug schedule
         rxs ; block of rx
         set-doc ; fills the wtemplate with current doc
         write-rx ; sends to docx
         docregistration
-        parse-referral
         clinical bio sero oth haemo mic write-ix
         biochem serology other haem micro
-        clrdata ; removes spaces, tabs from laboratory results
+        clrdata ; removes spaces, tabs from laboratory results - separate utility
+        parse-demographics ; extracts demographics from clinical portal details
+        parse-referral ; extracts demographics from Specialist Referral PDF
         help-rx
     }
 
