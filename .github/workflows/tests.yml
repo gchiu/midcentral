@@ -40,7 +40,7 @@ jobs:
     # page isn't working.
 
     - name: Run in Replpad using Chrome
-      uses: cypress-io/github-action@v4
+      uses: cypress-io/github-action@v6
       with:
         working-directory: cypress
         browser: chrome
