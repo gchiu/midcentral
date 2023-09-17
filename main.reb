@@ -403,7 +403,7 @@ parse-demographics: func [
             thru some eol try [thru "Email" try some whitespace email: across to space (?? 7 ?? email)]
         ]
         to <end>
-    ] else [
+    ] except [
         print "Could not parse demographic data"
         return none
     ]
