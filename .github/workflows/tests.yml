@@ -104,7 +104,7 @@ jobs:
                   result: 1
               ]
           ]
-          quit result
+          quit/with result
 
 #====# CHECK FILE DATA STRUCTURES #==============================================#
 
@@ -129,4 +129,4 @@ jobs:
                 ] else [fail "wrong datastructure for file" filename]
             ] else [ print [filename "doesn't exist"]]
           ]
-          quit result
+          quit/with result
