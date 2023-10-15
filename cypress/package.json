@@ -1,5 +1,5 @@
 {
-  "name": "ren-c rx app",
+  "name": "ren-c-rx-app",
   "version": "1.0.0",
   "description": "Made a basic repo with a git command and GitHub Actions",
   "main": "cypress.config.js",
@@ -17,6 +17,6 @@
   },
   "homepage": "https://github.com/gchiu/midcentral",
   "devDependencies": {
-    "cypress": "^10.0.3"
+    "cypress": "^13.0.0"
   }
 }
