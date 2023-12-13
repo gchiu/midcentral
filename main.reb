@@ -34,21 +34,21 @@ Rebol [
 === CUSTOMIZATIONS THAT SHOULD BE IN A COMMON "LIBCHIU" LIBRARY ===
 
 ; Customize FUNC to not require a RETURN--result drops out of body by
-; default, and to make a RETURN: <NONE> function have arity-0 RETURN.
+; default, and to make a RETURN: [~] function have arity-0 RETURN.
 ; Add a safety feature to help catch cases that would be dropping the
 ; RETURN argument on the floor when using this form.
 ;
 ; https://forum.rebol.info/t/1656/2
 
 adapted-func-body: [
-    body: if find spec spread [return: <none>] [
+    body: if find spec spread [return: [~]] [
         compose <*> [  ; only compose groups marked with <*>
             return: adapt augment (
                 specialize :return [value: meta ~]
             ) [^end-test [<end> any-value!]] [
                 if not null? end-test [
                     fail 'end-test [
-                        "arity-0 RETURN enforced when return: <none>"
+                        "arity-0 RETURN enforced when return: [~]"
                     ]
                 ]
             ]
@@ -154,7 +154,7 @@ okay?: func [<local> response][
 ]
 
 location: func [
-    return: <none>
+    return: [~]
     <local> config url loc i
 ][
     config: if exists? %/configuration.reb [
@@ -211,7 +211,7 @@ set-doc: does [
 ]
 
 grab-creds: func [
-    return: <none>
+    return: [~]
     <local> docnames docregistrations
 ][
     cycle [
@@ -266,7 +266,7 @@ add-content: func [txt [text!]
     js-do [{document.getElementById('script').innerHTML +=} spell @txt]
 ]
 
-choose-drug: func [return: <none> scheds [block!] filename
+choose-drug: func [return: [~] scheds [block!] filename
     <local> num choice output rx sig mitte drugname drug dose
 ][
     num: length-of scheds
@@ -303,7 +303,7 @@ choose-drug: func [return: <none> scheds [block!] filename
     output: expand-latin spaced [drugname dose "^/Sig:" sig "^/Mitte:" mitte]
     add-content output
     append rxs output
-    return  ; not necessary with [return <none>] in spec
+    return  ; not necessary with [return [~]] in spec
 ]
 
 comment {
@@ -405,12 +405,12 @@ parse-demographics: func [
         to <end>
     ] except [
         print "Could not parse demographic data"
-        return none
+        return ~
     ]
     if nhi = old_patient [
         response: lowercase ask compose [(spaced ["Do you want to use this patient" surname "again?"]) text!]
         if response.1 <> #"y" [
-            return none
+            return ~
         ]
     ]
 ;comment {
@@ -544,7 +544,7 @@ manual-entry: func [
     print unspaced ["saved " "%/" nhi %.reb ]
 ]
 
-rx: func [return: <none> drug [text! word!]
+rx: func [return: [~] drug [text! word!]
     <local> link result c err counter line drugs filename rxname mitte sig response dose local?
 ][
     local?: false
@@ -631,7 +631,7 @@ rx: func [return: <none> drug [text! word!]
                 choose-drug result filename
             ]
         ]
-    return  ; not necessary when spec has [return: <none>]
+    return  ; not necessary when spec has [return: [~]]
 ]
 
 clear-rx: func [ <local> data ][
