@@ -31,39 +31,6 @@ Rebol [
     ]
 ]
 
-=== CUSTOMIZATIONS THAT SHOULD BE IN A COMMON "LIBCHIU" LIBRARY ===
-
-; Customize FUNC to not require a RETURN--result drops out of body by
-; default, and to make a RETURN: [~] function have arity-0 RETURN.
-; Add a safety feature to help catch cases that would be dropping the
-; RETURN argument on the floor when using this form.
-;
-; https://forum.rebol.info/t/1656/2
-
-adapted-func-body: [
-    body: if find spec spread [return: [~]] [
-        compose <*> [  ; only compose groups marked with <*>
-            return: adapt augment (
-                specialize :return [value: meta ~]
-            ) [^end-test [<end> any-value!]] [
-                if not null? end-test [
-                    fail 'end-test [
-                        "arity-0 RETURN enforced when return: [~]"
-                    ]
-                ]
-            ]
-            (<*> as group! body)  ; returns in body will be arity-0
-            return  ; all functions must return (in case hooked)
-        ]
-    ] else [
-        compose [return (as group! body)]
-    ]
-]
-
-func: adapt :lib.func adapted-func-body
-meth: enfix adapt :lib.meth adapted-func-body
-function: method: does [fail "Use FUNC and METH for now"]
-
 
 === LIBRARIES ===
 
@@ -271,13 +238,13 @@ choose-drug: func [return: [~] scheds [block!] filename
 ][
     num: length-of scheds
     choice: ask ["Which schedule to use?" integer!]
-    if choice = 0 [return]
-    if choice = -1 [delete filename, print "Cache deleted, try again" return]
+    if choice = 0 [return ~]
+    if choice = -1 [delete filename, print "Cache deleted, try again" return ~]
     if choice <= num [
         print output: expand-latin pick scheds choice
         add-content output
         append rxs output
-        return
+        return ~
     ]
     ; out of bounds
     output: pick scheds 1
@@ -303,7 +270,7 @@ choose-drug: func [return: [~] scheds [block!] filename
     output: expand-latin spaced [drugname dose "^/Sig:" sig "^/Mitte:" mitte]
     add-content output
     append rxs output
-    return  ; not necessary with [return [~]] in spec
+    return ~
 ]
 
 comment {
@@ -571,7 +538,7 @@ rx: func [return: [~] drug [text! word!]
             ][
                 print spaced ["This page" link "isn't available, or, has a syntax error"]
                 ; probe err
-                return
+                return ~
             ] else [print "and cached"]
         ]
         if drug.2 = #"*" [
@@ -591,7 +558,7 @@ rx: func [return: [~] drug [text! word!]
             response: ask compose [(join "0-" counter) integer!]
             case [
                 all [response > 0 response <= counter][drug: pick drugs response]
-                response = 0 [return]
+                response = 0 [return ~]
                 response = -1 [delete filename rx drug] ; deletes cache and reloads it
                 true [
                     cycle [
@@ -605,7 +572,7 @@ rx: func [return: [~] drug [text! word!]
                     output: expand-latin spaced ["Rx:" rxname "^/Sig:" sig "^/Mitte:" mitte]
                     add-content output
                     append rxs output
-                    return
+                    return ~
                 ]
             ]
         ]
@@ -620,7 +587,7 @@ rx: func [return: [~] drug [text! word!]
                     data: data.1
                     ; dump data
                     prin "Datafile loading ... "
-                    if find data drug [rx drug, return]
+                    if find data drug [rx drug, return ~]
                 ][ print "And there's no file online"]
             ]
             print ["You can submit a PR to add them here." https://github.com/gchiu/midcentral/tree/main/drugs ]
@@ -631,7 +598,7 @@ rx: func [return: [~] drug [text! word!]
                 choose-drug result filename
             ]
         ]
-    return  ; not necessary when spec has [return: [~]]
+    return ~
 ]
 
 clear-rx: func [ <local> data ][
