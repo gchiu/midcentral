@@ -187,8 +187,8 @@ grab-creds: func [
         ; response: lowercase ask ["Okay?" text!]
         ; if find ["yes" "y"] response [
         if okay? [
-            set 'docname :docnames
-            set 'docregistration :docregistrations
+            set @docname :docnames
+            set @docregistration :docregistrations
             break
         ]
     ]
