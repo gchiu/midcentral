@@ -19,6 +19,7 @@ Rebol [
         rx ; starts the process of getting a drug schedule
         rxs ; block of rx
         set-doc ; fills the wtemplate with current doc
+        set-location ; sets where you are practicing
         write-rx ; sends to docx
         street town city
         docname doccode
@@ -168,6 +169,8 @@ location: func [
     ]
     save %/configuration.reb config
 ]
+
+set-location: :location
 
 set-doc: does [
     wtemplate: copy template
@@ -859,7 +862,7 @@ help-rx: does [
         clear-cache ; remove the drug caches
         clear-form ; clears the script
         clear-rx ; clears the drugs but leaves patient
-        location ; sets up the url to be used for the prescription
+        set-location ; sets up the url to be used for the prescription
         cdata ; the JS that will be executed
         expand-latin ; turns abbrevs into english
         grab-creds ; gets credentials
