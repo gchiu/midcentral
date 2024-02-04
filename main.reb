@@ -147,7 +147,7 @@ set-location: func [
     if any [url? choice text? choice] [
         rx-template: select config choice
         save %current.reb reduce [choice rx-template]
-        return
+        return ~
     ]
     cycle [
         ; Note: This is how ASK currently works.  Review.
