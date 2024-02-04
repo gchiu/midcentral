@@ -9,7 +9,6 @@ Rebol [
         clear-cache ; remove the drug caches
         clear-form ; clears the script
         clear-rx ; clears the drugs but leaves patient
-        location ; sets up the url to be used for the prescription
         cdata ; the JS that will be executed
         expand-latin ; turns abbrevs into english
         grab-creds ; gets credentials
@@ -121,7 +120,7 @@ okay?: func [<local> response][
     return did find "yY" first response: ask ["Okay?" text!]
 ]
 
-location: func [
+set-location: func [
     return: [~]
     <local> config url loc i
 ][
@@ -169,8 +168,6 @@ location: func [
     ]
     save %/configuration.reb config
 ]
-
-set-location: :location
 
 set-doc: does [
     wtemplate: copy template
