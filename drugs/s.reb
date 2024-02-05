@@ -21,4 +21,10 @@ then 2 tabs PO PC BID thereafter^/Mitte: 3/12}
             {Rx: Sildenafil 25 mg^/Sig: 1 tab PO BID^/Mitte: 3/12}
         ]
     ]
+    "sym" "Symbicort"[
+        [
+            {Rx: Symbicort Turbuhaler 200ug/6 ug^/Sig: 2 inhalations daily and prn^/Mitte: 2 op}
+        ]
+    ]
+
 ]
