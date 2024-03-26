@@ -5,6 +5,15 @@ rebol [
     exports: [data]
 ]
 [
+    "can" "Candesartan" [
+        [
+            {Rx: Candesartan 4 mg^/Sig: 1 PO QD^/Mitte: 3/12}
+            {Rx: Candesartan 8 mg^/Sig: 1 PO BID^/Mitte: 3/12}
+            {Rx: Candesartan 16 mg^/Sig: 1 PO nocte^/Mitte: 3/12}
+            {Rx: Candesartan 16 mg^/Sig: 1 PO BID^/Mitte: 3/12}
+            {Rx: Candesartan 32 mg^/Sig: 1 PO nocte^/Mitte: 3/12}
+        ]
+    ]
    "celeb" "celebrex" [
         [
             {Rx: Celebrex 200 mg^/Sig: 1 PO QD PC^/Mitte: 3/12}
