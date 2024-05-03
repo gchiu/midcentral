@@ -35,6 +35,19 @@ jobs:
 
 #====# TEST RX APP IN CYPRESS #==============================================#
 
+    # NPM insists on there being a package-lock.json file, if not you get:
+    #
+    #    "Error: Action failed. Missing package manager lockfile."
+    #
+    # While there may be good reasons for Node.js codebases to commit these
+    # lock files to their repositories, this is not a Node.js project.  Make
+    # the lock file as part of the test process.
+    #
+    - name: Create package-lock.json file in Cypress test directory
+      run: |
+        cd cypress
+        npm install
+
     # We do this first because it's frustrating to have to wait for the other
     # bits if you're iterating tests and trying to figure out why the cypress
     # page isn't working.
