@@ -28,6 +28,11 @@ rebol [
             {Rx: Aspirin EC 100 mg^/Sig: 1 tab PO QD^/Mitte: 3/12}
         ]
     ]
+    "atorvastatin" [
+        [
+            {Rx: atorvastatin 10 mg^/Sig: 1 tab PO nocte^/Mitte: 3/12}
+        ]
+    ]
     "aza" "azathioprine" [
         [
             {Rx: azathioprine 50 mg^/Sig: 1 tab PO daily^/Mitte: 3/12}
