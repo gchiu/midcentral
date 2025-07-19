@@ -8,7 +8,7 @@ Rebol [
 [
     "til" "Tilray" [
         [
-            {Rx: Tilray FS oral solution^/Sig: 1 ml BD^/Mitte: 1 op}
+            -[Rx: Tilray FS oral solution^/Sig: 1 ml BD^/Mitte: 1 op]-
         ]
     ]
 ]

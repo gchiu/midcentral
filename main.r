@@ -68,53 +68,57 @@ eol: charset [#"^/" #","] ; used to parse out the address line
 
 medical: biochem: serology: other: micro: haem: null  ; doccode: null
 
-dgh: {This Prescription meets the requirement of the Director-General of Health’s waiver of October 2022 for prescriptions not signed personally by a prescriber with their usual signature}
+dgh: --[This Prescription meets the requirement of the Director-General of Health’s waiver of October 2022 for prescriptions not signed personally by a prescriber with their usual signature]--
 
 === MAIN SCRIPT ===
 
-js-do {window.loadFile = function(url,callback){
-        PizZipUtils.getBinaryContent(url,callback);
-    };
-}
+js-do --[
+    window.loadFile = function(url,callback) {
+        PizZipUtils.getBinaryContent(url,callback)
+    }
+]--
 
-cdata: {window.generate = function() {
-        loadFile("$docxtemplate",
-    function(error,content){
-            if (error) { throw error };
-            var zip = new PizZip(content);
-            // var doc=new window.docxtemplater().loadZip(zip)
+cdata: --[
+  window.generate = function() {
+    loadFile("$docxtemplate", function(error,content) {
+        if (error) { throw error }
+        var zip = new PizZip(content);
+        /* var doc=new window.docxtemplater().loadZip(zip) */
         var doc = new window.docxtemplater(zip, {
-                        paragraphLoop: true,
-                        linebreaks: true,
-                    });
-            try {
-                // render the document (replace all occurences of {first_name} by John, {last_name} by Doe, ...)
-                doc.render({
-            $template
-        });
-            }
-            catch (error) {
-                var e = {
-                    message: error.message,
-                    name: error.name,
-                    stack: error.stack,
-                    properties: error.properties,
-                }
-                console.log(JSON.stringify({error: e}));
-                // The error thrown here contains additional information when logged with JSON.stringify (it contains a property object).
-                throw error;
-            }
-            var out=doc.getZip().generate({
-                type:"blob",
-                mimeType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-            }) //Output the document using Data-URI
-            saveAs(out,"$prescription.docx")
+            paragraphLoop: true,
+            linebreaks: true,
         })
-    };
-    generate()
-}
+        try {
+            // render the document
+            // (replace all occurences of {first_name} by John,
+            // {last_name} by Doe, ...)
+            doc.render({
+                $template
+            });
+        }
+        catch (error) {
+            var e = {
+                message: error.message,
+                name: error.name,
+                stack: error.stack,
+                properties: error.properties,
+            }
+            console.log(JSON.stringify({error: e}))
+            // The error thrown here contains additional information
+            // when logged with JSON.stringify (it contains a property object).
+            throw error
+        }
+        var out=doc.getZip().generate({
+            type:"blob",
+            mimeType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        }) // Output the document using Data-URI
+        saveAs(out,"$prescription.docx")
+    })
+  };
+  generate()
+]--
 
-js-button: {<input type="button" id="copy NHI" value="Copy NHI" onclick='reb.Elide("write clipboard:// {$a}")' />}
+js-button: --[<input type="button" id="copy NHI" value="Copy NHI" onclick='reb.Elide("write clipboard:// -[$a]-")' />]--
 
 okay?: func [<local> response][
     return did find "yY" first response: ask ["Okay?" text!]
@@ -219,18 +223,18 @@ expand-latin: func [sig [text!]
 ]
 
 add-form: does [
-    show-dialog/size {<div id="board" style="width: 400px"><textarea id="script" cols="80" rows="80"></textarea></div>} 480x480
+    show-dialog/size --[<div id="board" style="width: 400px"><textarea id="script" cols="80" rows="80"></textarea></div>]-- 480x480
 ]
 
 clear-form: does [
-    js-do {document.getElementById('script').innerHTML = ''}
+    js-do --[document.getElementById('script').innerHTML = '']--
     set-doc
 ]
 
 add-content: func [txt [text!]
 ][
     txt: append append copy txt newline newline
-    js-do [{document.getElementById('script').innerHTML +=} spell @txt]
+    js-do [--[document.getElementById('script').innerHTML +=]-- spell @txt]
 ]
 
 choose-drug: func [return: [~] scheds [block!] filename
@@ -273,7 +277,7 @@ choose-drug: func [return: [~] scheds [block!] filename
     return ~
 ]
 
-comment {
+comment --[
 >>>>>>>> example below this line
 
 ASurname, Basil Phillip (Mr)
@@ -290,7 +294,7 @@ Address  29 Somewhere League, Middleton, NEW ZEALAND, 4999
 
 Home  071234567
 <<<<<<<< above this line
-}
+]--
 
 whitespace: charset [#" " #"^/" #"^M" #"^J"]
 alpha: charset [#"A" - #"Z" #"a" - #"z"]
@@ -298,7 +302,7 @@ digit: charset [#"0" - #"9"]
 nhi-rule: [repeat 3 alpha, repeat 4 digit]
 digits: [some digit]
 
-template: {
+template: --[
     surname: `$surname`,
     firstnames: `$firstnames`,
     title: `$title`,
@@ -319,9 +323,9 @@ template: {
     docname: `$docname`,
     docregistration: `$docregistration`,
     dgh: `$dgh`,
-}
+]--
 
-labplate: {
+labplate: --[
     surname: `$surname`,
     firstnames: `$firstnames`,
     title: `$title`,
@@ -339,7 +343,7 @@ labplate: {
     other: `$other`,
     micro: `$micro`,
     cc: `$cc`,
-}
+]--
 
 parse-demographics: func [
     <local> data demo js
@@ -380,7 +384,7 @@ parse-demographics: func [
             return ~
         ]
     ]
-;comment {
+;comment --[
     dump surname
     dump firstnames
     dump title
@@ -391,7 +395,7 @@ parse-demographics: func [
     dump town
     dump city
     dump phone
-;}
+;]--
     clear-form
     data: unspaced [
         surname "," firstnames space "(" maybe title ")" space "DOB:" space dob space "NHI:" space nhi newline
@@ -468,7 +472,7 @@ manual-entry: func [
             if response.1 = #y [break]
         ]
     ]
-    comment {
+    comment --[
     dump surname
     dump firstnames
     dump title
@@ -479,7 +483,7 @@ manual-entry: func [
     dump town
     dump city
     dump phone
-    }
+    ]--
     data: unspaced [ surname "," firstnames space "(" title ")" space "DOB:" space dob space "NHI:" space nhi newline street newline town newline city newline newline]
     wtemplate: reword wtemplate reduce ['firstnames firstnames 'surname surname 'title title 'street street 'town town 'city city 'phone phone
         'dob dob 'nhi nhi
@@ -678,7 +682,7 @@ new-rx: does [
         cls ; clears the screen for the Cypress testing
         manual-entry
     ]
-    print {"Use Rx" to add a drug to prescription}
+    print --["Use Rx" to add a drug to prescription]--
 ]
 
 clear-cache: func [
@@ -753,11 +757,11 @@ clinical: func [][
 ]
 
 bio: func [][
-    print {1. Creatinine, LFTs, CRP
+    print --[1. Creatinine, LFTs, CRP
 2. CPK
 3. Serum Uric Acid
 4. cryoglobulins
-}
+]--
     biochem: ask ["Enter biochemistry requests" text!]
     replace biochem "1" "Creatinine, LFTs, CRP,"
     replace biochem "2" "CPK,"
@@ -768,14 +772,14 @@ bio: func [][
 ]
 
 sero: func [][
-    print {0. Hep B, C serology"
+    print --[0. Hep B, C serology"
 1. ANA ENA
 2. ds-DNA
 3. Complement
 4. Cardiolipin, Lupus Anticoagulant, B2-glycoprotein Antibodies
 5. Extended scleroderma blot
 6. Scl-70 by immunodiffusion
-}
+]--
     serology: ask ["Enter serology requests" text!]
     replace serology "0" "Hep B, C serology,"
     replace serology "1" "ANA ENA,"
@@ -789,7 +793,7 @@ sero: func [][
 ]
 
 oth: func [][
-    print {1. Quantiferon TB Gold,}
+    print --[1. Quantiferon TB Gold,]--
     other: ask ["Enter other requests" text!]
     replace other "1" "Quantiferon TB Gold"
     print other
@@ -797,11 +801,11 @@ oth: func [][
 ]
 
 haemo: func [][
-    print {1. CBC
+    print --[1. CBC
 2. Lupus Anticoagulant
 3. Coomb's test (DAGT)
 4. ESR
-}
+]--
     haem: ask ["Enter haematology requests" text!]
     replace haem "1" "CBC,"
     replace haem "2" "Lupus Anticoagulant,"
@@ -812,11 +816,11 @@ haemo: func [][
 ]
 
 mic: func [][
-    print {1. MSU
+    print --[1. MSU
 2. ACR
 3. Urinary Casts and sediment
 4. Polarized microscopy for urate crystals
-}
+]--
     micro: ask ["Enter Microbiology requests" text!]
     replace micro "1" "MSU,"
     replace micro "2" "ACR,"
@@ -852,7 +856,7 @@ clrdata: func [
 print "help-rx for help on commands"
 
 help-rx: does [
-    print {
+    print --[
         add-form ; puts JS form into DOM
         add-content ; adds content to the form
         choose-drug ; pick drug from a selection
@@ -876,8 +880,7 @@ help-rx: does [
         parse-demographics ; extracts demographics from clinical portal details
         parse-referral ; extracts demographics from Specialist Referral PDF
         help-rx
-    }
-
+    ]--
 ]
 
 if find "yY" first ask ["New Script?" text!][new-rx]
