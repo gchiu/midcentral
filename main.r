@@ -120,8 +120,8 @@ cdata: --[
 
 js-button: --[<input type="button" id="copy NHI" value="Copy NHI" onclick='reb.Elide("write clipboard:// -[$a]-")' />]--
 
-okay?: func [<local> response][
-    return did find "yY" first response: ask ["Okay?" text!]
+ask-confirm: func [<local> response][
+    return did find "yY" first response: ask ["okay?" text!]
 ]
 
 set-location: func [
@@ -165,7 +165,7 @@ set-location: func [
             print "This location is not available"
             continue
         ] else [
-            if #"y" = lowercase first ok: ask ["Okay?" text!][
+            if ask-confirm [
                 append config spread [loc url]
             ]
         ]
@@ -188,9 +188,7 @@ grab-creds: func [
     cycle [
         docnames: ask ["Enter your name as appears on a prescription:" text!]
         docregistrations: ask ["Enter your prescriber ID number:" integer!]
-        ; response: lowercase ask ["Okay?" text!]
-        ; if find ["yes" "y"] response [
-        if okay? [
+        if ask-confirm [
             set $docname :docnames
             set $docregistration :docregistrations
             break
@@ -267,9 +265,7 @@ choose-drug: func [return: [~] scheds [block!] filename
         dose: ask compose [(spaced ["New Dose for" drugname]) text!]
         sig: ask ["Sig:" text!]
         mitte: ask ["Mitte:" text!]
-        if okay? [break]
-            ;response: copy/part lowercase ask ["Okay?" text!] 1
-            ; if response = "y" [break]
+        if ask-confirm [break]
     ]
     output: expand-latin spaced [drugname dose "^/Sig:" sig "^/Mitte:" mitte]
     add-content output
@@ -365,8 +361,8 @@ parse-demographics: func [
         thru some eol [try some whitespace] city: across to eol (?? 3 ?? city)
         [thru "Home" (?? 4)
             | thru "Mobile" (?? 5)
-            | thru "EMAIL" (?? 50) try some whitespace email: across to space accept (true)
-            | thru "Contact – No Known Contact Information" (?? 6) to <end> (print "Incomplete Demographics") accept (true)
+            | thru "EMAIL" (?? 50) try some whitespace email: across to space accept (okay)
+            | thru "Contact – No Known Contact Information" (?? 6) to <end> (print "Incomplete Demographics") accept (okay)
         ] [try some whitespace]
         phone: across some digit (?? 51 ?? phone)
         try [
@@ -518,7 +514,7 @@ manual-entry: func [
 rx: func [return: [~] drug [text! word!]
     <local> link result c err counter line drugs filename rxname mitte sig response dose local?
 ][
-    local?: false
+    local?: null
     drug: form drug
     ; search for drug in database, get the first char
     c: form first drug
@@ -528,7 +524,7 @@ rx: func [return: [~] drug [text! word!]
         if exists? filename [
             data: first load filename
             print "loaded off local storage"
-            local?: true
+            local?: okay
             ; dump data
         ] else [
             ;dump filename
@@ -564,14 +560,12 @@ rx: func [return: [~] drug [text! word!]
                 all [response > 0 response <= counter][drug: pick drugs response]
                 response = 0 [return ~]
                 response = -1 [delete filename rx drug] ; deletes cache and reloads it
-                true [
+                <else> [
                     cycle [
                         rxname: ask ["Rx:" text!]
                         sig: ask ["Sig:" text!]
                         mitte: ask ["Mitte:" text!]
-                        if okay? [break]
-                        ;response: first lowercase ask ["Okay?" text!]
-                        ;if response = #"y" [break]
+                        if ask-confirm [break]
                     ]
                     output: expand-latin spaced ["Rx:" rxname "^/Sig:" sig "^/Mitte:" mitte]
                     add-content output
@@ -753,7 +747,7 @@ medical: biochem: serology: other: micro: haem: null  ; doccode: null
 clinical: func [][
     medical: ask ["Enter clinical details including periodicity" text!]
     print medical
-    if not okay? [clinical]
+    if not ask-confirm [clinical]
 ]
 
 bio: func [][
@@ -768,7 +762,7 @@ bio: func [][
     replace biochem "3" "Serum Uric Acid"
     replace biochem "4" "cryoglobulins"
     print biochem
-    if not okay? [bio]
+    if not ask-confirm [bio]
 ]
 
 sero: func [][
@@ -789,7 +783,7 @@ sero: func [][
     replace serology "5" "Extended scleroderma blot,"
     replace serology "6" "Scl-70 by immunodiffusion"
     print serology
-    if not okay? [sero]
+    if not ask-confirm [sero]
 ]
 
 oth: func [][
@@ -797,7 +791,7 @@ oth: func [][
     other: ask ["Enter other requests" text!]
     replace other "1" "Quantiferon TB Gold"
     print other
-    if not okay? [oth]
+    if not ask-confirm [oth]
 ]
 
 haemo: func [][
@@ -812,7 +806,7 @@ haemo: func [][
     replace haem "3" "Coomb's test,"
     replace haem "4" "ESR (see clinical details)"
     print haem
-    if not okay? [haemo]
+    if not ask-confirm [haemo]
 ]
 
 mic: func [][
@@ -827,7 +821,7 @@ mic: func [][
     replace micro "3" "Urinary Casts and sediment,"
     replace micro "4" "Polarized microscopy for urate crystals,"
     print micro
-    if not okay? [mic]
+    if not ask-confirm [mic]
 ]
 
 clean-data: func [
