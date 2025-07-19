@@ -253,7 +253,7 @@ choose-drug: func [return: [] scheds [block!] filename
     drugname: null
     ; first off, get any drugs that start with a digit eg. 6-Mercaptopurine
     parse output [drugname: across some digit, output: across to <end>]
-    if null? drugname [
+    if not drugname [
         ; not a drug that starts with a digit
         drugname: copy ""
     ] ; otherwise drugname = "6" etc
@@ -578,7 +578,7 @@ rx: func [return: [] drug [text! word!]
         ]
         ; dump drug
         ; dump data
-        if null? result: switch drug data [; data comes from import link
+        if not result: switch drug data [; data comes from import link
             print spaced ["Drug" drug "not found in database."]
             if local? [ ; means we used the cache, so let's fetch the original file
                 rescue [
@@ -833,10 +833,10 @@ clean-data: func [
     data [text!]
 ][
     replace data "^-" space
-    while [not null? find data "^/^/"][
+    while [find data "^/^/"] [
         replace data "^/^/" "^/"
     ]
-    while [not null? find data "  "][
+    while [find data "  "] [
         repeat 10 [replace data "  " space]
     ]
     data: trim:head data
