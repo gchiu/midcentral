@@ -36,7 +36,7 @@ Rebol [
 
 import @popupdemo
 
-for-each site [
+for-each 'site [
     https://cdnjs.cloudflare.com/ajax/libs/docxtemplater/3.29.0/docxtemplater.js
     https://unpkg.com/pizzip@3.1.1/dist/pizzip.js
     ; https://cdnjs.cloudflare.com/ajax/libs/jszip/2.6.1/jszip.js
@@ -546,7 +546,7 @@ rx: func [return: [] drug [text! word!]
         if drug.2 = #"*" [
             ; asking for what drugs are available
             counter: 0 line: copy [] drugs: copy []
-            for-each item data [
+            for-each 'item data [
                 if text? item [append line item]
                 if block? item [
                     counter: me + 1
