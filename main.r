@@ -161,7 +161,7 @@ set-location: func [
         if empty? trim loc [break]  ; ENTER with all whitespace
 
         url: ask ["Enter URL for the prescription template:" url!]
-        if error? trap [read url][
+        rescue [read url] then err -> [
             print "This location is not available"
             continue
         ] else [
@@ -529,17 +529,19 @@ rx: func [return: [] drug [text! word!]
         ] else [
             ;dump filename
             ;dump link
-            if not null? err: trap [
+            rescue [
                 data: load link
                 save:all filename data
                 data: data.1
                 ; dump data
                 prin "Datafile loading ... "
-            ][
+            ] then err -> [
                 print spaced ["This page" link "isn't available, or, has a syntax error"]
                 ; probe err
                 return ~
-            ] else [print "and cached"]
+            ] else [
+                print "and cached"
+            ]
         ]
         if drug.2 = #"*" [
             ; asking for what drugs are available
@@ -579,14 +581,16 @@ rx: func [return: [] drug [text! word!]
         if null? result: switch drug data [; data comes from import link
             print spaced ["Drug" drug "not found in database."]
             if local? [ ; means we used the cache, so let's fetch the original file
-                if not null? err: trap [
+                rescue [
                     data: load link
                     save:all filename data
                     data: data.1
                     ; dump data
                     prin "Datafile loading ... "
                     if find data drug [rx drug, return ~]
-                ][ print "And there's no file online"]
+                ] then err -> [
+                    print "And there's no file online"
+                ]
             ]
             print ["You can submit a PR to add them here." https://github.com/gchiu/midcentral/tree/main/drugs ]
         ] else [
