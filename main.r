@@ -109,7 +109,7 @@ cdata: --[
             throw error
         }
         var out=doc.getZip().generate({
-            type:"blob",
+            type: "blob",
             mimeType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
         }) // Output the document using Data-URI
         saveAs(out,"$prescription.docx")
@@ -214,8 +214,8 @@ expand-latin: func [sig [text!]
         "SQ" "subcutaneous"
     ]
     for-each [abbrev expansion] data [
-        replace/all sig unspaced [space abbrev space] unspaced [space expansion space]
-        replace/all sig unspaced [space abbrev newline] unspaced [space expansion newline]
+        replace sig unspaced [space abbrev space] unspaced [space expansion space]
+        replace sig unspaced [space abbrev newline] unspaced [space expansion newline]
     ]
     return sig
 ]
@@ -828,12 +828,12 @@ clean-data: func [
     "removes double spaces, tabs and empty lines from data"
     data [text!]
 ][
-    replace/all data "^-" space
+    replace data "^-" space
     while [not null? find data "^/^/"][
-        replace/all data "^/^/" "^/"
+        replace data "^/^/" "^/"
     ]
     while [not null? find data "  "][
-        repeat 10 [replace/all data "  " space]
+        repeat 10 [replace data "  " space]
     ]
     data: trim/head data
     return data
