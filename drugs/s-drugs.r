@@ -1,6 +1,6 @@
-rebol [
+Rebol [
     date: 9-Apr-2022
-    filename: %s.reb
+    filename: %s-drugs.r
     type: module
     exports: [data]
 ]

@@ -1,5 +1,5 @@
-rebol [
-    filename: %n.reb
+Rebol [
+    filename: %n-drugs.r
     type: module
     exports: [data]
 ]

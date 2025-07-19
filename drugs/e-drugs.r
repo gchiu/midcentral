@@ -1,6 +1,6 @@
-rebol [
+Rebol [
     date: 16-April-2022
-    filename: %e.reb
+    filename: %e-drugs.r
     type: module
     exports: [data]
 ]
@@ -12,7 +12,6 @@ rebol [
         ]
 
     ]
-
     "etn" "etanercept" [
         [
             {Rx: Etanercept Pen 50 mg^/Sig: 1 Pen SQ QW^/Mitte: 3/12}

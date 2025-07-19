@@ -1,7 +1,7 @@
 Rebol [
     type: module
     author: "Graham Chiu"
-    Version: 1.0.54
+    version: 1.0.54
     exports: [
         add-form ; puts JS form into DOM
         add-content ; adds content to the form
@@ -124,11 +124,11 @@ set-location: func [
     return: [~]
     <local> config url loc i
 ][
-    config: if exists? %/configuration.reb [
-        load %/configuration.reb
+    config: if exists? %/configuration.r [
+        load %/configuration.r
     ] else [
-        save %/configuration.reb load https://raw.githubusercontent.com/gchiu/midcentral/main/templates/sample-config.reb
-        ; load %/configuration.reb
+        save %/configuration.r load https://raw.githubusercontent.com/gchiu/midcentral/main/templates/sample-config.r
+        ; load %/configuration.r
     ]
     print "Current locations"
     i: 1
@@ -146,7 +146,7 @@ set-location: func [
     print form type-of choice
     if any [url? choice text? choice] [
         rx-template: select config choice
-        save %current.reb reduce [choice rx-template]
+        save %current.r reduce [choice rx-template]
         return ~
     ]
     cycle [
@@ -166,7 +166,7 @@ set-location: func [
             ]
         ]
     ]
-    save %/configuration.reb config
+    save %/configuration.r config
 ]
 
 set-doc: does [
@@ -194,7 +194,7 @@ grab-creds: func [
     ]
     set-doc
     ; probe wtemplate
-    write %/credentials.reb mold reduce [docname docregistration]
+    write %/credentials.r mold reduce [docname docregistration]
 ]
 
 expand-latin: func [sig [text!]
@@ -413,7 +413,7 @@ parse-demographics: func [
     probe itemplate
     old_patient: copy nhi
     ; probe wtemplate
-    write to file! unspaced ["/" nhi %.reb] mold compose [
+    write to file! unspaced ["/" nhi %.r] mold compose [
         nhi: (nhi)
         title: (title)
         surname: (surname)
@@ -430,7 +430,7 @@ parse-demographics: func [
     js: copy js-button
     replace js "$a" nhi
     replpad-write/html js
-    print unspaced ["saved " "%/" nhi %.reb ]
+    print unspaced ["saved " "%/" nhi %.r ]
 ]
 
 manual-entry: func [
@@ -438,7 +438,7 @@ manual-entry: func [
 ][
     print "Enter the following details:"
     nhi: uppercase ask ["NHI:" text!]
-    if word? exists? filename: to file! unspaced [ "/" nhi %.reb][
+    if word? exists? filename: to file! unspaced [ "/" nhi %.r][
         filedata: load to text! read filename
         filedata: filedata.1
         title: filedata.title
@@ -491,7 +491,7 @@ manual-entry: func [
     ]
 
     ; probe wtemplate
-    write to file! unspaced ["/" nhi %.reb] mold compose [
+    write to file! unspaced ["/" nhi %.r] mold compose [
         nhi: (nhi)
         title: (title)
         surname: (surname)
@@ -508,7 +508,7 @@ manual-entry: func [
     js: copy js-button
     replace js "$a" nhi
     replpad-write/html js
-    print unspaced ["saved " "%/" nhi %.reb ]
+    print unspaced ["saved " "%/" nhi %.r ]
 ]
 
 rx: func [return: [~] drug [text! word!]
@@ -518,8 +518,8 @@ rx: func [return: [~] drug [text! word!]
     drug: form drug
     ; search for drug in database, get the first char
     c: form first drug
-    filename: to file! unspaced ["/" c %.reb]
-    link: to url! unspaced [raw_root c %.reb]
+    filename: to file! unspaced ["/" c %.-drugs.r]
+    link: to url! unspaced [raw_root c %-drugs.r]
     ;dump link
         if exists? filename [
             data: first load filename
@@ -687,24 +687,24 @@ clear-cache: func [
     alphabet: "abcdefghijklmnopqrstuvwxyz"
     for i 26 [
         attempt [
-            delete file: to file! unspaced [ "/" alphabet.:i %.reb]
+            delete file: to file! unspaced [ "/" alphabet.(i) %-drugs.r]
             print ["Deleted" file]
         ]
     ]
 ]
 
-; print "checking for %/credentials.reb"
+; print "checking for %/credentials.r"
 
-if word? exists? %/credentials.reb [
-    creds: load read %/credentials.reb
+if word? exists? %/credentials.r [
+    creds: load read %/credentials.r
     docname: creds.1.1
     docregistration: creds.1.2
     set-doc
     print ["Welcome" docname]
 ]
 
-if word? exists? %/current.reb [
-    [current-location rx-template]: pack load %/current.reb
+if word? exists? %/current.r [
+    [current-location rx-template]: pack load %/current.r
     print ["You're practicing from" current-location]
     print ["Your prescription template is at" newline rx-template]
 ]

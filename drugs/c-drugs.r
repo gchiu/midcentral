@@ -1,9 +1,10 @@
-rebol [
+Rebol [
     date: 22-April-2022
-    filename: %c.reb
+    filename: %c-drugs.r
     type: module
     exports: [data]
 ]
+
 [
     "can" "Candesartan" [
         [
