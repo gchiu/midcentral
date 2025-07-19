@@ -175,9 +175,9 @@ set-location: func [
 
 set-doc: does [
     wtemplate: copy template
-    wtemplate: reword wtemplate reduce ['docname docname 'docregistration docregistration 'signature docname] ; 'date now/date]
+    wtemplate: reword wtemplate reduce ['docname docname 'docregistration docregistration 'signature docname] ; 'date now:date]
     itemplate: copy labplate
-    itemplate: reword itemplate reduce ['docname docname 'doccode doccode 'date now/date 'cc "copy to General Practitioner"]
+    itemplate: reword itemplate reduce ['docname docname 'doccode doccode 'date now:date 'cc "copy to General Practitioner"]
     ; probe wtemplate
 ]
 
@@ -221,7 +221,7 @@ expand-latin: func [sig [text!]
 ]
 
 add-form: does [
-    show-dialog/size --[<div id="board" style="width: 400px"><textarea id="script" cols="80" rows="80"></textarea></div>]-- 480x480
+    show-dialog:size --[<div id="board" style="width: 400px"><textarea id="script" cols="80" rows="80"></textarea></div>]-- 480x480
 ]
 
 clear-form: does [
@@ -350,7 +350,7 @@ parse-demographics: func [
         [try some whitespace]
         surname: across to ","
         thru space [try some space]
-        [firstnames: across to "("] (trim/head/tail firstnames)
+        [firstnames: across to "("] (trim:head:tail firstnames)
         thru "(" title: across to ")"  ; `title: between "(" ")"`
         thru "BORN" dob: across to space
         thru "(" age: across to ")"    ; `age: into between "(" ")" integer!`
@@ -429,7 +429,7 @@ parse-demographics: func [
     add-content data
     js: copy js-button
     replace js "$a" nhi
-    replpad-write/html js
+    replpad-write:html js
     print unspaced ["saved " "%/" nhi %.r ]
 ]
 
@@ -507,7 +507,7 @@ manual-entry: func [
     add-content data
     js: copy js-button
     replace js "$a" nhi
-    replpad-write/html js
+    replpad-write:html js
     print unspaced ["saved " "%/" nhi %.r ]
 ]
 
@@ -531,7 +531,7 @@ rx: func [return: [~] drug [text! word!]
             ;dump link
             if not null? err: trap [
                 data: load link
-                save/all filename data
+                save:all filename data
                 data: data.1
                 ; dump data
                 prin "Datafile loading ... "
@@ -581,7 +581,7 @@ rx: func [return: [~] drug [text! word!]
             if local? [ ; means we used the cache, so let's fetch the original file
                 if not null? err: trap [
                     data: load link
-                    save/all filename data
+                    save:all filename data
                     data: data.1
                     ; dump data
                     prin "Datafile loading ... "
@@ -619,19 +619,19 @@ clear-rx: func [ <local> data ][
 write-rx: func [
     <local> codedata response date
 ] [
-    ; append/dup rxs space slotno
+    ; append:dup rxs space slotno
     codedata: copy cdata
     replace codedata "$template" wtemplate
     replace codedata "$docxtemplate" rx-template
     ?? nhi
-    date: now/date
+    date: now:date
     ?? date
-    replace codedata "$prescription" unspaced [nhi "_" now/date]
+    replace codedata "$prescription" unspaced [nhi "_" now:date]
     codedata: reword codedata reduce ['rx1 rxs.1 'rx2 any [rxs.2 space] 'rx3 any [rxs.3 space] 'rx4 any [rxs.4 space] 'rx5 any [rxs.5 space] 'rx6 any [rxs.6 space]]
-    codedata: reword codedata reduce compose ['date (spaced [now/date now/time])]
+    codedata: reword codedata reduce compose ['date (spaced [now:date now:time])]
     response: lowercase ask ["For email?" text!]
     codedata: reword codedata reduce compose ['dgh (if response.1 = #"y" [dgh] else [" "])]
-    ;probe copy/part codedata 200
+    ;probe copy:part codedata 200
     ;dump rx-template
     js-do codedata
 ]
@@ -647,7 +647,7 @@ write-ix: func [
     codedata: copy cdata ; the JS template
     replace codedata "$template" itemplate ; put the JS definitions into the JS template
     replace codedata "$docxtemplate" ix-template ; link to the docx used for the laboratory request form
-    replace codedata "$prescription" unspaced [nhi "_" "labrequest" "_" now/date] ; specify the name used to save it as
+    replace codedata "$prescription" unspaced [nhi "_" "labrequest" "_" now:date] ; specify the name used to save it as
     codedata: reword codedata reduce [
         'biochem reify biochem
         'medical reify medical
@@ -656,7 +656,7 @@ write-ix: func [
         'haem reify haem
         'other reify other
     ]
-    probe copy/part codedata 500
+    probe copy:part codedata 500
     write clipboard:// codedata
     ;dump rx-template
     js-do codedata
@@ -835,7 +835,7 @@ clean-data: func [
     while [not null? find data "  "][
         repeat 10 [replace data "  " space]
     ]
-    data: trim/head data
+    data: trim:head data
     return data
 ]
 
