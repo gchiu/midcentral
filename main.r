@@ -189,8 +189,8 @@ grab-creds: func [
         docnames: ask ["Enter your name as appears on a prescription:" text!]
         docregistrations: ask ["Enter your prescriber ID number:" integer!]
         if ask-confirm [
-            set $docname :docnames
-            set $docregistration :docregistrations
+            set $docname docnames
+            set $docregistration docregistrations
             break
         ]
     ]
