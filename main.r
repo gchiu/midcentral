@@ -125,7 +125,7 @@ ask-confirm: func [<local> response][
 ]
 
 set-location: func [
-    return: [~]
+    return: []
     <local> config url loc i
 ][
     config: if exists? %/configuration.r [
@@ -182,7 +182,7 @@ set-doc: does [
 ]
 
 grab-creds: func [
-    return: [~]
+    return: []
     <local> docnames docregistrations
 ][
     cycle [
@@ -235,7 +235,7 @@ add-content: func [txt [text!]
     js-do [--[document.getElementById('script').innerHTML +=]-- spell @txt]
 ]
 
-choose-drug: func [return: [~] scheds [block!] filename
+choose-drug: func [return: [] scheds [block!] filename
     <local> num choice output rx sig mitte drugname drug dose
 ][
     num: length-of scheds
@@ -511,7 +511,7 @@ manual-entry: func [
     print unspaced ["saved " "%/" nhi %.r ]
 ]
 
-rx: func [return: [~] drug [text! word!]
+rx: func [return: [] drug [text! word!]
     <local> link result c err counter line drugs filename rxname mitte sig response dose local?
 ][
     local?: null
