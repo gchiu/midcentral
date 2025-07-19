@@ -438,7 +438,7 @@ manual-entry: func [
 ][
     print "Enter the following details:"
     nhi: uppercase ask ["NHI:" text!]
-    if word? exists? filename: to file! unspaced [ "/" nhi %.r][
+    if word? opt exists? filename: to file! unspaced [ "/" nhi %.r][
         filedata: load to text! read filename
         filedata: filedata.1
         title: filedata.title
@@ -697,7 +697,7 @@ clear-cache: func [
 
 ; print "checking for %/credentials.r"
 
-if word? exists? %/credentials.r [
+if word? opt exists? %/credentials.r [
     creds: load read %/credentials.r
     docname: creds.1.1
     docregistration: creds.1.2
@@ -705,7 +705,7 @@ if word? exists? %/credentials.r [
     print ["Welcome" docname]
 ]
 
-if word? exists? %/current.r [
+if word? opt exists? %/current.r [
     [current-location rx-template]: pack load %/current.r
     print ["You're practicing from" current-location]
     print ["Your prescription template is at" newline rx-template]
