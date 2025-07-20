@@ -55,18 +55,29 @@ doccode: "GCHIRC DCGHW DGCHI"
 root: https://github.com/gchiu/midcentral/blob/main/drugs/
 raw_root: https://raw.githubusercontent.com/gchiu/midcentral/main/drugs/ ; removed html etc
 
-slotno: 6
+slotno: 6  ; !!! only use was commented out
 rx-template: https://metaeducation.s3.amazonaws.com/rx-6template-docx.docx
 ix-template: sys.util/adjust-url-for-raw https://github.com/gchiu/midcentral/blob/main/templates/Medlab-form-ver1.docx
 ; https://metaeducation.s3.amazonaws.com/Medlab-form-ver1.docx
 
 rxs: []
-firstnames: surname: dob: title: nhi: rx1: rx2: rx3: rx4: rx5: rx6: street: town: city: docname: docregistration: null
+rx1: rx2: rx3: rx4: rx5: rx6: null
+
+nhi: null
+firstnames: surname: title: dob: age: gender: null
+street: town: city: null
+phone: mobile: email: null
+
+docname: docregistration: null
+
 wtemplate: itemplate: null
+
 old_patient: null
+
 eol: charset [#"^/" #","] ; used to parse out the address line
 
-medical: biochem: serology: other: micro: haem: null  ; doccode: null
+medical: biochem: serology: other: micro: haem: null
+; doccode: null
 
 dgh: --[This Prescription meets the requirement of the Director-General of Health’s waiver of October 2022 for prescriptions not signed personally by a prescriber with their usual signature]--
 
@@ -120,34 +131,37 @@ cdata: --[
 
 js-button: --[<input type="button" id="copy NHI" value="Copy NHI" onclick='reb.Elide("write clipboard:// -[$a]-")' />]--
 
-ask-confirm: func [<local> response][
-    return did find "yY" first response: ask ["okay?" text!]
+ask-confirm: func [
+    return: [logic?]
+][
+    let response: ask ["okay?" text!]
+    return did find "yY" first response
 ]
 
 set-location: func [
     return: []
-    <local> config url loc i
+    <with> rx-template
 ][
-    config: if exists? %/configuration.r [
+    let config: if exists? %/configuration.r [
         load %/configuration.r
     ] else [
         save %/configuration.r load https://raw.githubusercontent.com/gchiu/midcentral/main/templates/sample-config.r
         ; load %/configuration.r
     ]
     print "Current locations"
-    i: 1
+    let i: 1
     for-each [name url] config [
         print [i name]
         i: me + 1
     ]
-    choice: ask ["select location (use 0 to add more locations):" integer!]
+    let choice: ask ["select location (use 0 to add more locations):" integer!]
     choice: choice * 2 - 1
     dump choice
     choice: pick config choice
     dump choice
     ?? choice
     dump config
-    print form type-of choice
+    print form lift type of choice
     if any [url? choice text? choice] [
         rx-template: select config choice
         save %current.r reduce [choice rx-template]
@@ -156,11 +170,11 @@ set-location: func [
     cycle [
         ; Note: This is how ASK currently works.  Review.
         ;
-        loc: ask ["Enter consulting location name:" text!]
+        let loc: ask ["Enter consulting location name:" text!]
         if null? loc [break]  ; ESCAPE hit
         if empty? trim loc [break]  ; ENTER with all whitespace
 
-        url: ask ["Enter URL for the prescription template:" url!]
+        let url: ask ["Enter URL for the prescription template:" url!]
         rescue [read url] then err -> [
             print "This location is not available"
             continue
@@ -183,8 +197,9 @@ set-doc: does [
 
 grab-creds: func [
     return: []
-    <local> docnames docregistrations
 ][
+    let docnames
+    let docregistrations
     cycle [
         docnames: ask ["Enter your name as appears on a prescription:" text!]
         docregistrations: ask ["Enter your prescriber ID number:" integer!]
@@ -199,10 +214,11 @@ grab-creds: func [
     write %/credentials.r mold reduce [docname docregistration]
 ]
 
-expand-latin: func [sig [text!]
-    <local> data
+expand-latin: func [
+    return: "Updated sig" [text!]
+    sig [text!]
 ][
-    data: [
+    let data: [
         "QD" "once daily"
         "QW" "once weekly"
         "BID" "twice daily"
@@ -220,37 +236,47 @@ expand-latin: func [sig [text!]
     return sig
 ]
 
-add-form: does [
+add-form: func [
+    return: []
+][
     show-dialog:size --[<div id="board" style="width: 400px"><textarea id="script" cols="80" rows="80"></textarea></div>]-- 480x480
 ]
 
-clear-form: does [
+clear-form: func [
+    return: []
+][
     js-do --[document.getElementById('script').innerHTML = '']--
     set-doc
 ]
 
-add-content: func [txt [text!]
+add-content: func [
+    return: []
+    txt [text!]
 ][
     txt: append append copy txt newline newline
     js-do [--[document.getElementById('script').innerHTML +=]-- spell @txt]
 ]
 
-choose-drug: func [return: [] scheds [block!] filename
-    <local> num choice output rx sig mitte drugname drug dose
+choose-drug: func [
+    return: []
+    scheds [block!]
+    filename
+    <with> rxs
 ][
-    num: length-of scheds
-    choice: ask ["Which schedule to use?" integer!]
+    let num: length-of scheds
+    let choice: ask ["Which schedule to use?" integer!]
     if choice = 0 [return ~]
     if choice = -1 [delete filename, print "Cache deleted, try again" return ~]
     if choice <= num [
-        print output: expand-latin pick scheds choice
+        let output: expand-latin pick scheds choice
+        print output
         add-content output
         append rxs output
         return ~
     ]
     ; out of bounds
-    output: pick scheds 1
-    drugname: null
+    let output: pick scheds 1
+    let drugname: null
     ; first off, get any drugs that start with a digit eg. 6-Mercaptopurine
     parse output [drugname: across some digit, output: across to <end>]
     if not drugname [
@@ -258,9 +284,13 @@ choose-drug: func [return: [] scheds [block!] filename
         drugname: copy ""
     ] ; otherwise drugname = "6" etc
     ; now get the rest of the drugname
+    let drug
     parse output [drug: across to digit, to <end> (append drugname drug)]
     ; so we now have the drugname
     ; so let's ask for the new dose
+    let dose
+    let sig
+    let mitte
     cycle [
         dose: ask compose [(spaced ["New Dose for" drugname]) text!]
         sig: ask ["Sig:" text!]
@@ -343,11 +373,18 @@ labplate: --[
 ]--
 
 parse-demographics: func [
-    <local> data demo js
+    return: []
+    <with>
+        surname firstnames title dob age gender nhi street town city
+        phone mobile email
+        wtemplate itemplate old_patient
 ][
-    demo: ask ["Paste in demographics from CP" text!]
+    let demo: ask ["Paste in demographics from CP" text!]
+
+    ; see https://rebol.metaeducation.com/t/gather-and-emit/1531/9
+
+    phone: mobile: email: null
     parse demo [
-        (home: phone: mobile: email: null)
         [opt whitespace]
         surname: across to ","
         thru space [opt whitespace]
@@ -376,7 +413,9 @@ parse-demographics: func [
         return ~
     ]
     if nhi = old_patient [
-        response: lowercase ask compose [(spaced ["Do you want to use this patient" surname "again?"]) text!]
+        let response: lowercase ask compose [
+            (spaced ["Do you want to use this patient" surname "again?"]) text!
+        ]
         if response.1 <> #"y" [
             return ~
         ]
@@ -394,7 +433,7 @@ parse-demographics: func [
     dump phone
 ;]--
     clear-form
-    data: unspaced [
+    let data: unspaced [
         surname "," firstnames space "(" maybe title ")" space "DOB:" space dob space "NHI:" space nhi newline
         street newline town newline city newline newline
         "phone:" space maybe phone newline
@@ -428,19 +467,23 @@ parse-demographics: func [
     ]
 
     add-content data
-    js: copy js-button
+    let js: copy js-button
     replace js "$a" nhi
     replpad-write:html js
     print unspaced ["saved " "%/" nhi %.r ]
 ]
 
 manual-entry: func [
-    <local> filename filedata response js
+    return: []
+    <with>
+        title surname firstnames dob street town city phone gender
+        wtemplate itemplate
 ][
     print "Enter the following details:"
-    nhi: uppercase ask ["NHI:" text!]
-    if word? opt exists? filename: to file! unspaced [ "/" nhi %.r][
-        filedata: load to text! read filename
+    let nhi: uppercase ask ["NHI:" text!]
+    let filename: to file! unspaced [ "/" nhi %.r]
+    if word? opt exists? filename [
+        let filedata: load to text! read filename
         filedata: filedata.1
         title: filedata.title
         surname: filedata.surname
@@ -464,7 +507,7 @@ manual-entry: func [
             city: ask ["City:" text!]
             phone: ask ["Phone:" text!]
             gender: ask ["Gender:" text!]
-            response: lowercase ask ["OK?" text!]
+            let response: lowercase ask ["OK?" text!]
 
             if response.1 = #y [break]
         ]
@@ -481,7 +524,9 @@ manual-entry: func [
     dump city
     dump phone
     ]--
-    data: unspaced [ surname "," firstnames space "(" title ")" space "DOB:" space dob space "NHI:" space nhi newline street newline town newline city newline newline]
+    let data: unspaced [
+        surname "," firstnames space "(" title ")" space "DOB:" space dob space "NHI:" space nhi newline street newline town newline city newline newline
+    ]
     wtemplate: reword wtemplate reduce ['firstnames firstnames 'surname surname 'title title 'street street 'town town 'city city 'phone phone
         'dob dob 'nhi nhi
         'prescription nhi
@@ -506,22 +551,23 @@ manual-entry: func [
     ]
 
     add-content data
-    js: copy js-button
+    let js: copy js-button
     replace js "$a" nhi
     replpad-write:html js
     print unspaced ["saved " "%/" nhi %.r ]
 ]
 
-rx: func [return: [] drug [text! word!]
-    <local> link result c err counter line drugs filename rxname mitte sig response dose local?
+rx: func [
+    return: []
+    drug [text! word!]
 ][
-    local?: null
+    let local?: null
     drug: form drug
     ; search for drug in database, get the first char
-    c: form first drug
-    filename: to file! unspaced ["/" c %.-drugs.r]
-    link: to url! unspaced [raw_root c %-drugs.r]
-    ;dump link
+    let c: form first drug
+    let filename: to file! unspaced ["/" c %.-drugs.r]
+    let link: to url! unspaced [raw_root c %-drugs.r]
+    let data
         if exists? filename [
             data: first load filename
             print "loaded off local storage"
@@ -546,7 +592,10 @@ rx: func [return: [] drug [text! word!]
         ]
         if drug.2 = #"*" [
             ; asking for what drugs are available
-            counter: 0 line: copy [] drugs: copy []
+            let counter: 0
+            let line: copy []
+            let drugs: copy []
+            let lastitem
             for-each 'item data [
                 if text? item [append line item]
                 if block? item [
@@ -558,19 +607,22 @@ rx: func [return: [] drug [text! word!]
                 ]
                 lastitem: copy item
             ]
-            response: ask compose [(join "0-" counter) integer!]
+            let response: ask compose [(join "0-" counter) integer!]
             case [
                 all [response > 0 response <= counter][drug: pick drugs response]
                 response = 0 [return ~]
                 response = -1 [delete filename rx drug] ; deletes cache and reloads it
                 <else> [
+                    let rxname
+                    let sig
+                    let mitte
                     cycle [
                         rxname: ask ["Rx:" text!]
                         sig: ask ["Sig:" text!]
                         mitte: ask ["Mitte:" text!]
                         if ask-confirm [break]
                     ]
-                    output: expand-latin spaced ["Rx:" rxname "^/Sig:" sig "^/Mitte:" mitte]
+                    let output: expand-latin spaced ["Rx:" rxname "^/Sig:" sig "^/Mitte:" mitte]
                     add-content output
                     append rxs output
                     return ~
@@ -579,7 +631,8 @@ rx: func [return: [] drug [text! word!]
         ]
         ; dump drug
         ; dump data
-        if not result: switch drug data [; data comes from import link
+        let result: switch drug data  ; data comes from import link
+        if not result [
             print spaced ["Drug" drug "not found in database."]
             if local? [ ; means we used the cache, so let's fetch the original file
                 rescue [
@@ -595,21 +648,29 @@ rx: func [return: [] drug [text! word!]
             ]
             print ["You can submit a PR to add them here." https://github.com/gchiu/midcentral/tree/main/drugs ]
         ] else [
-            if 0 < len: length-of result [
+            let len: length of result
+            if len <> 0 [
                 print newline
-                for i len [print form i print result.:i print newline]
+                for 'i len [print form i print result.:i print newline]
                 choose-drug result filename
             ]
         ]
     return ~
 ]
 
-clear-rx: func [ <local> data ][
+clear-rx: func [
+    return: []
+    <with>
+    wtemplate
+    surname firstnames title dob nhi street town city phone
+][
     clear-form
     ; probe wtemplate
     ; ?? nhi
     ; ?? firstnames
-    data: unspaced [ surname "," firstnames space "(" title ")" space "DOB:" space dob space "NHI:" space nhi newline street newline town newline city newline newline]
+    let data: unspaced [
+        surname "," firstnames space "(" title ")" space "DOB:" space dob space "NHI:" space nhi newline street newline town newline city newline newline
+    ]
     wtemplate: reword wtemplate reduce ['firstnames firstnames 'surname surname 'title title 'street street 'town town 'city city 'phone phone
         'dob dob 'nhi nhi
         'prescription nhi
@@ -622,19 +683,22 @@ clear-rx: func [ <local> data ][
 ]
 
 write-rx: func [
-    <local> codedata response date
-] [
+    return: []
+    <with>
+    rx-template wtemplate
+    slotno  ; !!! only use and commented out, still relevant?
+][
     ; append:dup rxs space slotno
-    codedata: copy cdata
+    let codedata: copy cdata
     replace codedata "$template" wtemplate
     replace codedata "$docxtemplate" rx-template
     ?? nhi
-    date: now:date
+    let date: now:date
     ?? date
     replace codedata "$prescription" unspaced [nhi "_" now:date]
     codedata: reword codedata reduce ['rx1 rxs.1 'rx2 any [rxs.2 space] 'rx3 any [rxs.3 space] 'rx4 any [rxs.4 space] 'rx5 any [rxs.5 space] 'rx6 any [rxs.6 space]]
     codedata: reword codedata reduce compose ['date (spaced [now:date now:time])]
-    response: lowercase ask ["For email?" text!]
+    let response: lowercase ask ["For email?" text!]
     codedata: reword codedata reduce compose ['dgh (if response.1 = #"y" [dgh] else [" "])]
     ;probe copy:part codedata 200
     ;dump rx-template
@@ -642,14 +706,14 @@ write-rx: func [
 ]
 
 write-ix: func [
-    <local> codedata
-] [
+    return: []
+][
     ?? biochem
     ?? medical
     ?? serology
     ?? haem
     ?? other
-    codedata: copy cdata ; the JS template
+    let codedata: copy cdata ; the JS template
     replace codedata "$template" itemplate ; put the JS definitions into the JS template
     replace codedata "$docxtemplate" ix-template ; link to the docx used for the laboratory request form
     replace codedata "$prescription" unspaced [nhi "_" "labrequest" "_" now:date] ; specify the name used to save it as
@@ -667,7 +731,10 @@ write-ix: func [
     js-do codedata
 ]
 
-new-rx: does [
+new-rx: func [
+    return: []
+    <with> rxs
+][
     if not docname [
         grab-creds
     ]
@@ -687,12 +754,13 @@ new-rx: does [
 ]
 
 clear-cache: func [
-    <local> alphabet file
+    return: []
 ][
-    alphabet: "abcdefghijklmnopqrstuvwxyz"
-    for i 26 [
+    let alphabet: "abcdefghijklmnopqrstuvwxyz"
+    for 'i 26 [
         attempt [
-            delete file: to file! unspaced [ "/" alphabet.(i) %-drugs.r]
+            let file: to file! unspaced [ "/" alphabet.(i) %-drugs.r]
+            delete file
             print ["Deleted" file]
         ]
     ]
@@ -701,7 +769,7 @@ clear-cache: func [
 ; print "checking for %/credentials.r"
 
 if word? opt exists? %/credentials.r [
-    creds: load read %/credentials.r
+    let creds: load read %/credentials.r
     docname: creds.1.1
     docregistration: creds.1.2
     set-doc
@@ -718,10 +786,12 @@ print ["Current Version:" form system.script.header.Version]
 
 === other parse tools ===
 
-parse-referral: func [
-    <local> data fname sname nhi dob gender email mobile street suburb city zip
+parse-referral: func [  ; !!! does not seem to be used
+    return: []
+    <with>
+    fname sname nhi dob gender email mobile street suburb city zip
 ][
-    data: ask ["Paste in Specialist Referral Demographics" text!]
+    let data: ask ["Paste in Specialist Referral Demographics" text!]
     fname: sname: nhi: dob: gender: email: mobile: street: suburb: city: zip: null
     parse data [
         thru "Name" thru ":" [opt whitespace] fname: across to space [whitespace] sname: across to "NHI"
@@ -751,13 +821,19 @@ parse-referral: func [
 
 medical: biochem: serology: other: micro: haem: null  ; doccode: null
 
-clinical: func [][
+clinical: func [
+    return: []
+    <with> medical
+][
     medical: ask ["Enter clinical details including periodicity" text!]
     print medical
     if not ask-confirm [clinical]
 ]
 
-bio: func [][
+bio: func [
+    return: []
+    <with> biochem
+][
     print --[1. Creatinine, LFTs, CRP
 2. CPK
 3. Serum Uric Acid
@@ -772,8 +848,11 @@ bio: func [][
     if not ask-confirm [bio]
 ]
 
-sero: func [][
-    print --[0. Hep B, C serology"
+sero: func [
+    return: []
+    <with> serology
+][
+    print --[0. Hep B, C serology
 1. ANA ENA
 2. ds-DNA
 3. Complement
@@ -793,7 +872,10 @@ sero: func [][
     if not ask-confirm [sero]
 ]
 
-oth: func [][
+oth: func [
+    return: []
+    <with> other
+][
     print --[1. Quantiferon TB Gold,]--
     other: ask ["Enter other requests" text!]
     replace other "1" "Quantiferon TB Gold"
@@ -801,7 +883,10 @@ oth: func [][
     if not ask-confirm [oth]
 ]
 
-haemo: func [][
+haemo: func [
+    return: []
+    <with> haem
+][
     print --[1. CBC
 2. Lupus Anticoagulant
 3. Coomb's test (DAGT)
@@ -816,7 +901,10 @@ haemo: func [][
     if not ask-confirm [haemo]
 ]
 
-mic: func [][
+mic: func [
+    return: []
+    <with> micro
+][
     print --[1. MSU
 2. ACR
 3. Urinary Casts and sediment
@@ -833,6 +921,7 @@ mic: func [][
 
 clean-data: func [
     "removes double spaces, tabs and empty lines from data"
+    return: "cleaned data" [text!]
     data [text!]
 ][
     replace data "^-" space
@@ -848,6 +937,7 @@ clean-data: func [
 
 clrdata: func [
     "prompted removes double spaces, tabs and empty lines from data"
+    return: []  ; !!! is this meant to return data?
 ][
     data: ask "Paste in your blood results"
     clean-data data
