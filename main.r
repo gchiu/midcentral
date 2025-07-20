@@ -3,30 +3,32 @@ Rebol [
     author: "Graham Chiu"
     version: 1.0.54
     exports: [
-        add-form ; puts JS form into DOM
-        add-content ; adds content to the form
-        choose-drug ; pick drug from a selection
-        clear-cache ; remove the drug caches
-        clear-form ; clears the script
-        clear-rx ; clears the drugs but leaves patient
-        cdata ; the JS that will be executed
-        expand-latin ; turns abbrevs into english
-        grab-creds ; gets credentials
-        manual-entry ; asks for patient demographics
-        new-rx ; start a new prescription
-        parse-demographics ; extracts demographics from clinical portal details
-        rx ; starts the process of getting a drug schedule
-        rxs ; block of rx
-        set-doc ; fills the wtemplate with current doc
-        set-location ; sets where you are practicing
-        write-rx ; sends to docx
+        add-form  ; puts JS form into DOM
+        add-content  ; adds content to the form
+        choose-drug  ; pick drug from a selection
+        clear-cache  ; remove the drug caches
+        clear-form  ; clears the script
+        clear-rx  ; clears the drugs but leaves patient
+        cdata  ; the JS that will be executed
+        expand-latin  ; turns abbrevs into english
+        grab-creds  ; gets credentials
+        manual-entry  ; asks for patient demographics
+        new-rx  ; start a new prescription
+        parse-demographics  ; extracts demographics from clinical portal details
+        rx  ; starts the process of getting a drug schedule
+        rxs  ; block of rx
+        set-doc  ; fills the wtemplate with current doc
+        set-location  ; sets where you are practicing
+        write-rx  ; sends to docx
+
         street town city
         docname doccode
         docregistration
         parse-referral
         clinical bio sero oth haemo mic write-ix
         biochem serology other haem micro
-        clrdata ; removes spaces, tabs from laboratory results
+
+        clrdata  ; removes spaces, tabs from laboratory results
         help-rx
     ]
 ]
@@ -420,7 +422,8 @@ parse-demographics: func [
             return ~
         ]
     ]
-;comment --[
+
+  ;comment [
     dump surname
     dump firstnames
     dump title
@@ -431,7 +434,8 @@ parse-demographics: func [
     dump town
     dump city
     dump phone
-;]--
+  ;]
+
     clear-form
     let data: unspaced [
         surname "," firstnames space "(" maybe title ")" space "DOB:" space dob space "NHI:" space nhi newline
@@ -512,7 +516,8 @@ manual-entry: func [
             if response.1 = #y [break]
         ]
     ]
-    comment --[
+
+  comment [
     dump surname
     dump firstnames
     dump title
@@ -523,7 +528,8 @@ manual-entry: func [
     dump town
     dump city
     dump phone
-    ]--
+  ]
+
     let data: unspaced [
         surname "," firstnames space "(" title ")" space "DOB:" space dob space "NHI:" space nhi newline street newline town newline city newline newline
     ]
@@ -563,98 +569,100 @@ rx: func [
 ][
     let local?: null
     drug: form drug
+
     ; search for drug in database, get the first char
+
     let c: form first drug
     let filename: to file! unspaced ["/" c %.-drugs.r]
     let link: to url! unspaced [raw_root c %-drugs.r]
     let data
-        if exists? filename [
-            data: first load filename
-            print "loaded off local storage"
-            local?: okay
+    if exists? filename [
+        data: first load filename
+        print "loaded off local storage"
+        local?: okay
+        ; dump data
+    ] else [
+        ;dump filename
+        ;dump link
+        rescue [
+            data: load link
+            save:all filename data
+            data: data.1
             ; dump data
+            prin "Datafile loading ... "
+        ] then err -> [
+            print spaced ["This page" link "isn't available, or, has a syntax error"]
+            ; probe err
+            return ~
         ] else [
-            ;dump filename
-            ;dump link
+            print "and cached"
+        ]
+    ]
+    if drug.2 = #"*" [
+        ; asking for what drugs are available
+        let counter: 0
+        let line: copy []
+        let drugs: copy []
+        let lastitem
+        for-each 'item data [
+            if text? item [append line item]
+            if block? item [
+                counter: me + 1
+                insert head line form counter
+                print line
+                clear head line
+                append drugs lastitem
+            ]
+            lastitem: copy item
+        ]
+        let response: ask compose [(join "0-" counter) integer!]
+        case [
+            all [response > 0 response <= counter][drug: pick drugs response]
+            response = 0 [return ~]
+            response = -1 [delete filename rx drug] ; deletes cache and reloads it
+            <else> [
+                let rxname
+                let sig
+                let mitte
+                cycle [
+                    rxname: ask ["Rx:" text!]
+                    sig: ask ["Sig:" text!]
+                    mitte: ask ["Mitte:" text!]
+                    if ask-confirm [break]
+                ]
+                let output: expand-latin spaced ["Rx:" rxname "^/Sig:" sig "^/Mitte:" mitte]
+                add-content output
+                append rxs output
+                return ~
+            ]
+        ]
+    ]
+    ; dump drug
+    ; dump data
+    let result: switch drug data  ; data comes from import link
+    if not result [
+        print spaced ["Drug" drug "not found in database."]
+        if local? [ ; means we used the cache, so let's fetch the original file
             rescue [
                 data: load link
                 save:all filename data
                 data: data.1
                 ; dump data
                 prin "Datafile loading ... "
+                if find data drug [rx drug, return ~]
             ] then err -> [
-                print spaced ["This page" link "isn't available, or, has a syntax error"]
-                ; probe err
-                return ~
-            ] else [
-                print "and cached"
+                print "And there's no file online"
             ]
         ]
-        if drug.2 = #"*" [
-            ; asking for what drugs are available
-            let counter: 0
-            let line: copy []
-            let drugs: copy []
-            let lastitem
-            for-each 'item data [
-                if text? item [append line item]
-                if block? item [
-                    counter: me + 1
-                    insert head line form counter
-                    print line
-                    clear head line
-                    append drugs lastitem
-                ]
-                lastitem: copy item
-            ]
-            let response: ask compose [(join "0-" counter) integer!]
-            case [
-                all [response > 0 response <= counter][drug: pick drugs response]
-                response = 0 [return ~]
-                response = -1 [delete filename rx drug] ; deletes cache and reloads it
-                <else> [
-                    let rxname
-                    let sig
-                    let mitte
-                    cycle [
-                        rxname: ask ["Rx:" text!]
-                        sig: ask ["Sig:" text!]
-                        mitte: ask ["Mitte:" text!]
-                        if ask-confirm [break]
-                    ]
-                    let output: expand-latin spaced ["Rx:" rxname "^/Sig:" sig "^/Mitte:" mitte]
-                    add-content output
-                    append rxs output
-                    return ~
-                ]
-            ]
+        print ["You can submit a PR to add them here." https://github.com/gchiu/midcentral/tree/main/drugs ]
+    ] else [
+        let len: length of result
+        if len <> 0 [
+            print newline
+            for 'i len [print form i print result.:i print newline]
+            choose-drug result filename
         ]
-        ; dump drug
-        ; dump data
-        let result: switch drug data  ; data comes from import link
-        if not result [
-            print spaced ["Drug" drug "not found in database."]
-            if local? [ ; means we used the cache, so let's fetch the original file
-                rescue [
-                    data: load link
-                    save:all filename data
-                    data: data.1
-                    ; dump data
-                    prin "Datafile loading ... "
-                    if find data drug [rx drug, return ~]
-                ] then err -> [
-                    print "And there's no file online"
-                ]
-            ]
-            print ["You can submit a PR to add them here." https://github.com/gchiu/midcentral/tree/main/drugs ]
-        ] else [
-            let len: length of result
-            if len <> 0 [
-                print newline
-                for 'i len [print form i print result.:i print newline]
-                choose-drug result filename
-            ]
-        ]
+    ]
     return ~
 ]
 
