@@ -438,11 +438,11 @@ parse-demographics: func [
 
     clear-form
     let data: unspaced [
-        surname "," firstnames space "(" maybe title ")" space "DOB:" space dob space "NHI:" space nhi newline
+        surname "," firstnames space "(" opt title ")" space "DOB:" space dob space "NHI:" space nhi newline
         street newline town newline city newline newline
-        "phone:" space maybe phone newline
-        "mobile:" space maybe mobile newline
-        "email:" space maybe email
+        "phone:" space opt phone newline
+        "mobile:" space opt mobile newline
+        "email:" space opt email
     ]
     phone: default [blank]
     mobile: default [blank]
@@ -451,7 +451,7 @@ parse-demographics: func [
         'dob dob 'nhi nhi
         'prescription nhi
     ]
-    itemplate: reword itemplate reduce compose ['firstnames firstnames 'surname (join surname ",") 'address (spaced [maybe street maybe town maybe city]) 'phone phone
+    itemplate: reword itemplate reduce compose ['firstnames firstnames 'surname (join surname ",") 'address (spaced [opt street opt town opt city]) 'phone phone
         'dob dob 'nhi nhi 'gender "M F O" 'title title
     ]
     probe itemplate
@@ -538,7 +538,7 @@ manual-entry: func [
         'prescription nhi
     ]
     ; update the investigation template in both manual and pasted versions
-    itemplate: reword itemplate reduce compose ['firstnames firstnames 'surname (join surname ",") 'address (spaced [maybe street maybe town maybe city]) 'phone phone
+    itemplate: reword itemplate reduce compose ['firstnames firstnames 'surname (join surname ",") 'address (spaced [opt street opt town opt city]) 'phone phone
         'dob dob 'nhi nhi 'gender "M F O" 'title title
     ]
 
