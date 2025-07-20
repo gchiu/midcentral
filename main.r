@@ -608,9 +608,9 @@ rx: func [
             if text? item [append line item]
             if block? item [
                 counter: me + 1
-                insert head line form counter
+                insert head of line form counter
                 print line
-                clear head line
+                clear head of line
                 append drugs lastitem
             ]
             lastitem: copy item
