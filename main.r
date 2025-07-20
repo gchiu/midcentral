@@ -480,11 +480,12 @@ parse-demographics: func [
 manual-entry: func [
     return: []
     <with>
+        nhi
         title surname firstnames dob street town city phone gender
         wtemplate itemplate
 ][
     print "Enter the following details:"
-    let nhi: uppercase ask ["NHI:" text!]
+    nhi: uppercase ask ["NHI:" text!]
     let filename: to file! unspaced [ "/" nhi %.r]
     if word? opt exists? filename [
         let filedata: load filename
