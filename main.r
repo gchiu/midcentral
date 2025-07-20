@@ -586,7 +586,7 @@ rx: func [
         ;dump link
         rescue [
             data: load link
-            save:all filename data
+            save filename data
             data: data.1
             ; dump data
             prin "Datafile loading ... "
@@ -645,7 +645,7 @@ rx: func [
         if local? [ ; means we used the cache, so let's fetch the original file
             rescue [
                 data: load link
-                save:all filename data
+                save filename data
                 data: data.1
                 ; dump data
                 prin "Datafile loading ... "
