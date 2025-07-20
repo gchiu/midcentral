@@ -673,7 +673,9 @@ new-rx: does [
     rxs: copy []
     set-doc
     add-form
-    response: lowercase ask ["Paste in Patient Demographics from Clinical Portal? (y/n)" text!]
+    let response: lowercase ask [
+        "Paste in Patient Demographics from Clinical Portal? (y/n)" text!
+    ]
     if response.1 = #y [
         parse-demographics
     ] else [
