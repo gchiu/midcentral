@@ -292,7 +292,8 @@ Home  071234567
 <<<<<<<< above this line
 ]--
 
-whitespace: charset [#" " #"^/" #"^M" #"^J"]
+whitespace-char: charset [#" " #"^/" #"^M" #"^J"]
+whitespace: [some whitespace-char]
 alpha: charset [#"A" - #"Z" #"a" - #"z"]
 digit: charset [#"0" - #"9"]
 nhi-rule: [repeat 3 alpha, repeat 4 digit]
@@ -347,27 +348,27 @@ parse-demographics: func [
     demo: ask ["Paste in demographics from CP" text!]
     parse demo [
         (home: phone: mobile: email: null)
-        [try some whitespace]
+        [opt whitespace]
         surname: across to ","
-        thru space [try some space]
+        thru space [opt whitespace]
         [firstnames: across to "("] (trim:head:tail firstnames)
         thru "(" title: across to ")"  ; `title: between "(" ")"`
         thru "BORN" dob: across to space
         thru "(" age: across to ")"    ; `age: into between "(" ")" integer!`
-        thru "GENDER" try some space gender: across some alpha
+        thru "GENDER" [opt whitespace] gender: across some alpha
         thru "NHI" nhi: across nhi-rule
-        thru "Address" [try some whitespace] try "Address" try space street: across to eol (?? street ?? 1)
-        thru some eol [try some whitespace] town: across to eol (?? 2 ?? town)
-        thru some eol [try some whitespace] city: across to eol (?? 3 ?? city)
+        thru "Address" [opt whitespace] street: across to eol (?? street ?? 1)
+        thru some eol [opt whitespace] town: across to eol (?? 2 ?? town)
+        thru some eol [opt whitespace] city: across to eol (?? 3 ?? city)
         [thru "Home" (?? 4)
             | thru "Mobile" (?? 5)
-            | thru "EMAIL" (?? 50) try some whitespace email: across to space accept (okay)
+            | thru "EMAIL" (?? 50) [opt whitespace] email: across to space accept (okay)
             | thru "Contact – No Known Contact Information" (?? 6) to <end> (print "Incomplete Demographics") accept (okay)
-        ] [try some whitespace]
+        ] [opt whitespace]
         phone: across some digit (?? 51 ?? phone)
         try [
-            thru some eol thru "Mobile" try some whitespace mobile: across some digit (?? 6 ?? mobile)
-            thru some eol try [thru "Email" try some whitespace email: across to space (?? 7 ?? email)]
+            thru some eol thru "Mobile" [opt whitespace] mobile: across some digit (?? 6 ?? mobile)
+            thru some eol try [thru "Email" [opt whitespace] email: across to space (?? 7 ?? email)]
         ]
         to <end>
     ] except [
@@ -723,14 +724,14 @@ parse-referral: func [
     data: ask ["Paste in Specialist Referral Demographics" text!]
     fname: sname: nhi: dob: gender: email: mobile: street: suburb: city: zip: null
     parse data [
-        thru "Name" thru ":" try some whitespace fname: across to space some space sname: across to "NHI"
+        thru "Name" thru ":" [opt whitespace] fname: across to space [whitespace] sname: across to "NHI"
         (trim sname)
-        thru ":" some space nhi: across nhi-rule thru eol
-        thru "Date Of Birth" thru ":" try some space dob: across to space
-        thru "Gender" thru ":" try some space gender: between <here> eol
-        thru "Email" thru ":" try some space email: between <here> eol
-        thru "Mobile" thru ":" try some space mobile: between <here> eol
-        thru "Residential Address" thru ":" try some space street: between <here> "," suburb: between <here> ","
+        thru ":" [whitespace] nhi: across nhi-rule thru eol
+        thru "Date Of Birth" thru ":" [opt whitespace] dob: across to space
+        thru "Gender" thru ":" [opt whitespace] gender: between <here> eol
+        thru "Email" thru ":" [opt whitespace] email: between <here> eol
+        thru "Mobile" thru ":" [opt whitespace] mobile: between <here> eol
+        thru "Residential Address" thru ":" [opt whitespace] street: between <here> "," suburb: between <here> ","
         city: between <here> "," zip: across digits to <end>
     ]
     ?? fname
