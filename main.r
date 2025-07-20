@@ -896,24 +896,6 @@ clear-cache: func [
     ]
 ]
 
-; print "checking for %/credentials.r"
-
-if word? opt exists? %/credentials.r [
-    let creds: load read %/credentials.r
-    docname: creds.1.1
-    docregistration: creds.1.2
-    set-doc
-    print ["Welcome" docname]
-]
-
-if word? opt exists? %/current.r [
-    [current-location rx-template]: pack load %/current.r
-    print ["You're practicing from" current-location]
-    print ["Your prescription template is at" newline rx-template]
-]
-
-print ["Current Version:" form system.script.header.Version]
-
 
 === OTHER PARSE TOOLS ===
 
@@ -1116,6 +1098,25 @@ help-rx: func [
 
 
 === ENTRY POINT ===
+
+; If persistent information has been written into the browser local storage,
+; retrieve it so that the user can continue where they left off.
+
+if exists? %/credentials.r [
+    let creds: load read %/credentials.r
+    docname: creds.1.1
+    docregistration: creds.1.2
+    set-doc
+    print ["Welcome" docname]
+]
+
+if exists? %/current.r [
+    [current-location rx-template]: pack load %/current.r
+    print ["You're practicing from" current-location]
+    print ["Your prescription template is at" newline rx-template]
+]
+
+print ["Current Version:" form system.script.header.version]
 
 ; Make NEW-RX and HELP-RX more discoverable
 
