@@ -659,7 +659,7 @@ rx: func [
         let len: length of result
         if len <> 0 [
             print newline
-            for 'i len [print form i print result.:i print newline]
+            for 'i len [print form i print result.(i) print newline]
             choose-drug result filename
         ]
     ]
