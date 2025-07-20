@@ -82,17 +82,37 @@ for-each 'site [
 ]
 
 
+=== FILENAMES AND URLS ===
+
+; The Ren-C web console treats requests to read and write FILE! as applying
+; to browser-local storage associated with the ReplPad domain.  This space is
+; used to store doctor information, patient demographics, and caches of the
+; drug lists.
+;
+; Drug lists are located on GitHub, and the DOCX templates are stored on S3.
+
+druglist-url-for-char: lambda [c [char?]] [
+    compose https://raw.githubusercontent.com/gchiu/midcentral/main/drugs/(c)-drugs.r
+]
+
+druglist-cachefile-for-char: lambda [c [char?]] [
+    compose %/(c)-drugs.r
+]
+
+localstorage-file-for-nhi: lambda [nhi [text!]] [
+    compose %/(nhi).r
+]
+
+rx-template: https://metaeducation.s3.amazonaws.com/rx-6template-docx.docx
+ix-template: sys.util/adjust-url-for-raw https://github.com/gchiu/midcentral/blob/main/templates/Medlab-form-ver1.docx
+; https://metaeducation.s3.amazonaws.com/Medlab-form-ver1.docx
+
+
 === GLOBAL DEFINITIONS ===
 
 doccode: "GCHIRC DCGHW DGCHI"
 
-root: https://github.com/gchiu/midcentral/blob/main/drugs/
-raw_root: https://raw.githubusercontent.com/gchiu/midcentral/main/drugs/ ; removed html etc
-
 slotno: 6  ; !!! only use was commented out
-rx-template: https://metaeducation.s3.amazonaws.com/rx-6template-docx.docx
-ix-template: sys.util/adjust-url-for-raw https://github.com/gchiu/midcentral/blob/main/templates/Medlab-form-ver1.docx
-; https://metaeducation.s3.amazonaws.com/Medlab-form-ver1.docx
 
 rxs: []
 rx1: rx2: rx3: rx4: rx5: rx6: null
@@ -116,7 +136,7 @@ medical: biochem: serology: other: micro: haem: null
 dgh: --[This Prescription meets the requirement of the Director-General of Health’s waiver of October 2022 for prescriptions not signed personally by a prescriber with their usual signature]--
 
 
-=== MAIN SCRIPT ===
+=== JAVASCRIPT INTERFACE ===
 
 js-do --[
     window.loadFile = function(url,callback) {
@@ -164,7 +184,16 @@ cdata: --[
   generate()
 ]--
 
-js-button: --[<input type="button" id="copy NHI" value="Copy NHI" onclick='reb.Elide("write clipboard:// -[$a]-")' />]--
+js-button: --[
+    <input type="button"
+        id="copy NHI"
+        value="Copy NHI"
+        onclick='reb.Elide("write clipboard:// -[$a]-")'
+    />
+]--
+
+
+=== MAIN SCRIPT ===
 
 ask-confirm: func [
     return: [logic?]
@@ -511,7 +540,7 @@ parse-demographics: func [
     probe itemplate
     old_patient: copy nhi
     ; probe wtemplate
-    write to file! unspaced ["/" nhi %.r] mold compose [
+    write (localstorage-file-for-nhi nhi) mold compose [
         nhi: (nhi)
         title: (title)
         surname: (surname)
@@ -541,7 +570,7 @@ manual-entry: func [
 ][
     print "Enter the following details:"
     nhi: uppercase ask ["NHI:" text!]
-    let filename: to file! unspaced [ "/" nhi %.r]
+    let filename: localstorage-file-for-nhi nhi
     if word? opt exists? filename [
         let filedata: load filename
         filedata: filedata.1
@@ -614,7 +643,7 @@ manual-entry: func [
     ]
 
     ; probe wtemplate
-    write to file! unspaced ["/" nhi %.r] mold compose [
+    write (localstorage-file-for-nhi nhi) mold compose [
         nhi: (nhi)
         title: (title)
         surname: (surname)
@@ -644,9 +673,9 @@ rx: func [
 
     ; search for drug in database, get the first char
 
-    let c: form first drug
-    let filename: to file! unspaced ["/" c %-drugs.r]
-    let link: to url! unspaced [raw_root c %-drugs.r]
+    let c: first drug
+    let filename: druglist-cachefile-for-char c
+    let link: druglist-url-for-char c
     let data
     if exists? filename [
         data: first load filename
@@ -860,7 +889,7 @@ clear-cache: func [
     let alphabet: "abcdefghijklmnopqrstuvwxyz"
     for 'i 26 [
         attempt [
-            let file: to file! unspaced [ "/" alphabet.(i) %-drugs.r]
+            let file: druglist-cachefile-for-char alphabet.(i)
             delete file
             print ["Deleted" file]
         ]
