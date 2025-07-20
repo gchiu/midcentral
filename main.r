@@ -487,7 +487,7 @@ manual-entry: func [
     let nhi: uppercase ask ["NHI:" text!]
     let filename: to file! unspaced [ "/" nhi %.r]
     if word? opt exists? filename [
-        let filedata: load to text! read filename
+        let filedata: load filename
         filedata: filedata.1
         title: filedata.title
         surname: filedata.surname
