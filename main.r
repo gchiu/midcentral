@@ -704,10 +704,19 @@ write-rx: func [
     let date: now:date
     ?? date
     replace codedata "$prescription" unspaced [nhi "_" now:date]
-    codedata: reword codedata reduce ['rx1 rxs.1 'rx2 any [rxs.2 space] 'rx3 any [rxs.3 space] 'rx4 any [rxs.4 space] 'rx5 any [rxs.5 space] 'rx6 any [rxs.6 space]]
+    codedata: reword codedata reduce [
+        'rx1 rxs.1
+        'rx2 any [try rxs.2 space]
+        'rx3 any [try rxs.3 space]
+        'rx4 any [try rxs.4 space]
+        'rx5 any [try rxs.5 space]
+        'rx6 any [try rxs.6 space]
+    ]
     codedata: reword codedata reduce compose ['date (spaced [now:date now:time])]
     let response: lowercase ask ["For email?" text!]
-    codedata: reword codedata reduce compose ['dgh (if response.1 = #"y" [dgh] else [" "])]
+    codedata: reword codedata reduce compose [
+        'dgh (if response.1 = #"y" [dgh] else [" "])
+    ]
     ;probe copy:part codedata 200
     ;dump rx-template
     js-do codedata
