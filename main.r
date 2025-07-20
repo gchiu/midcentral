@@ -573,7 +573,7 @@ rx: func [
     ; search for drug in database, get the first char
 
     let c: form first drug
-    let filename: to file! unspaced ["/" c %.-drugs.r]
+    let filename: to file! unspaced ["/" c %-drugs.r]
     let link: to url! unspaced [raw_root c %-drugs.r]
     let data
     if exists? filename [
