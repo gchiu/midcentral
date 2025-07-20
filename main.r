@@ -12,34 +12,56 @@ Rebol [
         JavaScript libraries for document generation and manipulation.
     ]--
 
-    exports: [
-        add-form  ; puts JS form into DOM
-        add-content  ; adds content to the form
-        choose-drug  ; pick drug from a selection
-        clear-cache  ; remove the drug caches
-        clear-form  ; clears the script
-        clear-rx  ; clears the drugs but leaves patient
-        cdata  ; the JS that will be executed
-        expand-latin  ; turns abbrevs into english
-        grab-creds  ; gets credentials
-        manual-entry  ; asks for patient demographics
-        new-rx  ; start a new prescription
-        parse-demographics  ; extracts demographics from clinical portal details
-        rx  ; starts the process of getting a drug schedule
-        rxs  ; block of rx
-        set-doc  ; fills the wtemplate with current doc
-        set-location  ; sets where you are practicing
-        write-rx  ; sends to docx
+    sample-data: --[  ; use w/"Paste Patient Demographics from Clinical Portal"
+        ASurname, Basil Phillip (Mr)
 
+        BORN16-Aug-1925 (96y)GENDER Male
+
+        NHIABC1234
+
+        
+
+            
+
+        Address  29 Somewhere League, Middleton, NEW ZEALAND, 4999
+
+        Home  071234567
+    ]--
+
+    exports: [  ; `help-rx` prints the help strings of functions in this list
+        add-form
+        add-content
+        choose-drug
+        clear-cache
+        clear-form
+        clear-rx
+        expand-latin
+        grab-creds
+        manual-entry
+        new-rx
+        parse-demographics
+        rx
+        set-doc
+        set-location
+        write-rx
+        write-ix
+        clrdata
+        parse-referral
+        clinical
+        bio
+        sero
+        oth
+        haemo
+        mic
+        help-rx
+
+        ; exported variables (how to encode help on these?)
+        rxs
         street town city
         docname doccode
         docregistration
-        parse-referral
-        clinical bio sero oth haemo mic write-ix
         biochem serology other haem micro
-
-        clrdata  ; removes spaces, tabs from laboratory results
-        help-rx
+        cdata
     ]
 ]
 
@@ -92,6 +114,7 @@ medical: biochem: serology: other: micro: haem: null
 ; doccode: null
 
 dgh: --[This Prescription meets the requirement of the Director-General of Health’s waiver of October 2022 for prescriptions not signed personally by a prescriber with their usual signature]--
+
 
 === MAIN SCRIPT ===
 
@@ -151,6 +174,7 @@ ask-confirm: func [
 ]
 
 set-location: func [
+    "sets up the url to be used for the prescription"
     return: []
     <with> rx-template
 ][
@@ -199,7 +223,10 @@ set-location: func [
     save %/configuration.r config
 ]
 
-set-doc: does [
+set-doc: func [
+    "fills the wtemplate with current doc"
+    return: []
+][
     wtemplate: copy template
     wtemplate: reword wtemplate reduce [
         'docname docname
@@ -218,6 +245,7 @@ set-doc: does [
 ]
 
 grab-creds: func [
+    "gets credentials"
     return: []
 ][
     let docnames
@@ -237,6 +265,7 @@ grab-creds: func [
 ]
 
 expand-latin: func [
+    "turns abbreviations into english"
     return: "Updated sig" [text!]
     sig [text!]
 ][
@@ -259,6 +288,7 @@ expand-latin: func [
 ]
 
 add-form: func [
+    "puts JS form into DOM"
     return: []
 ][
     show-dialog:size --[
@@ -269,6 +299,7 @@ add-form: func [
 ]
 
 clear-form: func [
+    "clears the script"
     return: []
 ][
     js-do --[document.getElementById('script').innerHTML = '']--
@@ -276,6 +307,7 @@ clear-form: func [
 ]
 
 add-content: func [
+    "adds content to the form"
     return: []
     txt [text!]
 ][
@@ -284,6 +316,7 @@ add-content: func [
 ]
 
 choose-drug: func [
+    "pick drug from a selection"
     return: []
     scheds [block!]
     filename
@@ -328,25 +361,6 @@ choose-drug: func [
     append rxs output
     return ~
 ]
-
-comment --[
->>>>>>>> example below this line
-
-ASurname, Basil Phillip (Mr)
-
-BORN16-Aug-1925 (96y)GENDER Male
-
-NHIABC1234
-
-
-
-    
-
-Address  29 Somewhere League, Middleton, NEW ZEALAND, 4999
-
-Home  071234567
-<<<<<<<< above this line
-]--
 
 whitespace-char: charset [#" " #"^/" #"^M" #"^J"]
 whitespace: [some whitespace-char]
@@ -399,6 +413,7 @@ labplate: --[
 ]--
 
 parse-demographics: func [
+    "extracts demographics from clinical portal details"
     return: []
     <with>
         surname firstnames title dob age gender nhi street town city
@@ -517,6 +532,7 @@ parse-demographics: func [
 ]
 
 manual-entry: func [
+    "asks for patient demographics"
     return: []
     <with>
         nhi
@@ -619,6 +635,7 @@ manual-entry: func [
 ]
 
 rx: func [
+    "starts the process of getting a drug schedule"
     return: []
     drug [text! word!]
 ][
@@ -722,6 +739,7 @@ rx: func [
 ]
 
 clear-rx: func [
+    "clears the drugs but leaves patient"
     return: []
     <with>
     wtemplate
@@ -754,6 +772,7 @@ clear-rx: func [
 ]
 
 write-rx: func [
+    "sends to docx"
     return: []
     <with>
     rx-template wtemplate
@@ -812,6 +831,7 @@ write-ix: func [
 ]
 
 new-rx: func [
+    "start a new prescription"
     return: []
     <with> rxs
 ][
@@ -834,6 +854,7 @@ new-rx: func [
 ]
 
 clear-cache: func [
+    "remove the drug caches"
     return: []
 ][
     let alphabet: "abcdefghijklmnopqrstuvwxyz"
@@ -864,9 +885,11 @@ if word? opt exists? %/current.r [
 
 print ["Current Version:" form system.script.header.Version]
 
-=== other parse tools ===
+
+=== OTHER PARSE TOOLS ===
 
 parse-referral: func [  ; !!! does not seem to be used
+    "extracts demographics from Specialist Referral PDF"
     return: []
     <local>
     fname sname nhi dob gender email mobile street suburb city zip
@@ -897,7 +920,8 @@ parse-referral: func [  ; !!! does not seem to be used
     ?? zip
 ]
 
-=== lab form tools ===
+
+=== LAB FORM TOOLS ===
 
 medical: biochem: serology: other: micro: haem: null  ; doccode: null
 
@@ -1016,7 +1040,7 @@ clean-data: func [
 ]
 
 clrdata: func [
-    "prompted removes double spaces, tabs and empty lines from data"
+    "removes spaces, tabs from laboratory results - separate utility"
     return: []  ; !!! is this meant to return data?
 ][
     data: ask "Paste in your blood results"
@@ -1024,34 +1048,50 @@ clrdata: func [
     write clipboard:// data
 ]
 
-print "help-rx for help on commands"
 
-help-rx: does [
-    print --[
-        add-form ; puts JS form into DOM
-        add-content ; adds content to the form
-        choose-drug ; pick drug from a selection
-        clear-cache ; remove the drug caches
-        clear-form ; clears the script
-        clear-rx ; clears the drugs but leaves patient
-        set-location ; sets up the url to be used for the prescription
-        cdata ; the JS that will be executed
-        expand-latin ; turns abbrevs into english
-        grab-creds ; gets credentials
-        manual-entry ; asks for patient demographics
-        new-rx ; start a new prescription
-        rx ; starts the process of getting a drug schedule
-        rxs ; block of rx
-        set-doc ; fills the wtemplate with current doc
-        write-rx ; sends to docx
-        docregistration
-        clinical bio sero oth haemo mic write-ix
-        biochem serology other haem micro
-        clrdata ; removes spaces, tabs from laboratory results - separate utility
-        parse-demographics ; extracts demographics from clinical portal details
-        parse-referral ; extracts demographics from Specialist Referral PDF
-        help-rx
-    ]--
+=== HELP ===
+
+; Help is generated for functions in the [exports: [...]] list in the header.
+;
+; 1. The header is (currently) only available in system.script.header.exports
+;    during the loading of this script, so capture it into a static variable.
+;    (future approaches may persist module properties in the environment).
+
+help-rx: func [
+    return: []
+] bind construct [
+    exports-in-header: system.script.header.exports  ; capture during load [1]
+][
+    print "=== ACTION! exports:"
+
+    let non-action-names: collect [
+        for-each 'name exports-in-header [
+            let ^value: get inside [] name
+            if not action? opt ^value [
+                keep name
+                continue
+            ]
+            print [name opt unspaced [" - " description of ^value else [veto]]]
+        ]
+    ]
+
+    print newline
+    print "=== non-ACTION! exports:"
+
+    for-each 'name non-action-names [
+        print [name]
+    ]
+
+    print newline
 ]
 
-if find "yY" first ask ["New Script?" text!][new-rx]
+
+=== ENTRY POINT ===
+
+; Make NEW-RX and HELP-RX more discoverable
+
+print "help-rx for help on commands"
+
+if find "yY" first ask ["New Script?" text!] [
+    new-rx
+]
