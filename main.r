@@ -2,6 +2,16 @@ Rebol [
     type: module
     author: "Graham Chiu"
     version: 1.0.54
+
+    description: --[
+        This is a module for managing prescriptions and laboratory requests.
+        It allows you to create, edit, and manage drug schedules, patient
+        demographics, and generate prescription documents in DOCX format.
+
+        It is designed to run in the Ren-C web console, where it can use
+        JavaScript libraries for document generation and manipulation.
+    ]--
+
     exports: [
         add-form  ; puts JS form into DOM
         add-content  ; adds content to the form
@@ -191,9 +201,19 @@ set-location: func [
 
 set-doc: does [
     wtemplate: copy template
-    wtemplate: reword wtemplate reduce ['docname docname 'docregistration docregistration 'signature docname] ; 'date now:date]
+    wtemplate: reword wtemplate reduce [
+        'docname docname
+        'docregistration docregistration
+        'signature docname
+        'date now:date
+    ]
     itemplate: copy labplate
-    itemplate: reword itemplate reduce ['docname docname 'doccode doccode 'date now:date 'cc "copy to General Practitioner"]
+    itemplate: reword itemplate reduce [
+        'docname docname
+        'doccode doccode
+        'date now:date
+        'cc "copy to General Practitioner"
+    ]
     ; probe wtemplate
 ]
 
@@ -241,7 +261,11 @@ expand-latin: func [
 add-form: func [
     return: []
 ][
-    show-dialog:size --[<div id="board" style="width: 400px"><textarea id="script" cols="80" rows="80"></textarea></div>]-- 480x480
+    show-dialog:size --[
+        <div id="board" style="width: 400px">
+            <textarea id="script" cols="80" rows="80"></textarea>
+        </div>
+    ]-- 480x480
 ]
 
 clear-form: func [
@@ -447,12 +471,27 @@ parse-demographics: func [
     phone: default [blank]
     mobile: default [blank]
     email: default [blank]
-    wtemplate: reword wtemplate reduce ['firstnames firstnames 'surname surname 'title title 'street street 'town town 'city city 'phone phone
-        'dob dob 'nhi nhi
+    wtemplate: reword wtemplate reduce [
+        'firstnames firstnames
+        'surname surname
+        'title title
+        'street street
+        'town town
+        'city city
+        'phone phone
+        'dob dob
+        'nhi nhi
         'prescription nhi
     ]
-    itemplate: reword itemplate reduce compose ['firstnames firstnames 'surname (join surname ",") 'address (spaced [opt street opt town opt city]) 'phone phone
-        'dob dob 'nhi nhi 'gender "M F O" 'title title
+    itemplate: reword itemplate reduce compose [
+        'firstnames firstnames
+        'surname (join surname ",")
+        'address (spaced [opt street opt town opt city])
+        'phone phone
+        'dob dob
+        'nhi nhi
+        'gender "M F O"
+        'title title
     ]
     probe itemplate
     old_patient: copy nhi
@@ -534,13 +573,28 @@ manual-entry: func [
     let data: unspaced [
         surname "," firstnames space "(" title ")" space "DOB:" space dob space "NHI:" space nhi newline street newline town newline city newline newline
     ]
-    wtemplate: reword wtemplate reduce ['firstnames firstnames 'surname surname 'title title 'street street 'town town 'city city 'phone phone
-        'dob dob 'nhi nhi
+    wtemplate: reword wtemplate reduce [
+        'firstnames firstnames
+        'surname surname
+        'title title
+        'street street
+        'town town
+        'city city
+        'phone phone
+        'dob dob
+        'nhi nhi
         'prescription nhi
     ]
     ; update the investigation template in both manual and pasted versions
-    itemplate: reword itemplate reduce compose ['firstnames firstnames 'surname (join surname ",") 'address (spaced [opt street opt town opt city]) 'phone phone
-        'dob dob 'nhi nhi 'gender "M F O" 'title title
+    itemplate: reword itemplate reduce compose [
+        'firstnames firstnames
+        'surname (join surname ",")
+        'address (spaced [opt street opt town opt city])
+        'phone phone
+        'dob dob
+        'nhi nhi
+        'gender "M F O"
+        'title title
     ]
 
     ; probe wtemplate
@@ -680,8 +734,16 @@ clear-rx: func [
     let data: unspaced [
         surname "," firstnames space "(" title ")" space "DOB:" space dob space "NHI:" space nhi newline street newline town newline city newline newline
     ]
-    wtemplate: reword wtemplate reduce ['firstnames firstnames 'surname surname 'title title 'street street 'town town 'city city 'phone phone
-        'dob dob 'nhi nhi
+    wtemplate: reword wtemplate reduce [
+        'firstnames firstnames
+        'surname surname
+        'title title
+        'street street
+        'town town
+        'city city
+        'phone phone
+        'dob dob
+        'nhi nhi
         'prescription nhi
     ]
     ; probe wtemplate
