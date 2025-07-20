@@ -796,7 +796,7 @@ print ["Current Version:" form system.script.header.Version]
 
 parse-referral: func [  ; !!! does not seem to be used
     return: []
-    <with>
+    <local>
     fname sname nhi dob gender email mobile street suburb city zip
 ][
     let data: ask ["Paste in Specialist Referral Demographics" text!]
