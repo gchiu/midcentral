@@ -195,17 +195,16 @@ js-button: --[
 
 === MAIN SCRIPT ===
 
-ask-confirm: func [
-    return: [logic?]
+ask-confirm: lambda [
+    []: [logic?]
 ][
     let response: ask ["okay?" text!]
-    return did find "yY" first response
+    did find "yY" first response
 ]
 
-set-location: func [
+set-location: proc [
     "sets up the url to be used for the prescription"
-    return: []
-    <with> rx-template
+    ; <with> rx-template
 ][
     let config: if exists? %/configuration.r [
         load %/configuration.r
@@ -230,7 +229,7 @@ set-location: func [
     if any [url? choice text? choice] [
         rx-template: select config choice
         save %current.r reduce [choice rx-template]
-        return ~
+        exit
     ]
     cycle [
         ; Note: This is how ASK currently works.  Review.
@@ -252,9 +251,8 @@ set-location: func [
     save %/configuration.r config
 ]
 
-set-doc: func [
+set-doc: proc [
     "fills the wtemplate with current doc"
-    return: []
 ][
     wtemplate: copy template
     wtemplate: reword wtemplate reduce [
@@ -273,9 +271,8 @@ set-doc: func [
     ; probe wtemplate
 ]
 
-grab-creds: func [
+grab-creds: proc [
     "gets credentials"
-    return: []
 ][
     let docnames
     let docregistrations
@@ -316,9 +313,8 @@ expand-latin: func [
     return sig
 ]
 
-add-form: func [
+add-form: proc [
     "puts JS form into DOM"
-    return: []
 ][
     show-dialog:size --[
         <div id="board" style="width: 400px">
@@ -327,40 +323,41 @@ add-form: func [
     ]-- 480x480
 ]
 
-clear-form: func [
+clear-form: proc [
     "clears the script"
-    return: []
 ][
     js-do --[document.getElementById('script').innerHTML = '']--
     set-doc
 ]
 
-add-content: func [
+add-content: proc [
     "adds content to the form"
-    return: []
     txt [text!]
 ][
     txt: append append copy txt newline newline
     js-do [--[document.getElementById('script').innerHTML +=]-- spell @txt]
 ]
 
-choose-drug: func [
+choose-drug: proc [
     "pick drug from a selection"
-    return: []
     scheds [block!]
     filename
-    <with> rxs
+    ; <with> rxs
 ][
     let num: length-of scheds
     let choice: ask ["Which schedule to use?" integer!]
-    if choice = 0 [return ~]
-    if choice = -1 [delete filename, print "Cache deleted, try again" return ~]
+    if choice = 0 [exit]
+    if choice = -1 [
+        delete filename
+        print "Cache deleted, try again"
+        exit
+    ]
     if choice <= num [
         let output: expand-latin pick scheds choice
         print output
         add-content output
         append rxs output
-        return ~
+        exit
     ]
     ; out of bounds
     let output: pick scheds 1
@@ -388,7 +385,6 @@ choose-drug: func [
     output: expand-latin spaced [drugname dose "^/Sig:" sig "^/Mitte:" mitte]
     add-content output
     append rxs output
-    return ~
 ]
 
 whitespace-char: charset [#" " #"^/" #"^M" #"^J"]
@@ -441,13 +437,12 @@ labplate: --[
     cc: `$cc`,
 ]--
 
-parse-demographics: func [
+parse-demographics: proc [
     "extracts demographics from clinical portal details"
-    return: []
-    <with>
-        surname firstnames title dob age gender nhi street town city
-        phone mobile email
-        wtemplate itemplate old_patient
+    ; <with>
+    ;    surname firstnames title dob age gender nhi street town city
+    ;    phone mobile email
+    ;    wtemplate itemplate old_patient
 ][
     let demo: ask ["Paste in demographics from CP" text!]
 
@@ -480,14 +475,14 @@ parse-demographics: func [
         to <end>
     ] except [
         print "Could not parse demographic data"
-        return ~
+        exit
     ]
     if nhi = old_patient [
         let response: lowercase ask compose [
             (spaced ["Do you want to use this patient" surname "again?"]) text!
         ]
         if response.1 <> #"y" [
-            return ~
+            exit
         ]
     ]
 
@@ -560,13 +555,12 @@ parse-demographics: func [
     print unspaced ["saved " "%/" nhi %.r ]
 ]
 
-manual-entry: func [
+manual-entry: proc [
     "asks for patient demographics"
-    return: []
-    <with>
-        nhi
-        title surname firstnames dob street town city phone gender
-        wtemplate itemplate
+    ; <with>
+    ;    nhi
+    ;    title surname firstnames dob street town city phone gender
+    ;    wtemplate itemplate
 ][
     print "Enter the following details:"
     nhi: uppercase ask ["NHI:" text!]
@@ -663,9 +657,8 @@ manual-entry: func [
     print unspaced ["saved " "%/" nhi %.r ]
 ]
 
-rx: func [
+rx: proc [
     "starts the process of getting a drug schedule"
-    return: []
     drug [text! word!]
 ][
     let local?: null
@@ -694,7 +687,7 @@ rx: func [
         ] then err -> [
             print spaced ["This page" link "isn't available, or, has a syntax error"]
             ; probe err
-            return ~
+            exit
         ] else [
             print "and cached"
         ]
@@ -719,7 +712,7 @@ rx: func [
         let response: ask compose [(join "0-" counter) integer!]
         case [
             all [response > 0 response <= counter][drug: pick drugs response]
-            response = 0 [return ~]
+            response = 0 [exit]
             response = -1 [delete filename rx drug] ; deletes cache and reloads it
             <else> [
                 let rxname
@@ -734,7 +727,7 @@ rx: func [
                 let output: expand-latin spaced ["Rx:" rxname "^/Sig:" sig "^/Mitte:" mitte]
                 add-content output
                 append rxs output
-                return ~
+                exit
             ]
         ]
     ]
@@ -750,7 +743,7 @@ rx: func [
                 data: data.1
                 ; dump data
                 prin "Datafile loading ... "
-                if find data drug [rx drug, return ~]
+                if find data drug [rx drug, exit]
             ] then err -> [
                 print "And there's no file online"
             ]
@@ -764,15 +757,13 @@ rx: func [
             choose-drug result filename
         ]
     ]
-    return ~
 ]
 
-clear-rx: func [
+clear-rx: proc [
     "clears the drugs but leaves patient"
-    return: []
-    <with>
-    wtemplate
-    surname firstnames title dob nhi street town city phone
+    ; <with>
+    ; wtemplate
+    ; surname firstnames title dob nhi street town city phone
 ][
     clear-form
     ; probe wtemplate
@@ -800,12 +791,11 @@ clear-rx: func [
     print "Ready for another Rx"
 ]
 
-write-rx: func [
+write-rx: proc [
     "sends to docx"
-    return: []
-    <with>
-    rx-template wtemplate
-    slotno  ; !!! only use and commented out, still relevant?
+    ; <with>
+    ; rx-template wtemplate
+    ; slotno  ; !!! only use and commented out, still relevant?
 ][
     ; append:dup rxs space slotno
     let codedata: copy cdata
@@ -833,8 +823,7 @@ write-rx: func [
     js-do codedata
 ]
 
-write-ix: func [
-    return: []
+write-ix: proc [
 ][
     ?? biochem
     ?? medical
@@ -859,10 +848,9 @@ write-ix: func [
     js-do codedata
 ]
 
-new-rx: func [
+new-rx: proc [
     "start a new prescription"
-    return: []
-    <with> rxs
+    ; <with> rxs
 ][
     if not docname [
         grab-creds
@@ -882,9 +870,8 @@ new-rx: func [
     print --["Use Rx" to add a drug to prescription]--
 ]
 
-clear-cache: func [
+clear-cache: proc [
     "remove the drug caches"
-    return: []
 ][
     let alphabet: "abcdefghijklmnopqrstuvwxyz"
     for 'i 26 [
@@ -899,14 +886,11 @@ clear-cache: func [
 
 === OTHER PARSE TOOLS ===
 
-parse-referral: func [  ; !!! does not seem to be used
+parse-referral: proc [  ; !!! does not seem to be used
     "extracts demographics from Specialist Referral PDF"
-    return: []
-    <local>
-    fname sname nhi dob gender email mobile street suburb city zip
+    {fname sname nhi dob gender email mobile street suburb city zip}
 ][
     let data: ask ["Paste in Specialist Referral Demographics" text!]
-    fname: sname: nhi: dob: gender: email: mobile: street: suburb: city: zip: null
     parse data [
         thru "Name" thru ":" [opt whitespace] fname: across to space [whitespace] sname: across to "NHI"
         (trim sname)
@@ -936,18 +920,16 @@ parse-referral: func [  ; !!! does not seem to be used
 
 medical: biochem: serology: other: micro: haem: null  ; doccode: null
 
-clinical: func [
-    return: []
-    <with> medical
+clinical: proc [
+    ; <with> medical
 ][
     medical: ask ["Enter clinical details including periodicity" text!]
     print medical
     if not ask-confirm [clinical]
 ]
 
-bio: func [
-    return: []
-    <with> biochem
+bio: proc [
+    ; <with> biochem
 ][
     print --[1. Creatinine, LFTs, CRP
 2. CPK
@@ -963,9 +945,8 @@ bio: func [
     if not ask-confirm [bio]
 ]
 
-sero: func [
-    return: []
-    <with> serology
+sero: proc [
+    ; <with> serology
 ][
     print --[0. Hep B, C serology
 1. ANA ENA
@@ -987,9 +968,8 @@ sero: func [
     if not ask-confirm [sero]
 ]
 
-oth: func [
-    return: []
-    <with> other
+oth: proc [
+    ; <with> other
 ][
     print --[1. Quantiferon TB Gold,]--
     other: ask ["Enter other requests" text!]
@@ -998,9 +978,8 @@ oth: func [
     if not ask-confirm [oth]
 ]
 
-haemo: func [
-    return: []
-    <with> haem
+haemo: proc [
+    ; <with> haem
 ][
     print --[1. CBC
 2. Lupus Anticoagulant
@@ -1016,9 +995,8 @@ haemo: func [
     if not ask-confirm [haemo]
 ]
 
-mic: func [
-    return: []
-    <with> micro
+mic: proc [
+    ; <with> micro
 ][
     print --[1. MSU
 2. ACR
@@ -1050,9 +1028,8 @@ clean-data: func [
     return data
 ]
 
-clrdata: func [
+clrdata: proc [
     "removes spaces, tabs from laboratory results - separate utility"
-    return: []  ; !!! is this meant to return data?
 ][
     data: ask "Paste in your blood results"
     clean-data data
@@ -1062,17 +1039,15 @@ clrdata: func [
 
 === HELP ===
 
-; Help is generated for functions in the [exports: [...]] list in the header.
-;
 ; 1. The header is (currently) only available in system.script.header.exports
 ;    during the loading of this script, so capture it into a static variable.
 ;    (future approaches may persist module properties in the environment).
 
-help-rx: func [
-    return: []
-] bind construct [
+help-rx: proc [
+    "Help generated for functions in the [exports: [...]] list in the header"
+] bind {
     exports-in-header: system.script.header.exports  ; capture during load [1]
-][
+} [
     print "=== ACTION! exports:"
 
     let non-action-names: collect [
