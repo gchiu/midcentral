@@ -1045,9 +1045,9 @@ clrdata: proc [
 
 help-rx: proc [
     "Help generated for functions in the [exports: [...]] list in the header"
-] bind {
+] bind construct [
     exports-in-header: system.script.header.exports  ; capture during load [1]
-} [
+] [
     print "=== ACTION! exports:"
 
     let non-action-names: collect [
