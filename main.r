@@ -229,7 +229,7 @@ set-location: proc [
     if any [url? choice text? choice] [
         rx-template: select config choice
         save %current.r reduce [choice rx-template]
-        exit
+        return
     ]
     cycle [
         ; Note: This is how ASK currently works.  Review.
@@ -346,18 +346,18 @@ choose-drug: proc [
 ][
     let num: length-of scheds
     let choice: ask ["Which schedule to use?" integer!]
-    if choice = 0 [exit]
+    if choice = 0 [return]
     if choice = -1 [
         delete filename
         print "Cache deleted, try again"
-        exit
+        return
     ]
     if choice <= num [
         let output: expand-latin pick scheds choice
         print output
         add-content output
         append rxs output
-        exit
+        return
     ]
     ; out of bounds
     let output: pick scheds 1
@@ -475,14 +475,14 @@ parse-demographics: proc [
         to <end>
     ] except [
         print "Could not parse demographic data"
-        exit
+        return
     ]
     if nhi = old_patient [
         let response: lowercase ask compose [
             (spaced ["Do you want to use this patient" surname "again?"]) text!
         ]
         if response.1 <> #"y" [
-            exit
+            return
         ]
     ]
 
@@ -687,7 +687,7 @@ rx: proc [
         ] then err -> [
             print spaced ["This page" link "isn't available, or, has a syntax error"]
             ; probe err
-            exit
+            return
         ] else [
             print "and cached"
         ]
@@ -712,7 +712,7 @@ rx: proc [
         let response: ask compose [(join "0-" counter) integer!]
         case [
             all [response > 0 response <= counter][drug: pick drugs response]
-            response = 0 [exit]
+            response = 0 [return]
             response = -1 [delete filename rx drug] ; deletes cache and reloads it
             <else> [
                 let rxname
@@ -727,7 +727,7 @@ rx: proc [
                 let output: expand-latin spaced ["Rx:" rxname "^/Sig:" sig "^/Mitte:" mitte]
                 add-content output
                 append rxs output
-                exit
+                return
             ]
         ]
     ]
@@ -743,7 +743,7 @@ rx: proc [
                 data: data.1
                 ; dump data
                 prin "Datafile loading ... "
-                if find data drug [rx drug, exit]
+                if find data drug [rx drug, return]
             ] then err -> [
                 print "And there's no file online"
             ]
