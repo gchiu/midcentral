@@ -565,7 +565,7 @@ manual-entry: proc [
     print "Enter the following details:"
     nhi: uppercase ask ["NHI:" text!]
     let filename: localstorage-file-for-nhi nhi
-    if word? opt exists? filename [
+    if word? cond exists? filename [
         let filedata: load filename
         filedata: filedata.1
         title: filedata.title
@@ -1053,7 +1053,7 @@ help-rx: proc [
     let non-action-names: collect [
         for-each 'name exports-in-header [
             let ^value: get inside [] name
-            if not action? opt ^value [
+            if not action? cond ^value [
                 keep name
                 continue
             ]
