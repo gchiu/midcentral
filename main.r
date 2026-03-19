@@ -1040,14 +1040,14 @@ clrdata: proc [
 === HELP ===
 
 ; 1. The header is (currently) only available in system.script.header.exports
-;    during the loading of this script, so capture it into a static variable.
+;    during the loading of this script, so capture it into a variable.
 ;    (future approaches may persist module properties in the environment).
+
+exports-in-header: system.script.header.exports  ; capture on load [1]
 
 help-rx: proc [
     "Help generated for functions in the [exports: [...]] list in the header"
-] bind construct [
-    exports-in-header: system.script.header.exports  ; capture during load [1]
-] [
+][
     print "=== ACTION! exports:"
 
     let non-action-names: collect [
