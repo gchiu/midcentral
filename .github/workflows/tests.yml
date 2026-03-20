@@ -94,8 +94,8 @@ jobs:
           for-each file files [
               parse file [thru ".r"] except [continue]
               print ["Checking:" file]
-              text: as text! read file
-              collect* [case/all [
+              let text: as text! read file
+              collect* [case:all [
                   find text tab [
                       keep "contains TABS, the horror!"
                   ]
@@ -108,16 +108,16 @@ jobs:
                   newline <> last text [
                       keep "has no terminal newline"
                   ]
-                  newline = first back back tail text [
+                  newline = first back back tail of text [
                       keep "has extra newlines at end of file"
                   ]
-              ]] then problems -> [
+              ]] then (problems -> [
                   preface: spaced [newline "File" mold file "=>" space]
-                  print delimit/head preface problems
+                  print delimit:head preface problems
                   result: 1
-              ]
+              ])
           ]
-          quit/with result
+          quit result
 
 #====# CHECK FILE DATA STRUCTURES #==============================================#
 
@@ -133,13 +133,21 @@ jobs:
           raw_root: https://raw.githubusercontent.com/gchiu/midcentral/main/drugs/
           print "starting test run..."
           for-each letter split alphabet 1 [
-            filename: to url! unspaced [raw_root letter %-drugs.r]
+            let filename: to url! unspaced [raw_root letter %-drugs.r]
             print ["checking" filename]
             if exists? filename [
-                filedata: load filename
-                if all [block? filedata.1 block? filedata text? filedata.1.1][
-                    print ["OK with letter" letter]
-                ] else [fail "wrong datastructure for file" filename]
-            ] else [ print [filename "doesn't exist"]]
+                let filedata: load filename
+                all [
+                  block? filedata.1
+                  block? filedata
+                  text? filedata.1.1
+                ] then [
+                  print ["OK with letter" letter]
+                ] else [
+                  panic ["wrong datastructure for file" filename]
+                ]
+            ] else [
+              print [filename "doesn't exist"]
+            ]
           ]
-          quit/with result
+          quit result
