@@ -239,10 +239,10 @@ set-location: proc [
         if empty? trim loc [break]  ; ENTER with all whitespace
 
         let url: ask ["Enter URL for the prescription template:" url!]
-        rescue [read url] then err -> [
+        rescue [read url] then (err -> [
             print "This location is not available"
             continue
-        ] else [
+        ]) else [
             if ask-confirm [
                 append config spread [loc url]
             ]
@@ -684,11 +684,11 @@ rx: proc [
             data: data.1
             ; dump data
             prin "Datafile loading ... "
-        ] then err -> [
+        ] then (err -> [
             print spaced ["This page" link "isn't available, or, has a syntax error"]
             ; probe err
             return
-        ] else [
+        ]) else [
             print "and cached"
         ]
     ]
@@ -744,9 +744,9 @@ rx: proc [
                 ; dump data
                 prin "Datafile loading ... "
                 if find data drug [rx drug, return]
-            ] then err -> [
+            ] then (err -> [
                 print "And there's no file online"
-            ]
+            ])
         ]
         print ["You can submit a PR to add them here." https://github.com/gchiu/midcentral/tree/main/drugs ]
     ] else [
