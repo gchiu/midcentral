@@ -65,6 +65,16 @@ Rebol [
     ]
 ]
 
+=== DEBUG HELPERS ===
+
+; Note that there was some contention over `??` as to whether it should be a
+; standard operator in lib; since `?` was used for OPTIONAL/OPT for a while.
+; This was moved away from when it was deemed that `?` did not look prefix
+; (more likely infix or postfix, or an arity-0 "wildcard" variable name).
+; For the moment ?? is not defined and you can make it whatever you want.
+
+??: dump/
+
 
 === LIBRARIES ===
 
