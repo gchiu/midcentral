@@ -2,7 +2,7 @@
 // %rx-app.cy.js
 //
 
-let replpad_url = 'http://hostilefork.com/media/shared/replpad-js/'
+let replpad_url = 'https://revolt.metaeducation.com/console/'
 
 let short_hash = Cypress.env('GIT_COMMIT_SHORT')
 if (short_hash)
