@@ -81,12 +81,12 @@ Rebol [
 import @popupdemo
 
 for-each 'site [
-    https://cdnjs.cloudflare.com/ajax/libs/docxtemplater/3.29.0/docxtemplater.js
-    https://unpkg.com/pizzip@3.1.1/dist/pizzip.js
-    ; https://cdnjs.cloudflare.com/ajax/libs/jszip/2.6.1/jszip.js
-    https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.8/FileSaver.js
-    https://unpkg.com/pizzip@3.1.1/dist/pizzip-utils.js
-    ; https://cdnjs.cloudflare.com/ajax/libs/jszip-utils/0.0.2/jszip-utils.js
+    <https://cdnjs.cloudflare.com/ajax/libs/docxtemplater/3.29.0/docxtemplater.js>
+    <https://unpkg.com/pizzip@3.1.1/dist/pizzip.js>
+    ; <https://cdnjs.cloudflare.com/ajax/libs/jszip/2.6.1/jszip.js>
+    <https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.8/FileSaver.js>
+    <https://unpkg.com/pizzip@3.1.1/dist/pizzip-utils.js>
+    ; <https://cdnjs.cloudflare.com/ajax/libs/jszip-utils/0.0.2/jszip-utils.js>
 ][
     js-do site
 ]
@@ -102,7 +102,7 @@ for-each 'site [
 ; Drug lists are located on GitHub, and the DOCX templates are stored on S3.
 
 druglist-url-for-char: lambda [c [char?]] [
-    compose https://raw.githubusercontent.com/gchiu/midcentral/main/drugs/(c)-drugs.r
+    compose <https://raw.githubusercontent.com/gchiu/midcentral/main/drugs/(c)-drugs.r>
 ]
 
 druglist-cachefile-for-char: lambda [c [char?]] [
@@ -113,9 +113,9 @@ localstorage-file-for-nhi: lambda [nhi [text!]] [
     compose %/(nhi).r
 ]
 
-rx-template: https://metaeducation.s3.amazonaws.com/rx-6template-docx.docx
-ix-template: sys.util/adjust-url-for-raw https://github.com/gchiu/midcentral/blob/main/templates/Medlab-form-ver1.docx
-; https://metaeducation.s3.amazonaws.com/Medlab-form-ver1.docx
+rx-template: <https://metaeducation.s3.amazonaws.com/rx-6template-docx.docx>
+ix-template: sys.util/adjust-url-for-raw <https://github.com/gchiu/midcentral/blob/main/templates/Medlab-form-ver1.docx>
+; <https://metaeducation.s3.amazonaws.com/Medlab-form-ver1.docx>
 
 
 === GLOBAL DEFINITIONS ===
@@ -219,7 +219,7 @@ set-location: proc [
     let config: if exists? %/configuration.r [
         load %/configuration.r
     ] else [
-        save %/configuration.r load https://raw.githubusercontent.com/gchiu/midcentral/main/templates/sample-config.r
+        save %/configuration.r load <https://raw.githubusercontent.com/gchiu/midcentral/main/templates/sample-config.r>
         ; load %/configuration.r
     ]
     print "Current locations"
@@ -248,7 +248,7 @@ set-location: proc [
         if null? loc [break]  ; ESCAPE hit
         if empty? trim loc [break]  ; ENTER with all whitespace
 
-        let url: ask ["Enter URL for the prescription template:" url!]
+        let url: as tag! ask ["Enter URL for the prescription template:" text!]
         rescue [read url] then (err -> [
             print "This location is not available"
             continue
@@ -758,7 +758,10 @@ rx: proc [
                 print "And there's no file online"
             ])
         ]
-        print ["You can submit a PR to add them here." https://github.com/gchiu/midcentral/tree/main/drugs ]
+        print [
+            "You can submit a PR to add them here:"
+            "https://github.com/gchiu/midcentral/tree/main/drugs"
+        ]
     ] else [
         let len: length of result
         if len <> 0 [

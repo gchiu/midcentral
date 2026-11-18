@@ -130,10 +130,10 @@ jobs:
         script: |
           result: 0
           alphabet: "abcdefghijklmnopqrstuvwxyz"
-          raw_root: https://raw.githubusercontent.com/gchiu/midcentral/main/drugs/
+          raw_root: <https://raw.githubusercontent.com/gchiu/midcentral/main/drugs/>
           print "starting test run..."
           for-each letter split alphabet 1 [
-            let filename: to url! unspaced [raw_root letter %-drugs.r]
+            let filename: join raw_root [letter %-drugs.r]
             print ["checking" filename]
             if exists? filename [
                 let filedata: load filename
