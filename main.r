@@ -78,7 +78,7 @@ Rebol [
 
 === LIBRARIES ===
 
-import @popupdemo
+import #popupdemo
 
 for-each 'site [
     <https://cdnjs.cloudflare.com/ajax/libs/docxtemplater/3.29.0/docxtemplater.js>
