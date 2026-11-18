@@ -11,7 +11,7 @@ if (short_hash)
 describe('Rx replpad App continous integration', () => {
   it('Visits Replpad', () => {
     cy.visit(replpad_url)
-    cy.get('.input').type('import @rx{enter}')
+    cy.get('.input').type('import #rx{enter}')
     cy.get('.stdout').should('contain','New Script?')
     cy.get('.input:focus').type('y{enter}')
     cy.get('.stdout').should('contain','Enter your name as appears on a prescription:')
